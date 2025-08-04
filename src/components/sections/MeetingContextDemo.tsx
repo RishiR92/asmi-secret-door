@@ -12,7 +12,7 @@ const MeetingContextDemo = () => {
     {
       title: "Win every meeting.",
       content: "prep",
-      message: "Help me prep for meeting with Ben"
+      message: "Help me prep for board meeting with Pat"
     },
     {
       title: "Win every meeting.",
@@ -27,12 +27,12 @@ const MeetingContextDemo = () => {
   ];
 
   const contextData = {
-    meeting: "Meeting with Ben from a16z at 2pm tomorrow:",
+    meeting: "Board meeting with Pat Grady from Sequoia at 2pm tomorrow:",
     insights: [
-      { icon: "📚", text: "Co-founded a16z, wrote 'The Hard Thing About Hard Things'", time: "Background" },
-      { icon: "🎯", text: "Focus areas: Enterprise software, AI/ML, fintech", time: "Investment thesis" },
-      { icon: "💡", text: "Values: Product-market fit, strong founding teams", time: "Key priorities" },
-      { icon: "🤝", text: "Meeting style: Direct, data-driven discussions", time: "Approach" }
+      { icon: "📊", text: "Last meeting: Expressed concerns about burn rate, wants path to profitability", time: "Previous feedback" },
+      { icon: "🎯", text: "Focus areas: Growth metrics, unit economics, competitive positioning", time: "Board priorities" },
+      { icon: "💼", text: "Sequoia portfolio: Prefers data-driven founders, scalable business models", time: "Investment style" },
+      { icon: "⚡", text: "Agenda: Q3 results, fundraising timeline, product roadmap review", time: "Today's focus" }
     ]
   };
 
@@ -167,10 +167,10 @@ const MeetingContextDemo = () => {
                   <span className="text-black text-lg font-bold">✓</span>
                 </div>
                 <p className="text-green-300 text-sm font-medium mb-2">
-                  You're prepared for Ben!
+                  You're prepared for Pat!
                 </p>
                 <p className="text-gray-300 text-xs">
-                  All context loaded. Ready to impress a16z.
+                  Board context loaded. Ready to impress Sequoia.
                 </p>
               </div>
               
