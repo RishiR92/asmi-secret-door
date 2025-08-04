@@ -58,9 +58,10 @@ const VoiceRescheduleDemo = () => {
   }, [currentStep]);
 
   const meetingData = {
-    original: "4:00 PM - 5:00 PM",
-    new: "6:00 PM - 7:00 PM", 
-    attendees: "You, Eric Chen, Sarah Kim"
+    original: "TBD",
+    new: "7:00 PM - 8:00 PM", 
+    attendees: "You, Sam Peterson",
+    location: "State Bird Provisions, SF"
   };
 
   return (
@@ -88,7 +89,7 @@ const VoiceRescheduleDemo = () => {
           <div className="bg-black min-h-[400px] p-4 space-y-4">
             {/* Voice Message */}
             <VoiceMessage 
-              text="Move Eric call to 6PM"
+              text="Meeting with Sam over dinner. Find a good place in Downtown SF & block 1 hour."
               isRecording={isRecording}
               audioWaves={audioWaves}
               isVisible={currentStep >= 0}
@@ -100,14 +101,14 @@ const VoiceRescheduleDemo = () => {
             {/* Processing Message */}
             <ProcessingMessage 
               type="processing"
-              text="Got it. Checking Eric's availability..."
+              text="Got it. Finding restaurants in Downtown SF and checking Sam's availability..."
               isVisible={currentStep >= 2}
             />
 
             {/* Success Message */}
             <ProcessingMessage 
               type="confirmation" 
-              text="Done! Eric's team confirmed. Updated your calendar and sent new invite."
+              text="Perfect! Found 3 great spots. Booked table at State Bird Provisions for 7PM. Sam confirmed & calendar updated."
               isVisible={currentStep >= 3}
             />
 

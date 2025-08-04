@@ -11,6 +11,7 @@ import TimelineHowItWorks from './sections/TimelineHowItWorks';
 import FounderSectionNew from './sections/FounderSectionNew';
 import TractionSectionNew from './sections/TractionSectionNew';
 import VoiceToOSSection from './sections/VoiceToOSSection';
+import WhyMessagingSection from './sections/WhyMessagingSection';
 import BuiltForEveryoneSection from './sections/BuiltForEveryoneSection';
 import FinalCTASectionNew from './sections/FinalCTASectionNew';
 
@@ -29,6 +30,7 @@ const InvestorSite = () => {
     { component: TimelineHowItWorks, title: 'How It Works' },
     { component: FounderSectionNew, title: 'Founders' },
     { component: TractionSectionNew, title: 'Traction' },
+    { component: WhyMessagingSection, title: 'Why Messaging' },
     { component: VoiceToOSSection, title: 'Voice to OS' },
     { component: BuiltForEveryoneSection, title: 'Built for Everyone' },
     { component: FinalCTASectionNew, title: 'CTA' },

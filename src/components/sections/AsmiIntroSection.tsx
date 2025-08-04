@@ -10,7 +10,7 @@ const AsmiIntroSection = () => {
   const [showTags, setShowTags] = useState(false);
   const [activeTags, setActiveTags] = useState<number[]>([]);
 
-  const fullText = "Asmi is your smart Chief of Staff within ";
+  const fullText = "The Context Layer for Personal Super-intelligence";
   const platforms = ["WhatsApp", "iMessage"];
   const tags = ["Calendar", "Meeting Preps", "Mails"];
 
@@ -66,18 +66,8 @@ const AsmiIntroSection = () => {
         {/* Main Text with Typewriter Effect */}
         <div className="space-y-6">
           <div className="text-3xl md:text-4xl font-space font-bold text-white leading-tight min-h-[120px] flex items-center justify-center">
-            <div>
+            <div className="text-center">
               {typedText}
-              {showPlatforms && (
-                <span className="text-green-400 relative inline-block min-w-[140px] text-left">
-                  <span 
-                    key={currentPlatform}
-                    className="absolute left-0 top-0 animate-fade-in"
-                  >
-                    {platforms[currentPlatform]}
-                  </span>
-                </span>
-              )}
               {isTyping && <span className="animate-pulse text-green-400">|</span>}
             </div>
           </div>

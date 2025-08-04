@@ -6,6 +6,7 @@ interface MeetingDetailsProps {
     original: string;
     new: string;
     attendees: string;
+    location?: string;
   };
   isVisible: boolean;
 }
@@ -30,8 +31,11 @@ const MeetingDetails = ({ data, isVisible }: MeetingDetailsProps) => {
               <span className="text-purple-200">Now:</span>
               <span className="text-purple-200 font-medium">{data.new}</span>
             </div>
-            <div className="pt-2 border-t border-purple-400/20">
+            <div className="pt-2 border-t border-purple-400/20 space-y-1">
               <span className="text-purple-300 text-xs">{data.attendees}</span>
+              {data.location && (
+                <div className="text-purple-300 text-xs">📍 {data.location}</div>
+              )}
             </div>
           </div>
         </div>

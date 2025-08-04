@@ -21,9 +21,10 @@ const MorningBriefDemo = () => {
     { 
       type: 'schedule', 
       items: [
-        { icon: Calendar, text: '9 AM: Board meeting prep', color: 'text-blue-400' },
-        { icon: User, text: '2 PM: 1:1 with Sarah', color: 'text-green-400' },
-        { icon: Calendar, text: '4 PM: Investor call', color: 'text-purple-400' }
+        { icon: Calendar, text: '9 AM: Board meeting prep', color: 'text-blue-400', location: 'Office Conference Room', notes: true },
+        { icon: User, text: '11 AM: Coffee with Alex (Physical)', color: 'text-orange-400', location: 'Blue Bottle Coffee', notes: true },
+        { icon: User, text: '2 PM: 1:1 with Sarah', color: 'text-green-400', location: 'Virtual', notes: false },
+        { icon: Calendar, text: '4 PM: Investor call with Sequoia', color: 'text-purple-400', location: 'Virtual', notes: true }
       ],
       delay: 400 // Faster
     },

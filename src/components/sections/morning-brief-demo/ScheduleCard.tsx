@@ -5,6 +5,8 @@ interface ScheduleItem {
   icon: typeof Calendar;
   text: string;
   color: string;
+  location?: string;
+  notes?: boolean;
 }
 
 interface ScheduleCardProps {
@@ -22,11 +24,23 @@ const ScheduleCard = ({ items, isVisible }: ScheduleCardProps) => {
           {items.map((item, index) => {
             const IconComponent = item.icon;
             return (
-              <div key={index} className="flex items-center space-x-3">
-                <div className="p-1.5 rounded-lg bg-black/30">
-                  <IconComponent size={14} className={item.color} />
+              <div key={index} className="space-y-2">
+                <div className="flex items-center space-x-3">
+                  <div className="p-1.5 rounded-lg bg-black/30">
+                    <IconComponent size={14} className={item.color} />
+                  </div>
+                  <span className="text-sm font-light text-white flex-1">{item.text}</span>
+                  {item.notes && (
+                    <button className="text-xs text-green-400 bg-green-400/10 px-2 py-1 rounded-full">
+                      Notes
+                    </button>
+                  )}
                 </div>
-                <span className="text-sm font-light text-white">{item.text}</span>
+                {item.location && (
+                  <div className="text-xs text-gray-400 ml-8">
+                    📍 {item.location}
+                  </div>
+                )}
               </div>
             );
           })}
