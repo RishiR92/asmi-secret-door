@@ -65,20 +65,20 @@ const VoiceRescheduleDemo = () => {
   };
 
   return (
-    <MobileOptimizedSection maxWidth="sm">
-      <div className="space-y-6">
+    <MobileOptimizedSection maxWidth="xs" padding="sm">
+      <div className="space-y-4">
         {/* Header */}
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-            <Mic className="text-red-400" size={20} />
+          <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+            <Mic className="text-red-400" size={16} />
           </div>
-          <h2 className="text-2xl font-bold text-white leading-tight">
+          <h2 className="text-xl font-bold text-white leading-tight">
             Just speak. It's done.
           </h2>
         </div>
 
         {/* Phone Demo */}
-        <div className="bg-gray-900 rounded-3xl overflow-hidden mx-auto max-w-xs shadow-2xl">
+        <div className="bg-gray-900 rounded-2xl overflow-hidden mx-auto max-w-[280px] shadow-xl">
           {/* Status Bar */}
           <PhoneStatusBar isRecording={isRecording} />
           
@@ -86,7 +86,7 @@ const VoiceRescheduleDemo = () => {
           <ChatHeader isRecording={isRecording} />
 
           {/* Chat Messages */}
-          <div className="bg-black min-h-[400px] p-4 space-y-4">
+          <div className="bg-black min-h-[320px] p-3 space-y-3">
             {/* Voice Message */}
             <VoiceMessage 
               text="Meeting with Sam over dinner. Find a good place in Downtown SF & block 1 hour."
@@ -121,7 +121,7 @@ const VoiceRescheduleDemo = () => {
         </div>
 
         {/* Bottom Text */}
-        <p className="text-gray-400 text-sm text-center font-light">
+        <p className="text-gray-400 text-xs text-center font-light">
           Voice → Understanding → Action in seconds
         </p>
       </div>
