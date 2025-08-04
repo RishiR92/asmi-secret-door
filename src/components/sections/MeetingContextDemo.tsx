@@ -27,11 +27,11 @@ const MeetingContextDemo = () => {
   ];
 
   const contextData = {
-    meeting: "Board meeting with Pat Grady from Sequoia at 2pm tomorrow:",
+    meeting: "Board meeting with Pat Grady from Sequoia at 4pm today:",
     insights: [
       { icon: "📊", text: "Last meeting: Expressed concerns about burn rate, wants path to profitability", time: "Previous feedback" },
       { icon: "🎯", text: "Focus areas: Growth metrics, unit economics, competitive positioning", time: "Board priorities" },
-      { icon: "💼", text: "Sequoia portfolio: Prefers data-driven founders, scalable business models", time: "Investment style" },
+      { icon: "🔑", text: "Secret to win: Reference Sequoia's recent AI portfolio wins & position your growth as similar trajectory", time: "Winning strategy" },
       { icon: "⚡", text: "Agenda: Q3 results, fundraising timeline, product roadmap review", time: "Today's focus" }
     ]
   };
