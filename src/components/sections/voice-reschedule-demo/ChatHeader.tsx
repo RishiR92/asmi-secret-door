@@ -15,7 +15,7 @@ const ChatHeader = ({ isRecording }: ChatHeaderProps) => {
         <h3 className="text-white font-medium text-sm">Asmi</h3>
         <div className="text-gray-400 text-xs flex items-center space-x-1">
           <Mic size={10} />
-          <span>Voice assistant</span>
+          <span>Online</span>
         </div>
       </div>
       {isRecording && (
