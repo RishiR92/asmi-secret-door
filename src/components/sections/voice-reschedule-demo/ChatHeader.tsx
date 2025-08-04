@@ -13,10 +13,6 @@ const ChatHeader = ({ isRecording }: ChatHeaderProps) => {
       </div>
       <div className="flex-1">
         <h3 className="text-white font-medium text-sm">Asmi</h3>
-        <div className="text-gray-400 text-xs flex items-center space-x-1">
-          <Mic size={10} />
-          <span>Online</span>
-        </div>
       </div>
       {isRecording && (
         <div className="flex items-center space-x-2">
