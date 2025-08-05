@@ -1,27 +1,29 @@
 import { useState, useEffect } from 'react';
-import { Users, Zap, Mail, MessageSquare, Slack, ArrowRight } from 'lucide-react';
+import { Users, Zap, TrendingUp, Mail, MessageSquare, Slack } from 'lucide-react';
+import MobileOptimizedSection from './MobileOptimizedSection';
 
 const WhyMessagingSection = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentBenefit, setCurrentBenefit] = useState(0);
+  const [showNext, setShowNext] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   const benefits = [
     {
-      icon: <Users className="text-emerald-400" size={20} />,
-      title: "Billions already here",
-      description: "No downloads needed"
+      icon: <Users className="text-green-400" size={24} />,
+      title: "Massive existing reach",
+      description: "Billions of users already on these platforms"
     },
     {
-      icon: <Zap className="text-amber-400" size={20} />,
-      title: "Instant adoption",
-      description: "Zero friction setup"
+      icon: <Zap className="text-blue-400" size={24} />,
+      title: "Lowest friction, immediate adoption",
+      description: "No app download, instant setup"
     }
   ];
 
   const nextChannels = [
-    { icon: <Mail size={16} />, name: "Mail", color: "text-rose-400" },
-    { icon: <Slack size={16} />, name: "Slack", color: "text-violet-400" },
-    { icon: <MessageSquare size={16} />, name: "Teams", color: "text-cyan-400" }
+    { icon: <Mail size={20} />, name: "Mail", color: "text-red-400" },
+    { icon: <Slack size={20} />, name: "Slack", color: "text-purple-400" },
+    { icon: <MessageSquare size={20} />, name: "Teams", color: "text-blue-400" }
   ];
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const WhyMessagingSection = () => {
           setIsVisible(true);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.3 }
     );
 
     const element = document.getElementById('why-messaging-section');
@@ -45,111 +47,91 @@ const WhyMessagingSection = () => {
   useEffect(() => {
     if (!isVisible) return;
 
-    const sequence = async () => {
-      // Show title first
-      await new Promise(resolve => setTimeout(resolve, 300));
-      setCurrentStep(1);
-      
-      // Show first benefit
-      await new Promise(resolve => setTimeout(resolve, 800));
-      setCurrentStep(2);
-      
-      // Show second benefit
-      await new Promise(resolve => setTimeout(resolve, 800));
-      setCurrentStep(3);
-      
-      // Show next channels
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setCurrentStep(4);
-    };
+    const interval = setInterval(() => {
+      setCurrentBenefit(prev => {
+        if (prev < benefits.length - 1) {
+          return prev + 1;
+        } else {
+          setShowNext(true);
+          return prev;
+        }
+      });
+    }, 1500);
 
-    sequence();
+    return () => clearInterval(interval);
   }, [isVisible]);
 
   return (
-    <div id="why-messaging-section" className="min-h-screen bg-black flex items-center justify-center px-6 py-16">
-      <div className="w-full max-w-sm mx-auto space-y-8">
-        {/* Title */}
-        <div className={`text-center transition-all duration-800 ${
-          currentStep >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-        }`}>
-          <h2 className="text-2xl font-bold text-white mb-2">
-            Why messaging?
+    <div id="why-messaging-section" className="min-h-screen bg-black flex items-center py-12">
+      <MobileOptimizedSection>
+        <div className="text-center space-y-8">
+          {/* Title */}
+          <h2 className="text-3xl md:text-4xl font-space font-bold text-white leading-tight">
+            Why WhatsApp and iMessage
           </h2>
-          <p className="text-gray-400 text-sm">
-            Start where people already are
-          </p>
-        </div>
 
-        {/* Benefits */}
-        <div className="space-y-4">
-          {benefits.map((benefit, index) => (
-            <div
-              key={index}
-              className={`transition-all duration-700 ${
-                currentStep >= index + 2 
-                  ? 'opacity-100 translate-y-0 scale-100' 
-                  : 'opacity-0 translate-y-6 scale-95'
-              }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
-            >
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 hover:bg-white/[0.07] transition-all duration-300">
-                <div className="flex items-center space-x-4">
-                  <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
+          {/* Main Benefits */}
+          <div className="space-y-8">
+            {benefits.map((benefit, index) => (
+              <div
+                key={index}
+                className={`bg-gradient-to-r from-gray-900/60 to-gray-800/40 border rounded-3xl p-8 backdrop-blur-sm transition-all duration-1000 transform ${
+                  currentBenefit >= index 
+                    ? 'border-white/30 opacity-100 scale-100 shadow-2xl shadow-white/10' 
+                    : 'border-gray-700/20 opacity-30 scale-95'
+                }`}
+                style={{
+                  animationDelay: `${index * 300}ms`
+                }}
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className={`w-16 h-16 bg-gradient-to-br from-black/70 to-gray-900/50 rounded-full flex items-center justify-center transition-all duration-700 ${
+                    currentBenefit >= index ? 'animate-pulse' : ''
+                  }`}>
                     {benefit.icon}
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-white font-semibold text-base mb-1">
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">
                       {benefit.title}
                     </h3>
-                    <p className="text-gray-400 text-sm">
+                    <p className="text-gray-300 text-base leading-relaxed">
                       {benefit.description}
                     </p>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Next Channels */}
-        <div className={`transition-all duration-800 ${
-          currentStep >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-        }`}>
-          <div className="bg-gradient-to-br from-emerald-500/10 to-blue-500/10 border border-emerald-400/20 rounded-2xl p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-emerald-400 font-semibold text-sm">
-                Coming next
-              </h3>
-              <ArrowRight className="text-emerald-400" size={16} />
-            </div>
-            
-            <div className="grid grid-cols-3 gap-2">
-              {nextChannels.map((channel, index) => (
-                <div
-                  key={channel.name}
-                  className={`bg-black/20 border border-white/10 rounded-xl p-3 text-center animate-fade-in hover:scale-105 transition-all duration-300`}
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <div className={`${channel.color} mb-2 flex justify-center`}>
-                    {channel.icon}
-                  </div>
-                  <span className="text-white text-xs font-medium">
-                    {channel.name}
-                  </span>
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
-        </div>
 
-        {/* Bottom indicator */}
-        <div className={`flex justify-center transition-all duration-800 ${
-          currentStep >= 4 ? 'opacity-100' : 'opacity-0'
-        }`}>
-          <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+          {/* Next Section */}
+          {showNext && (
+            <div className="animate-fade-in space-y-6 pt-12">
+              <div className="bg-gradient-to-r from-green-500/10 to-blue-500/10 border border-green-400/30 rounded-2xl p-6 backdrop-blur-sm">
+                <h3 className="text-lg font-semibold text-green-400 mb-4">
+                  Next: High frequency channels
+                </h3>
+                
+                <div className="flex flex-wrap justify-center gap-3">
+                  {nextChannels.map((channel, index) => (
+                    <div
+                      key={channel.name}
+                      className={`flex items-center space-x-2 px-4 py-3 rounded-full bg-black/30 border border-gray-600/50 animate-scale-in hover:scale-105 transition-all duration-300`}
+                      style={{ animationDelay: `${index * 150}ms` }}
+                    >
+                      <span className={channel.color}>
+                        {channel.icon}
+                      </span>
+                      <span className="text-white text-sm font-medium">
+                        {channel.name}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
+      </MobileOptimizedSection>
     </div>
   );
 };
