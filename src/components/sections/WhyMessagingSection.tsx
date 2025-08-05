@@ -17,11 +17,6 @@ const WhyMessagingSection = () => {
       icon: <Zap className="text-blue-400" size={24} />,
       title: "Lowest friction, immediate adoption",
       description: "No app download, instant setup"
-    },
-    {
-      icon: <TrendingUp className="text-purple-400" size={24} />,
-      title: "Faster growth with viral hooks",
-      description: "Share experiences naturally within conversations"
     }
   ];
 
@@ -61,7 +56,7 @@ const WhyMessagingSection = () => {
           return prev;
         }
       });
-    }, 2000);
+    }, 1500);
 
     return () => clearInterval(interval);
   }, [isVisible]);
@@ -76,25 +71,30 @@ const WhyMessagingSection = () => {
           </h2>
 
           {/* Main Benefits */}
-          <div className="space-y-6">
+          <div className="space-y-8">
             {benefits.map((benefit, index) => (
               <div
                 key={index}
-                className={`bg-gray-900/50 border rounded-2xl p-6 backdrop-blur-sm transition-all duration-700 ${
+                className={`bg-gradient-to-r from-gray-900/60 to-gray-800/40 border rounded-3xl p-8 backdrop-blur-sm transition-all duration-1000 transform ${
                   currentBenefit >= index 
-                    ? 'border-white/20 opacity-100 scale-100' 
-                    : 'border-gray-700/30 opacity-40 scale-95'
+                    ? 'border-white/30 opacity-100 scale-100 shadow-2xl shadow-white/10' 
+                    : 'border-gray-700/20 opacity-30 scale-95'
                 }`}
+                style={{
+                  animationDelay: `${index * 300}ms`
+                }}
               >
-                <div className="flex items-center justify-center space-x-4">
-                  <div className="w-12 h-12 bg-black/50 rounded-full flex items-center justify-center">
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className={`w-16 h-16 bg-gradient-to-br from-black/70 to-gray-900/50 rounded-full flex items-center justify-center transition-all duration-700 ${
+                    currentBenefit >= index ? 'animate-pulse' : ''
+                  }`}>
                     {benefit.icon}
                   </div>
-                  <div className="flex-1 text-left">
-                    <h3 className="text-lg font-semibold text-white mb-1">
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">
                       {benefit.title}
                     </h3>
-                    <p className="text-gray-400 text-sm">
+                    <p className="text-gray-300 text-base leading-relaxed">
                       {benefit.description}
                     </p>
                   </div>
@@ -105,39 +105,31 @@ const WhyMessagingSection = () => {
 
           {/* Next Section */}
           {showNext && (
-            <div className="animate-fade-in space-y-4 pt-8 border-t border-gray-800">
-              <h3 className="text-xl font-semibold text-green-400">
-                Next: High frequency channels
-              </h3>
-              
-              <div className="flex justify-center space-x-6">
-                {nextChannels.map((channel, index) => (
-                  <div
-                    key={channel.name}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-full bg-gray-900/50 border border-gray-700 animate-fade-in`}
-                    style={{ animationDelay: `${index * 200}ms` }}
-                  >
-                    <span className={channel.color}>
-                      {channel.icon}
-                    </span>
-                    <span className="text-white text-sm font-medium">
-                      {channel.name}
-                    </span>
-                  </div>
-                ))}
+            <div className="animate-fade-in space-y-6 pt-12">
+              <div className="bg-gradient-to-r from-green-500/10 to-blue-500/10 border border-green-400/30 rounded-2xl p-6 backdrop-blur-sm">
+                <h3 className="text-lg font-semibold text-green-400 mb-4">
+                  Next: High frequency channels
+                </h3>
+                
+                <div className="flex flex-wrap justify-center gap-3">
+                  {nextChannels.map((channel, index) => (
+                    <div
+                      key={channel.name}
+                      className={`flex items-center space-x-2 px-4 py-3 rounded-full bg-black/30 border border-gray-600/50 animate-scale-in hover:scale-105 transition-all duration-300`}
+                      style={{ animationDelay: `${index * 150}ms` }}
+                    >
+                      <span className={channel.color}>
+                        {channel.icon}
+                      </span>
+                      <span className="text-white text-sm font-medium">
+                        {channel.name}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
-
-          {/* Visual Enhancement */}
-          <div className="flex justify-center space-x-8 pt-4">
-            <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center">
-              <span className="text-2xl">💬</span>
-            </div>
-            <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center">
-              <span className="text-2xl">📱</span>
-            </div>
-          </div>
         </div>
       </MobileOptimizedSection>
     </div>
