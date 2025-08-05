@@ -14,6 +14,8 @@ const VoiceRescheduleDemo = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [audioWaves, setAudioWaves] = useState<number[]>([]);
   const [showTyping, setShowTyping] = useState(false);
+  const [showVoiceMessage, setShowVoiceMessage] = useState(true);
+  const [showTextMessage, setShowTextMessage] = useState(false);
 
   // Generate random audio wave heights
   useEffect(() => {
@@ -37,10 +39,11 @@ const VoiceRescheduleDemo = () => {
   useEffect(() => {
     const stepTimings = [
       { step: 0, delay: 1000, action: () => { setIsRecording(true); } },
-      { step: 1, delay: 3000, action: () => { setIsRecording(false); setShowTyping(true); } },
-      { step: 2, delay: 1500, action: () => { setShowTyping(false); } },
-      { step: 3, delay: 3000, action: () => {} },
-      { step: 4, delay: 4000, action: () => { setCurrentStep(0); } }
+      { step: 1, delay: 3000, action: () => { setIsRecording(false); } },
+      { step: 2, delay: 800, action: () => { setShowVoiceMessage(false); setShowTextMessage(true); setShowTyping(true); } },
+      { step: 3, delay: 1500, action: () => { setShowTyping(false); } },
+      { step: 4, delay: 3000, action: () => {} },
+      { step: 5, delay: 4000, action: () => { setCurrentStep(0); setShowVoiceMessage(true); setShowTextMessage(false); } }
     ];
 
     const currentTiming = stepTimings[currentStep];
@@ -91,8 +94,17 @@ const VoiceRescheduleDemo = () => {
               text="Meeting with Sam over dinner. Find a good place in Downtown SF & block 1 hour."
               isRecording={isRecording}
               audioWaves={audioWaves}
-              isVisible={currentStep >= 0}
+              isVisible={showVoiceMessage && currentStep >= 0}
             />
+
+            {/* Text Message (converted from voice) */}
+            {showTextMessage && (
+              <div className="flex justify-end animate-slide-in-right">
+                <div className="bg-blue-600 px-4 py-3 rounded-2xl rounded-tr-sm max-w-xs">
+                  <span className="text-white text-sm">Meeting with Sam over dinner. Find a good place in Downtown SF & block 1 hour.</span>
+                </div>
+              </div>
+            )}
 
             {/* Typing Indicator */}
             <TypingIndicator isVisible={showTyping} />
@@ -101,13 +113,13 @@ const VoiceRescheduleDemo = () => {
             <ProcessingMessage 
               type="confirmation" 
               text="Perfect! Found 3 great spots. Booked table at State Bird Provisions for 7PM. Sam confirmed & calendar updated."
-              isVisible={currentStep >= 2}
+              isVisible={currentStep >= 3}
             />
 
             {/* Meeting Details */}
             <MeetingDetails 
               data={meetingData}
-              isVisible={currentStep >= 3}
+              isVisible={currentStep >= 4}
             />
           </div>
         </div>
