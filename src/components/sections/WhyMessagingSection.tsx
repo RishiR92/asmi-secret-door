@@ -6,6 +6,7 @@ const WhyMessagingSection = () => {
   const [currentBenefit, setCurrentBenefit] = useState(0);
   const [showNext, setShowNext] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [visibleChannels, setVisibleChannels] = useState(0);
 
   const benefits = [
     {
@@ -60,6 +61,17 @@ const WhyMessagingSection = () => {
     return () => clearInterval(interval);
   }, [isVisible]);
 
+  useEffect(() => {
+    if (!showNext) return;
+
+    const channelTimers = [
+      setTimeout(() => setVisibleChannels(1), 300),
+      setTimeout(() => setVisibleChannels(2), 800)
+    ];
+
+    return () => channelTimers.forEach(clearTimeout);
+  }, [showNext]);
+
   return (
     <div id="why-messaging-section" className="h-screen bg-black flex items-center justify-center py-4">
       <div className="px-4 w-full max-w-sm mx-auto">
@@ -112,8 +124,9 @@ const WhyMessagingSection = () => {
                   {nextChannels.map((channel, index) => (
                     <div
                       key={channel.name}
-                      className={`flex items-center space-x-1 px-3 py-2 rounded-full bg-black/30 border border-gray-600/50 animate-scale-in transition-all duration-300`}
-                      style={{ animationDelay: `${index * 150}ms` }}
+                      className={`flex items-center space-x-1 px-3 py-2 rounded-full bg-black/30 border border-gray-600/50 transition-all duration-300 ${
+                        visibleChannels > index ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                      }`}
                     >
                       <span className={channel.color}>
                         {channel.icon}
