@@ -100,8 +100,8 @@ const VoiceRescheduleDemo = () => {
             {/* Text Message (converted from voice) */}
             {showTextMessage && (
               <div className="flex justify-end animate-slide-in-right">
-                <div className="bg-blue-600 px-4 py-3 rounded-2xl rounded-tr-sm max-w-xs">
-                  <span className="text-white text-sm">Meeting with Sam over dinner. Find a good place in Downtown SF & block 1 hour.</span>
+                <div className="bg-purple-600/60 border border-purple-400/30 px-4 py-3 rounded-2xl rounded-tr-sm max-w-xs backdrop-blur-sm">
+                  <span className="text-purple-100 text-sm">Meeting with Sam over dinner. Find a good place in Downtown SF & block 1 hour.</span>
                 </div>
               </div>
             )}
