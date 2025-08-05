@@ -68,11 +68,8 @@ const PersonalOSTimelineSection = () => {
           {/* Title */}
           <div className="space-y-2">
             <h2 className="text-lg font-bold text-white leading-tight">
-              Starting from Personal OS
+              Starting from Personal OS, Building the context layer for personal super-intelligence
             </h2>
-            <p className="text-sm text-gray-300 leading-tight">
-              Building the context layer for personal super-intelligence
-            </p>
           </div>
 
           {/* Timeline */}
