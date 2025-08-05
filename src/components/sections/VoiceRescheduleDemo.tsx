@@ -40,8 +40,7 @@ const VoiceRescheduleDemo = () => {
       { step: 1, delay: 3000, action: () => { setIsRecording(false); setShowTyping(true); } },
       { step: 2, delay: 1500, action: () => { setShowTyping(false); } },
       { step: 3, delay: 3000, action: () => {} },
-      { step: 4, delay: 3000, action: () => {} },
-      { step: 5, delay: 4000, action: () => { setCurrentStep(0); } }
+      { step: 4, delay: 4000, action: () => { setCurrentStep(0); } }
     ];
 
     const currentTiming = stepTimings[currentStep];
@@ -98,24 +97,17 @@ const VoiceRescheduleDemo = () => {
             {/* Typing Indicator */}
             <TypingIndicator isVisible={showTyping} />
 
-            {/* Processing Message */}
-            <ProcessingMessage 
-              type="processing"
-              text="Got it. Finding restaurants in Downtown SF and checking Sam's availability..."
-              isVisible={currentStep >= 2}
-            />
-
             {/* Success Message */}
             <ProcessingMessage 
               type="confirmation" 
               text="Perfect! Found 3 great spots. Booked table at State Bird Provisions for 7PM. Sam confirmed & calendar updated."
-              isVisible={currentStep >= 3}
+              isVisible={currentStep >= 2}
             />
 
             {/* Meeting Details */}
             <MeetingDetails 
               data={meetingData}
-              isVisible={currentStep >= 4}
+              isVisible={currentStep >= 3}
             />
           </div>
         </div>
