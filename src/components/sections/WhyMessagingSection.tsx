@@ -22,8 +22,7 @@ const WhyMessagingSection = () => {
 
   const nextChannels = [
     { icon: <Mail size={20} />, name: "Mail", color: "text-red-400" },
-    { icon: <Slack size={20} />, name: "Slack", color: "text-purple-400" },
-    { icon: <MessageSquare size={20} />, name: "Teams", color: "text-blue-400" }
+    { icon: <Slack size={20} />, name: "Slack", color: "text-purple-400" }
   ];
 
   useEffect(() => {
@@ -85,9 +84,7 @@ const WhyMessagingSection = () => {
                 }}
               >
                 <div className="flex items-center space-x-3">
-                  <div className={`w-10 h-10 bg-gradient-to-br from-black/70 to-gray-900/50 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-700 ${
-                    currentBenefit >= index ? 'animate-pulse' : ''
-                  }`}>
+                  <div className="w-10 h-10 bg-gradient-to-br from-black/70 to-gray-900/50 rounded-full flex items-center justify-center flex-shrink-0">
                     {benefit.icon}
                   </div>
                   <div className="text-left">
