@@ -26,7 +26,7 @@ const OrbitDialVisionSection = () => {
         { name: "Gmail", color: "#EA4335", icon: "📧" },
         { name: "Calendar", color: "#4285F4", icon: "📅" }
       ],
-      color: "blue",
+      color: "green",
       radius: isMobile ? 25 : 140
     },
     {
@@ -37,7 +37,7 @@ const OrbitDialVisionSection = () => {
         { name: "Docs", color: "#4285F4", icon: "📄" },
         { name: "APIs", color: "#FF6B35", icon: "⚙️" }
       ],
-      color: "purple",
+      color: "emerald",
       radius: isMobile ? 35 : 180
     },
     {
@@ -159,10 +159,10 @@ const OrbitDialVisionSection = () => {
       let startAngle, startRadius, startX, startY;
       
       if (showInSummary) {
-        // Organized grid arrangement for all icons during typewriter
+        // Neat circular arrangement for all icons during typewriter
         const totalIcons = phases.reduce((sum, p) => sum + p.apps.length, 0);
         const globalIndex = phases.slice(0, phaseIndex).reduce((sum, p) => sum + p.apps.length, 0) + index;
-        const gridRadius = isMobile ? 60 : 150;
+        const gridRadius = isMobile ? 80 : 180;
         startAngle = (globalIndex * (360 / totalIcons)) - 90;
         startRadius = gridRadius;
         startX = Math.cos((startAngle * Math.PI) / 180) * startRadius;
@@ -203,7 +203,7 @@ const OrbitDialVisionSection = () => {
           {/* Enhanced connection lines for 2026 */}
           {phaseIndex === 1 && connections[index] && (
             <div 
-              className="absolute bg-gradient-to-r from-purple-400/60 to-transparent animate-draw-line"
+              className="absolute bg-gradient-to-r from-emerald-400/60 to-transparent animate-draw-line"
               style={{
                 left: '50%',
                 top: '50%',
@@ -213,7 +213,7 @@ const OrbitDialVisionSection = () => {
                 height: '2px',
                 rotate: `${Math.atan2(startY, startX)}rad`,
                 animationDelay: `${index * 200 + 400}ms`,
-                filter: 'drop-shadow(0 0 8px #A78BFA)'
+                filter: 'drop-shadow(0 0 8px #10B981)'
               }}
             />
           )}
@@ -222,19 +222,19 @@ const OrbitDialVisionSection = () => {
     });
   };
 
-  const renderBottomTag = () => {
+  const renderTopTag = () => {
     const phase = phases[currentPhase];
     return (
-      <div className={`absolute ${isMobile ? 'bottom-32' : 'bottom-40'} left-1/2 transform -translate-x-1/2 animate-fade-in`}>
+      <div className={`absolute ${isMobile ? 'top-24' : 'top-32'} left-1/2 transform -translate-x-1/2 animate-fade-in z-10`}>
         <div className={`${isMobile ? 'px-4 py-2' : 'px-6 py-3'} rounded-xl backdrop-blur-md border transition-all duration-700 ${
-          phase.color === 'blue' ? 'bg-blue-500/10 border-blue-400/40 shadow-lg shadow-blue-400/20' :
-          phase.color === 'purple' ? 'bg-purple-500/10 border-purple-400/40 shadow-lg shadow-purple-400/20' :
-          'bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-blue-400/40 shadow-lg shadow-blue-400/20'
+          phase.color === 'green' ? 'bg-green-500/10 border-green-400/40 shadow-lg shadow-green-400/20' :
+          phase.color === 'emerald' ? 'bg-emerald-500/10 border-emerald-400/40 shadow-lg shadow-emerald-400/20' :
+          'bg-gradient-to-r from-green-500/10 to-blue-500/10 border-green-400/40 shadow-lg shadow-green-400/20'
         }`}>
           <span className={`${isMobile ? 'text-sm' : 'text-base'} font-bold tracking-wide ${
-            phase.color === 'blue' ? 'text-blue-400' :
-            phase.color === 'purple' ? 'text-purple-400' :
-            'text-blue-400'
+            phase.color === 'green' ? 'text-green-400' :
+            phase.color === 'emerald' ? 'text-emerald-400' :
+            'text-green-400'
           }`}>
             {phase.tag}
           </span>
@@ -290,7 +290,7 @@ const OrbitDialVisionSection = () => {
           </div>
 
           {/* Phase Indicators - Clickable */}
-          <div className="flex justify-center space-x-4 mb-8 z-20">
+          <div className="flex justify-center space-x-4 mb-6 z-20">
             {phases.map((phase, index) => (
               <button 
                 key={index} 
@@ -300,16 +300,16 @@ const OrbitDialVisionSection = () => {
               >
                 <div className={`w-4 h-4 rounded-full transition-all duration-700 ease-out ${
                   currentPhase === index 
-                    ? phase.color === 'blue' ? 'bg-blue-400 shadow-lg shadow-blue-400/50 scale-125' :
-                      phase.color === 'purple' ? 'bg-purple-400 shadow-lg shadow-purple-400/50 scale-125' :
-                      'bg-gradient-to-r from-blue-400 to-purple-400 shadow-lg shadow-blue-400/50 scale-125'
+                    ? phase.color === 'green' ? 'bg-green-400 shadow-lg shadow-green-400/50 scale-125' :
+                      phase.color === 'emerald' ? 'bg-emerald-400 shadow-lg shadow-emerald-400/50 scale-125' :
+                      'bg-gradient-to-r from-green-400 to-blue-400 shadow-lg shadow-green-400/50 scale-125'
                     : animationComplete ? 'bg-gray-500 hover:bg-gray-400' : 'bg-gray-600'
                 }`} />
                 <span className={`text-xs font-semibold transition-all duration-700 tracking-wide ${
                   currentPhase === index 
-                    ? phase.color === 'blue' ? 'text-blue-400' :
-                      phase.color === 'purple' ? 'text-purple-400' :
-                      'text-blue-400'
+                    ? phase.color === 'green' ? 'text-green-400' :
+                      phase.color === 'emerald' ? 'text-emerald-400' :
+                      'text-green-400'
                     : animationComplete ? 'text-gray-400' : 'text-gray-500'
                 }`}>
                   {phase.name}
@@ -317,6 +317,9 @@ const OrbitDialVisionSection = () => {
               </button>
             ))}
           </div>
+          
+          {/* Tags above animation */}
+          {renderTopTag()}
 
           {/* Central Orbit Dial - Mobile Optimized */}
           <div className="relative w-full flex items-center justify-center" style={{ height: '50vh' }}>
@@ -345,17 +348,17 @@ const OrbitDialVisionSection = () => {
                       fill="none"
                       className={`transition-all duration-1000 ease-out ${
                         isActive 
-                          ? index === 0 ? 'stroke-blue-400' 
-                            : index === 1 ? 'stroke-purple-400'
-                            : index === 2 ? 'stroke-blue-400' : 'stroke-transparent'
+                          ? index === 0 ? 'stroke-green-400' 
+                            : index === 1 ? 'stroke-emerald-400'
+                            : index === 2 ? 'stroke-green-400' : 'stroke-transparent'
                           : 'stroke-transparent'
                       }`}
                       strokeWidth={isActive ? "1" : "0.5"}
                       style={{
                         filter: isActive ? `drop-shadow(0 0 4px ${
-                          index === 0 ? '#60A5FA' 
-                            : index === 1 ? '#A78BFA'
-                            : '#60A5FA'
+                          index === 0 ? '#4ADE80' 
+                            : index === 1 ? '#10B981'
+                            : '#4ADE80'
                         })` : 'none'
                       }}
                     />
@@ -366,16 +369,16 @@ const OrbitDialVisionSection = () => {
 
             {/* Central Asmi Orb - Mobile Sized */}
             <div className="relative z-10">
-              <div className={`w-16 h-16 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 flex items-center justify-center shadow-2xl shadow-blue-400/40 relative transition-all duration-500 ${
+              <div className={`w-16 h-16 rounded-full bg-gradient-to-r from-green-400 to-blue-400 flex items-center justify-center shadow-2xl shadow-green-400/40 relative transition-all duration-500 ${
                 currentPhase === 2 && flowingChips.length > 0 ? 'animate-orb-halo-pulse' : 'animate-pulse-orb'
               }`}>
                 {/* Elegant halo */}
-                <div className="absolute inset-0 rounded-full bg-purple-400/20 animate-pulse scale-125 blur-sm" />
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400/30 to-purple-400/30 animate-spin-slow scale-150 blur-md" />
-                <div className="absolute inset-0 rounded-full bg-blue-400/10 animate-ping scale-200" />
+                <div className="absolute inset-0 rounded-full bg-green-400/20 animate-pulse scale-125 blur-sm" />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-green-400/30 to-blue-400/30 animate-spin-slow scale-150 blur-md" />
+                <div className="absolute inset-0 rounded-full bg-green-400/10 animate-ping scale-200" />
                 
                 {/* Core orb */}
-                <div className="relative z-10 w-14 h-14 rounded-full bg-gradient-to-br from-blue-400 via-blue-400/95 to-purple-400/90 flex items-center justify-center border border-blue-400/50">
+                <div className="relative z-10 w-14 h-14 rounded-full bg-gradient-to-br from-green-400 via-green-400/95 to-blue-400/90 flex items-center justify-center border border-green-400/50">
                   <span className="text-white font-bold text-sm tracking-wide font-sans">Asmi</span>
                 </div>
               </div>
@@ -391,7 +394,7 @@ const OrbitDialVisionSection = () => {
                 {showLock && (
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
                     <div className="animate-fade-in">
-                      <Lock size={16} className="text-blue-400 drop-shadow-glow" />
+                      <Lock size={16} className="text-green-400 drop-shadow-glow" />
                     </div>
                   </div>
                 )}
@@ -416,13 +419,13 @@ const OrbitDialVisionSection = () => {
                             animationDelay: `${index * 100}ms`
                           }}
                         >
-                          <div className="w-6 h-6 rounded-lg bg-gray-900/80 border border-blue-400/40 flex items-center justify-center shadow-lg shadow-blue-400/10 backdrop-blur-sm">
-                            <Icon size={12} className="text-blue-400" />
+                          <div className="w-6 h-6 rounded-lg bg-gray-900/80 border border-green-400/40 flex items-center justify-center shadow-lg shadow-green-400/10 backdrop-blur-sm">
+                            <Icon size={12} className="text-green-400" />
                           </div>
                           
                           {/* Arrow pointing from center */}
                           <div 
-                            className="absolute w-0.5 bg-gradient-to-r from-blue-400/60 to-transparent animate-draw-arrow"
+                            className="absolute w-0.5 bg-gradient-to-r from-green-400/60 to-transparent animate-draw-arrow"
                             style={{
                               left: '50%',
                               top: '50%',
@@ -442,12 +445,9 @@ const OrbitDialVisionSection = () => {
             )}
           </div>
 
-          {/* Bottom Tag */}
-          {renderBottomTag()}
-
-          {/* Typewriter Final Message - Below Tags */}
+          {/* Typewriter Final Message - Below Animation */}
           {showTypewriter && (
-            <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-30 px-4">
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-30 px-4">
               <div className="text-center">
                 <p className="text-sm font-bold text-white leading-tight tracking-wide">
                   {typewriterText}
@@ -482,16 +482,16 @@ const OrbitDialVisionSection = () => {
             >
                   <div className={`w-3 h-3 rounded-full transition-all duration-700 ease-out ${
                     currentPhase === index 
-                      ? phase.color === 'blue' ? 'bg-blue-400 shadow-lg shadow-blue-400/50 scale-125' :
-                        phase.color === 'purple' ? 'bg-purple-400 shadow-lg shadow-purple-400/50 scale-125' :
-                        'bg-gradient-to-r from-blue-400 to-purple-400 shadow-lg shadow-blue-400/50 scale-125'
+                      ? phase.color === 'green' ? 'bg-green-400 shadow-lg shadow-green-400/50 scale-125' :
+                        phase.color === 'emerald' ? 'bg-emerald-400 shadow-lg shadow-emerald-400/50 scale-125' :
+                        'bg-gradient-to-r from-green-400 to-blue-400 shadow-lg shadow-green-400/50 scale-125'
                       : animationComplete ? 'bg-gray-500 hover:bg-gray-400' : 'bg-gray-600'
                   }`} />
                   <span className={`text-xs font-semibold transition-all duration-700 tracking-wide ${
                     currentPhase === index 
-                      ? phase.color === 'blue' ? 'text-blue-400' :
-                        phase.color === 'purple' ? 'text-purple-400' :
-                        'text-blue-400'
+                      ? phase.color === 'green' ? 'text-green-400' :
+                        phase.color === 'emerald' ? 'text-emerald-400' :
+                        'text-green-400'
                       : animationComplete ? 'text-gray-400' : 'text-gray-500'
                   }`}>
                 {phase.name}
@@ -499,6 +499,9 @@ const OrbitDialVisionSection = () => {
             </button>
           ))}
         </div>
+        
+        {/* Tags above animation */}
+        {renderTopTag()}
 
         {/* Central Orbit Dial */}
         <div className="relative w-full h-full flex items-center justify-center">
@@ -533,17 +536,17 @@ const OrbitDialVisionSection = () => {
                     fill="none"
                       className={`transition-all duration-1000 ease-out ${
                         isActive 
-                          ? index === 0 ? 'stroke-blue-400' 
-                            : index === 1 ? 'stroke-purple-400'
-                            : index === 2 ? 'stroke-blue-400' : 'stroke-transparent'
+                          ? index === 0 ? 'stroke-green-400' 
+                            : index === 1 ? 'stroke-emerald-400'
+                            : index === 2 ? 'stroke-green-400' : 'stroke-transparent'
                           : 'stroke-transparent'
                       }`}
                       strokeWidth={isActive ? "3" : "1"}
                       style={{
                         filter: isActive ? `drop-shadow(0 0 16px ${
-                          index === 0 ? '#60A5FA' 
-                            : index === 1 ? '#A78BFA'
-                            : '#60A5FA'
+                          index === 0 ? '#4ADE80' 
+                            : index === 1 ? '#10B981'
+                            : '#4ADE80'
                         })` : 'none',
                         stroke: isActive && index === 2 
                           ? 'url(#gradient-2027)' 
@@ -555,8 +558,8 @@ const OrbitDialVisionSection = () => {
                   {index === 2 && (
                     <defs>
                       <linearGradient id="gradient-2027" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#60A5FA" />
-                        <stop offset="100%" stopColor="#A78BFA" />
+                        <stop offset="0%" stopColor="#4ADE80" />
+                        <stop offset="100%" stopColor="#3B82F6" />
                       </linearGradient>
                     </defs>
                   )}
@@ -584,16 +587,16 @@ const OrbitDialVisionSection = () => {
 
           {/* Central Asmi Orb */}
           <div className="relative z-10">
-            <div className={`w-24 h-24 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 flex items-center justify-center shadow-2xl shadow-blue-400/40 relative transition-all duration-500 ${
+            <div className={`w-24 h-24 rounded-full bg-gradient-to-r from-green-400 to-blue-400 flex items-center justify-center shadow-2xl shadow-green-400/40 relative transition-all duration-500 ${
               currentPhase === 2 && flowingChips.length > 0 ? 'animate-orb-halo-pulse' : 'animate-pulse-orb'
             }`}>
               {/* Elegant halo */}
-              <div className="absolute inset-0 rounded-full bg-purple-400/20 animate-pulse scale-125 blur-sm" />
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400/30 to-purple-400/30 animate-spin-slow scale-150 blur-md" />
-              <div className="absolute inset-0 rounded-full bg-blue-400/10 animate-ping scale-200" />
+              <div className="absolute inset-0 rounded-full bg-green-400/20 animate-pulse scale-125 blur-sm" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-green-400/30 to-blue-400/30 animate-spin-slow scale-150 blur-md" />
+              <div className="absolute inset-0 rounded-full bg-green-400/10 animate-ping scale-200" />
               
               {/* Core orb */}
-              <div className="relative z-10 w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 via-blue-400/95 to-purple-400/90 flex items-center justify-center border border-blue-400/50">
+              <div className="relative z-10 w-20 h-20 rounded-full bg-gradient-to-br from-green-400 via-green-400/95 to-blue-400/90 flex items-center justify-center border border-green-400/50">
                 <span className="text-white font-bold text-base tracking-wide font-sans">Asmi</span>
               </div>
             </div>
@@ -609,7 +612,7 @@ const OrbitDialVisionSection = () => {
               {showLock && (
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
                   <div className="animate-fade-in">
-                    <Lock size={20} className="text-blue-400 drop-shadow-glow" />
+                    <Lock size={20} className="text-green-400 drop-shadow-glow" />
                   </div>
                 </div>
               )}
@@ -634,13 +637,13 @@ const OrbitDialVisionSection = () => {
                           animationDelay: `${index * 100}ms`
                         }}
                       >
-                        <div className="w-8 h-8 rounded-lg bg-gray-900/80 border border-blue-400/40 flex items-center justify-center shadow-lg shadow-blue-400/10 backdrop-blur-sm">
-                          <Icon size={16} className="text-blue-400" />
+                        <div className="w-8 h-8 rounded-lg bg-gray-900/80 border border-green-400/40 flex items-center justify-center shadow-lg shadow-green-400/10 backdrop-blur-sm">
+                          <Icon size={16} className="text-green-400" />
                         </div>
                         
                         {/* Arrow pointing from center */}
                         <div 
-                          className="absolute w-0.5 bg-gradient-to-r from-blue-400/60 to-transparent animate-draw-arrow"
+                          className="absolute w-0.5 bg-gradient-to-r from-green-400/60 to-transparent animate-draw-arrow"
                           style={{
                             left: '50%',
                             top: '50%',
@@ -660,12 +663,9 @@ const OrbitDialVisionSection = () => {
           )}
         </div>
 
-        {/* Bottom Tag */}
-        {renderBottomTag()}
-
-        {/* Typewriter Final Message - Below Tags */}
+        {/* Typewriter Final Message - Below Animation */}
         {showTypewriter && (
-          <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 z-30">
+          <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 z-30">
             <div className="text-center">
               <p className="text-xl font-bold text-white leading-tight tracking-wide">
                 {typewriterText}
