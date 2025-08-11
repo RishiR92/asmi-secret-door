@@ -14,6 +14,7 @@ const OrbitDialVisionSection = () => {
   const [connections, setConnections] = useState<boolean[]>([]);
   const [animationComplete, setAnimationComplete] = useState(false);
   const [showAllIcons, setShowAllIcons] = useState(false);
+  const [showCompleteContextTag, setShowCompleteContextTag] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
@@ -133,6 +134,7 @@ const OrbitDialVisionSection = () => {
         const text = "Deepest Personal context. You choose where it flows";
         setShowTypewriter(true);
         setShowAllIcons(true); // Show all icons when typewriter starts
+        setShowCompleteContextTag(true); // Show tag exactly when typing begins
         let index = 0;
         
         const typeInterval = setInterval(() => {
@@ -224,8 +226,8 @@ const OrbitDialVisionSection = () => {
 
   const renderTopTag = () => {
     const phase = phases[currentPhase];
-    // Show "The Complete Context" tag when typewriter text actually appears
-    if (showTypewriter && typewriterText.length > 0) {
+    // Show "The Complete Context" tag when tag should appear
+    if (showCompleteContextTag) {
       return (
         <div className={`absolute ${isMobile ? 'top-24' : 'top-32'} left-1/2 transform -translate-x-1/2 animate-fade-in z-10`}>
           <div className={`${isMobile ? 'px-4 py-2' : 'px-6 py-3'} rounded-xl backdrop-blur-md border transition-all duration-700 bg-gradient-to-r from-green-500/10 to-blue-500/10 border-green-400/40 shadow-lg shadow-green-400/20`}>
@@ -236,7 +238,7 @@ const OrbitDialVisionSection = () => {
         </div>
       );
     }
-    // Hide tag during typewriter phase if no text yet
+    // Hide tag during typewriter phase
     if (showTypewriter) return null;
     
     return (
@@ -265,6 +267,7 @@ const OrbitDialVisionSection = () => {
       setConnections([]);
       setShowAllIcons(false);
       setShowTypewriter(false);
+      setShowCompleteContextTag(false);
       setShowLock(false);
       setShowRouting(false);
       
