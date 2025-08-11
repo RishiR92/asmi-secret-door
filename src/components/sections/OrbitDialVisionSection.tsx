@@ -156,22 +156,30 @@ const OrbitDialVisionSection = () => {
       const showInSummary = showAllIcons && showTypewriter;
       const phase = phases[phaseIndex];
       
-      // Don't show icons during the summary/typewriter phase
-      if (showInSummary) {
-        return null;
-      }
+      let startAngle, startRadius, startX, startY;
       
-      // Original positioning for individual phases
-      const startAngle = (index * 90) + (phaseIndex * 25) - 45;
-      const startRadius = isMobile ? phase.radius * window.innerWidth * 0.01 : phase.radius;
-      const startX = Math.cos((startAngle * Math.PI) / 180) * startRadius;
-      const startY = Math.sin((startAngle * Math.PI) / 180) * startRadius;
+      if (showInSummary) {
+        // Neat circular arrangement for all icons during typewriter
+        const totalIcons = phases.reduce((sum, p) => sum + p.apps.length, 0);
+        const globalIndex = phases.slice(0, phaseIndex).reduce((sum, p) => sum + p.apps.length, 0) + index;
+        const gridRadius = isMobile ? 60 : 140;
+        startAngle = (globalIndex * (360 / totalIcons)) - 90;
+        startRadius = gridRadius;
+        startX = Math.cos((startAngle * Math.PI) / 180) * startRadius;
+        startY = Math.sin((startAngle * Math.PI) / 180) * startRadius;
+      } else {
+        // Original positioning for individual phases
+        startAngle = (index * 90) + (phaseIndex * 25) - 45;
+        startRadius = isMobile ? phase.radius * window.innerWidth * 0.01 : phase.radius;
+        startX = Math.cos((startAngle * Math.PI) / 180) * startRadius;
+        startY = Math.sin((startAngle * Math.PI) / 180) * startRadius;
+      }
 
       return (
         <div
           key={`${phaseIndex}-${index}`}
           className={`absolute transition-all duration-[1200ms] ease-out ${
-            isFlowing ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+            isFlowing || showInSummary ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
           }`}
           style={{
             left: `calc(50% + ${startX}px)`,
@@ -394,8 +402,8 @@ const OrbitDialVisionSection = () => {
                   </div>
                 )}
                 
-                {/* App routing arrows - appear after lock */}
-                {showRouting && (
+                {/* App routing arrows - appear after lock but hide during typewriter */}
+                {showRouting && !showTypewriter && (
                   <div className="absolute inset-0">
                     {[Smartphone, Zap, Globe, Brain, Database].map((Icon, index) => {
                       const angle = (index * 72) - 90;
@@ -612,8 +620,8 @@ const OrbitDialVisionSection = () => {
                 </div>
               )}
               
-              {/* App routing arrows - appear after lock */}
-              {showRouting && (
+              {/* App routing arrows - appear after lock but hide during typewriter */}
+              {showRouting && !showTypewriter && (
                 <div className="absolute inset-0">
                   {[Smartphone, Zap, Globe, Brain, Database].map((Icon, index) => {
                     const angle = (index * 72) - 90; // 360/5 = 72 degrees apart
