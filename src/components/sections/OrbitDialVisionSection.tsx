@@ -224,8 +224,8 @@ const OrbitDialVisionSection = () => {
 
   const renderTopTag = () => {
     const phase = phases[currentPhase];
-    // Show "The Complete Context" tag during typewriter phase, hide others
-    if (showTypewriter) {
+    // Show "The Complete Context" tag when typewriter text actually appears
+    if (showTypewriter && typewriterText.length > 0) {
       return (
         <div className={`absolute ${isMobile ? 'top-24' : 'top-32'} left-1/2 transform -translate-x-1/2 animate-fade-in z-10`}>
           <div className={`${isMobile ? 'px-4 py-2' : 'px-6 py-3'} rounded-xl backdrop-blur-md border transition-all duration-700 bg-gradient-to-r from-green-500/10 to-blue-500/10 border-green-400/40 shadow-lg shadow-green-400/20`}>
@@ -236,6 +236,8 @@ const OrbitDialVisionSection = () => {
         </div>
       );
     }
+    // Hide tag during typewriter phase if no text yet
+    if (showTypewriter) return null;
     
     return (
       <div className={`absolute ${isMobile ? 'top-24' : 'top-32'} left-1/2 transform -translate-x-1/2 animate-fade-in z-10`}>
