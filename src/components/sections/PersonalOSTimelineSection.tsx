@@ -10,20 +10,20 @@ const PersonalOSTimelineSection = () => {
   const timelineSteps = [
     {
       year: "Now",
-      title: "Personal OS",
-      description: "One interface for everything — calendar, inbox, meetings and thoughts.",
+      title: "Digital Layer",
+      description: "Integrating inbox, calendar & conversations into a single stream of truth to build users' \"work\" context.",
       icon: <Mic className="text-green-400" size={20} />,
     },
     {
-      year: "2025", 
-      title: "Decision Layer",
-      description: "Asmi takes over high-frequency tasks — calls, bookings, purchases — to build rich, real-time context.",
+      year: "2026", 
+      title: "Context Amplifier",
+      description: "Ingest high context, high frequency digital signals (Slack, docs, workflows)- magnifying users' contextual graph.",
       icon: <Zap className="text-green-400" size={20} />,
     },
     {
-      year: "2026",
-      title: "Personalized AI", 
-      description: "The deepest user context layer. Powers any LLM or tool. Controlled by you - just flip the switch.",
+      year: "2027",
+      title: "The Complete Context", 
+      description: "Going beyond screens, seamlessly integrating unstructured physical inputs (voice, vision, ambient cues) - creating the complete personal context.",
       icon: <Brain className="text-green-400" size={20} />,
     }
   ];
@@ -69,9 +69,8 @@ const PersonalOSTimelineSection = () => {
       <div className="w-full max-w-sm mx-auto space-y-8">
         {/* Title */}
         <div className="text-center space-y-2">
-          <p className="text-sm text-gray-400">Starting with Personal OS.</p>
           <h1 className="text-2xl font-bold text-white leading-tight">
-            Building the Deepest Personal Context.
+            From Personal OS to Personal Superintelligence.
           </h1>
         </div>
 
@@ -120,7 +119,7 @@ const PersonalOSTimelineSection = () => {
           }`}>
             <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-4 text-center">
               <p className="text-lg font-bold text-white leading-tight">
-                Asmi becomes your AI layer that — Knows you. Adapts to you. Gets it done — without being asked.
+                Deepest personal context - and users decide where it flows. Power any AI, any app, on their terms.
               </p>
             </div>
           </div>
