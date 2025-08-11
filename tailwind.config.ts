@@ -32,6 +32,9 @@ export default {
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				'neon-green': 'hsl(var(--neon-green))',
+				'soft-purple': 'hsl(var(--soft-purple))',
+				'black-matte': 'hsl(var(--black-matte))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'
@@ -102,12 +105,45 @@ export default {
 						opacity: '1',
 						transform: 'translateY(0)'
 					}
+				},
+				'orbit-rotate': {
+					'0%': { transform: 'rotate(0deg)' },
+					'100%': { transform: 'rotate(360deg)' }
+				},
+				'icon-flow': {
+					'0%': { opacity: '0', transform: 'translateX(-50px) scale(0.5)' },
+					'50%': { opacity: '1', transform: 'translateX(-25px) scale(0.8)' },
+					'100%': { opacity: '0', transform: 'translateX(0) scale(1)' }
+				},
+				'orb-pulse': {
+					'0%, 100%': { 
+						transform: 'scale(1)',
+						boxShadow: '0 0 20px hsl(158 100% 50% / 0.6), 0 0 40px hsl(258 100% 71% / 0.3)'
+					},
+					'50%': { 
+						transform: 'scale(1.05)',
+						boxShadow: '0 0 30px hsl(158 100% 50% / 0.8), 0 0 60px hsl(258 100% 71% / 0.5)'
+					}
+				},
+				'typing-bubble': {
+					'0%': { transform: 'translateX(-100px)', opacity: '0' },
+					'50%': { transform: 'translateX(-20px)', opacity: '0.8' },
+					'100%': { transform: 'translateX(0)', opacity: '1' }
+				},
+				'card-float-in': {
+					'0%': { opacity: '0', transform: 'translateY(30px) scale(0.9)' },
+					'100%': { opacity: '1', transform: 'translateY(0) scale(1)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'fade-in': 'fade-in 0.3s ease-out'
+				'fade-in': 'fade-in 0.3s ease-out',
+				'orbit-rotate': 'orbit-rotate 20s linear infinite',
+				'icon-flow': 'icon-flow 2s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+				'orb-pulse': 'orb-pulse 3s ease-in-out infinite',
+				'typing-bubble': 'typing-bubble 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+				'card-float-in': 'card-float-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards'
 			}
 		}
 	},

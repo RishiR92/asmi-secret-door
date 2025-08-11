@@ -7,12 +7,12 @@ import MeetingContextDemo from './sections/MeetingContextDemo';
 import PersonBackgroundDemo from './sections/PersonBackgroundDemo';
 import VoiceRescheduleDemo from './sections/VoiceRescheduleDemo';
 import MemoryEngineSection from './sections/MemoryEngineSection';
-import TimelineHowItWorks from './sections/TimelineHowItWorks';
+import ProcessAnimationSection from './sections/ProcessAnimationSection';
 import FounderSectionNew from './sections/FounderSectionNew';
 import TractionSectionNew from './sections/TractionSectionNew';
 import VoiceToOSSection from './sections/VoiceToOSSection';
 import WhyMessagingSection from './sections/WhyMessagingSection';
-import PersonalOSTimelineSection from './sections/PersonalOSTimelineSection';
+import OrbitDialVisionSection from './sections/OrbitDialVisionSection';
 import BuiltForEveryoneSection from './sections/BuiltForEveryoneSection';
 import FinalCTASectionNew from './sections/FinalCTASectionNew';
 
@@ -28,11 +28,11 @@ const InvestorSite = () => {
     { component: PersonBackgroundDemo, title: 'Person Background' },
     { component: VoiceRescheduleDemo, title: 'Voice Reschedule' },
     { component: MemoryEngineSection, title: 'Memory Engine' },
-    { component: TimelineHowItWorks, title: 'How It Works' },
+    { component: ProcessAnimationSection, title: 'How It Works' },
     { component: FounderSectionNew, title: 'Founders' },
     { component: TractionSectionNew, title: 'Traction' },
     { component: WhyMessagingSection, title: 'Why Messaging' },
-    { component: PersonalOSTimelineSection, title: 'Personal OS Timeline' },
+    { component: OrbitDialVisionSection, title: 'Vision' },
     { component: VoiceToOSSection, title: 'Voice to OS' },
     { component: BuiltForEveryoneSection, title: 'Built for Everyone' },
     { component: FinalCTASectionNew, title: 'CTA' },

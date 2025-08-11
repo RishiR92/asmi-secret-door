@@ -58,6 +58,11 @@ All colors MUST be HSL.
     --text-secondary: #B3B3B8;
     --accent-positive: #37D67A;
     --text-alert: #FF726F;
+
+    /* Interactive Animation Colors */
+    --neon-green: 158 100% 50%;  /* #00FF8A */
+    --soft-purple: 258 100% 71%; /* #A066FF */
+    --black-matte: 0 0% 0%;      /* #000000 */
   }
 
   .dark {
@@ -287,6 +292,148 @@ All colors MUST be HSL.
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Orbit Dial Animations */
+@keyframes orbit-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes arc-glow {
+  0%, 100% {
+    opacity: 0.3;
+    filter: drop-shadow(0 0 8px hsl(var(--neon-green) / 0.6));
+  }
+  50% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 16px hsl(var(--neon-green) / 0.9));
+  }
+}
+
+@keyframes arc-glow-purple {
+  0%, 100% {
+    opacity: 0.3;
+    filter: drop-shadow(0 0 8px hsl(var(--soft-purple) / 0.6));
+  }
+  50% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 16px hsl(var(--soft-purple) / 0.9));
+  }
+}
+
+@keyframes icon-flow {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px) scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-25px) scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes orb-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 
+      0 0 20px hsl(var(--neon-green) / 0.6),
+      0 0 40px hsl(var(--soft-purple) / 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 
+      0 0 30px hsl(var(--neon-green) / 0.8),
+      0 0 60px hsl(var(--soft-purple) / 0.5);
+  }
+}
+
+/* WhatsApp Chat Animations */
+@keyframes typing-bubble {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateX(-20px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes typing-indicator {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes waveform {
+  0%, 100% {
+    height: 4px;
+  }
+  50% {
+    height: 16px;
+  }
+}
+
+/* Knowledge Graph Animations */
+@keyframes graph-edge {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+  100% {
+    stroke-dasharray: 100 0;
+  }
+}
+
+@keyframes node-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Floating Cards Animation */
+@keyframes card-float-in {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pill-slide {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
