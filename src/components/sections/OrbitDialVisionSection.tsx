@@ -1,48 +1,49 @@
 import { useState, useEffect, useRef } from 'react';
-import { Mail, Calendar, MessageSquare, Slack, FileText, Workflow, Mic, Eye, Waves, Lock, Smartphone, Zap, Globe, Brain, Database } from 'lucide-react';
+import { Lock, Smartphone, Zap, Globe, Brain, Database } from 'lucide-react';
 
 const OrbitDialVisionSection = () => {
   const [currentPhase, setCurrentPhase] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [showCaption, setShowCaption] = useState(false);
+  const [typewriterText, setTypewriterText] = useState('');
+  const [showTypewriter, setShowTypewriter] = useState(false);
   const [flowingChips, setFlowingChips] = useState<number[]>([]);
-  const [cueWords, setCueWords] = useState<string[]>([]);
   const [showLock, setShowLock] = useState(false);
   const [showRouting, setShowRouting] = useState(false);
   const [connections, setConnections] = useState<boolean[]>([]);
+  const [animationComplete, setAnimationComplete] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const phases = [
     {
-      name: "Now",
+      name: "2025",
+      tag: "Digital Layer",
       apps: [
-        { icon: Mail, name: "Gmail", emoji: "📧" },
-        { icon: Calendar, name: "Google Calendar", emoji: "📅" },
-        { icon: MessageSquare, name: "WhatsApp", emoji: "💬" }
+        { name: "WhatsApp", color: "#25D366", icon: "💬" },
+        { name: "Gmail", color: "#EA4335", icon: "📧" },
+        { name: "Calendar", color: "#4285F4", icon: "📅" }
       ],
-      cueWords: ["All-in-one", "Noise-free"],
       color: "neon-green",
       radius: 140
     },
     {
       name: "2026", 
+      tag: "Context Amplifier",
       apps: [
-        { icon: Slack, name: "Slack", emoji: "💼" },
-        { icon: FileText, name: "Google Docs", emoji: "📄" },
-        { icon: Workflow, name: "Workflow APIs", emoji: "⚙️" }
+        { name: "Slack", color: "#4A154B", icon: "💼" },
+        { name: "Docs", color: "#4285F4", icon: "📄" },
+        { name: "APIs", color: "#FF6B35", icon: "⚙️" }
       ],
-      cueWords: ["Richer signals", "Smarter links"],
       color: "soft-purple",
       radius: 180
     },
     {
       name: "2027",
+      tag: "The Complete Context",
       apps: [
-        { icon: Mic, name: "Voice (On-device)", emoji: "🎤" },
-        { icon: Eye, name: "Vision (Context cam)", emoji: "👁️" },
-        { icon: Waves, name: "Ambient (Enviro-sensors)", emoji: "🌐" }
+        { name: "Voice", color: "#00D4AA", icon: "🎤" },
+        { name: "Vision", color: "#FF4081", icon: "👁️" },
+        { name: "Ambient", color: "#9C27B0", icon: "🌐" }
       ],
-      cueWords: ["Beyond screens", "Always-on"],
       color: "gradient",
       radius: 220
     }
@@ -66,75 +67,50 @@ const OrbitDialVisionSection = () => {
   }, []);
 
   useEffect(() => {
-    if (!isVisible) return;
+    if (!isVisible || animationComplete) return;
 
     const runPhaseSequence = () => {
-      // Reset all states
-      setFlowingChips([]);
-      setCueWords([]);
-      setShowLock(false);
-      setShowRouting(false);
-      setConnections([]);
-      setShowCaption(false);
-      
-      // Phase 0: Now (0-3s)
+      // Phase 0: 2025 (0-3s)
       setCurrentPhase(0);
+      setFlowingChips([]);
+      setConnections([]);
+      
       setTimeout(() => {
-        // Start chip animations one by one
         phases[0].apps.forEach((_, index) => {
           setTimeout(() => {
             setFlowingChips(prev => [...prev, index]);
-          }, index * 300);
+          }, index * 400);
         });
-        
-        // Show cue words after chips
-        setTimeout(() => {
-          setCueWords(phases[0].cueWords);
-        }, 1000);
-      }, 200);
+      }, 300);
 
       // Phase 1: 2026 (3-6s)
       setTimeout(() => {
         setCurrentPhase(1);
         setFlowingChips([]);
-        setCueWords([]);
+        setConnections([]);
         
         setTimeout(() => {
-          // Start chip animations
           phases[1].apps.forEach((_, index) => {
             setTimeout(() => {
               setFlowingChips(prev => [...prev, index]);
-              // Add connection lines
               setConnections(prev => [...prev, true]);
-            }, index * 300);
+            }, index * 400);
           });
-          
-          // Show cue words
-          setTimeout(() => {
-            setCueWords(phases[1].cueWords);
-          }, 1000);
-        }, 200);
+        }, 300);
       }, 3000);
 
       // Phase 2: 2027 (6-9s)
       setTimeout(() => {
         setCurrentPhase(2);
         setFlowingChips([]);
-        setCueWords([]);
         setConnections([]);
         
         setTimeout(() => {
-          // Start chip animations with fusion effect
           phases[2].apps.forEach((_, index) => {
             setTimeout(() => {
               setFlowingChips(prev => [...prev, index]);
-            }, index * 300);
+            }, index * 400);
           });
-          
-          // Show cue words
-          setTimeout(() => {
-            setCueWords(phases[2].cueWords);
-          }, 1000);
           
           // Show lock briefly
           setTimeout(() => {
@@ -142,33 +118,38 @@ const OrbitDialVisionSection = () => {
             setTimeout(() => {
               setShowLock(false);
               setShowRouting(true);
-            }, 500);
-          }, 1500);
-        }, 200);
+            }, 800);
+          }, 1600);
+        }, 300);
       }, 6000);
 
-      // Final caption (8-10s)
+      // Start typewriter effect (9s)
       setTimeout(() => {
-        setShowCaption(true);
-      }, 8000);
+        const text = "Deepest Personal context. You choose where it flows";
+        setShowTypewriter(true);
+        let index = 0;
+        
+        const typeInterval = setInterval(() => {
+          if (index <= text.length) {
+            setTypewriterText(text.slice(0, index));
+            index++;
+          } else {
+            clearInterval(typeInterval);
+            setAnimationComplete(true);
+          }
+        }, 50);
+      }, 9000);
     };
 
-    // Start the sequence
     runPhaseSequence();
-    
-    // Loop every 10 seconds
-    const loopTimer = setInterval(runPhaseSequence, 10000);
-
-    return () => clearInterval(loopTimer);
-  }, [isVisible]);
+  }, [isVisible, animationComplete]);
 
   const renderAppChips = (apps: any[], phaseIndex: number) => {
     return apps.map((app, index) => {
       const isFlowing = currentPhase === phaseIndex && flowingChips.includes(index);
       const phase = phases[phaseIndex];
       
-      // Calculate starting position on the arc
-      const startAngle = (index * 100) + (phaseIndex * 30) - 60;
+      const startAngle = (index * 90) + (phaseIndex * 25) - 45;
       const startRadius = phase.radius;
       const startX = Math.cos((startAngle * Math.PI) / 180) * startRadius;
       const startY = Math.sin((startAngle * Math.PI) / 180) * startRadius;
@@ -176,30 +157,32 @@ const OrbitDialVisionSection = () => {
       return (
         <div
           key={`${phaseIndex}-${index}`}
-          className={`absolute transition-all duration-[2000ms] ${
-            isFlowing ? 'opacity-100 animate-chip-flow' : 'opacity-0'
+          className={`absolute transition-all duration-[1200ms] ease-out ${
+            isFlowing ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
           }`}
           style={{
             left: `calc(50% + ${startX}px)`,
             top: `calc(50% + ${startY}px)`,
             transform: 'translate(-50%, -50%)',
-            animationDelay: `${index * 300}ms`,
-            animationTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)'
+            transitionDelay: `${index * 200}ms`,
           }}
         >
-          <div className={`flex items-center space-x-2 px-3 py-2 rounded-full bg-black/70 backdrop-blur-sm border transition-all duration-300 ${
-            phase.color === 'neon-green' ? 'border-neon-green/60 shadow-lg shadow-neon-green/20' :
-            phase.color === 'soft-purple' ? 'border-soft-purple/60 shadow-lg shadow-soft-purple/20' :
-            'border-neon-green/60 shadow-lg shadow-neon-green/20'
-          }`}>
-            <span className="text-base">{app.emoji}</span>
-            <span className="text-white text-sm font-medium whitespace-nowrap">{app.name}</span>
+          <div 
+            className="flex items-center space-x-2.5 px-4 py-2.5 rounded-xl backdrop-blur-md border transition-all duration-500 hover:scale-105"
+            style={{
+              backgroundColor: `${app.color}15`,
+              borderColor: `${app.color}40`,
+              boxShadow: `0 8px 32px ${app.color}20`
+            }}
+          >
+            <span className="text-lg">{app.icon}</span>
+            <span className="text-white text-sm font-semibold tracking-wide">{app.name}</span>
           </div>
           
-          {/* Connection line for 2026 phase */}
+          {/* Enhanced connection lines for 2026 */}
           {phaseIndex === 1 && connections[index] && (
             <div 
-              className="absolute w-0.5 bg-gradient-to-r from-soft-purple/80 to-transparent animate-draw-line"
+              className="absolute bg-gradient-to-r from-soft-purple/60 to-transparent animate-draw-line"
               style={{
                 left: '50%',
                 top: '50%',
@@ -208,7 +191,8 @@ const OrbitDialVisionSection = () => {
                 width: `${Math.sqrt(startX * startX + startY * startY)}px`,
                 height: '2px',
                 rotate: `${Math.atan2(startY, startX)}rad`,
-                animationDelay: `${index * 300 + 500}ms`
+                animationDelay: `${index * 200 + 400}ms`,
+                filter: 'drop-shadow(0 0 8px #A066FF)'
               }}
             />
           )}
@@ -217,37 +201,25 @@ const OrbitDialVisionSection = () => {
     });
   };
 
-  const renderCueWords = () => {
-    return cueWords.map((word, index) => {
-      const phase = phases[currentPhase];
-      
-      // Position cue words at different spots
-      const angle = (index * 140) + 45;
-      const radius = phase.radius + 50;
-      const x = Math.cos((angle * Math.PI) / 180) * radius;
-      const y = Math.sin((angle * Math.PI) / 180) * radius;
-
-      return (
-        <div
-          key={`cue-${currentPhase}-${index}`}
-          className="absolute animate-fade-in"
-          style={{
-            left: `calc(50% + ${x}px)`,
-            top: `calc(50% + ${y}px)`,
-            transform: 'translate(-50%, -50%)',
-            animationDelay: `${index * 200}ms`
-          }}
-        >
-          <span className={`text-sm font-medium px-3 py-1.5 rounded-full bg-black/70 border backdrop-blur-sm shadow-lg ${
-            phase.color === 'neon-green' ? 'border-neon-green/60 text-neon-green shadow-neon-green/20' :
-            phase.color === 'soft-purple' ? 'border-soft-purple/60 text-soft-purple shadow-soft-purple/20' :
-            'border-neon-green/60 text-neon-green shadow-neon-green/20'
+  const renderBottomTag = () => {
+    const phase = phases[currentPhase];
+    return (
+      <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 animate-fade-in">
+        <div className={`px-6 py-3 rounded-xl backdrop-blur-md border transition-all duration-700 ${
+          phase.color === 'neon-green' ? 'bg-neon-green/10 border-neon-green/40 shadow-lg shadow-neon-green/20' :
+          phase.color === 'soft-purple' ? 'bg-soft-purple/10 border-soft-purple/40 shadow-lg shadow-soft-purple/20' :
+          'bg-gradient-to-r from-neon-green/10 to-soft-purple/10 border-neon-green/40 shadow-lg shadow-neon-green/20'
+        }`}>
+          <span className={`text-base font-bold tracking-wide ${
+            phase.color === 'neon-green' ? 'text-neon-green' :
+            phase.color === 'soft-purple' ? 'text-soft-purple' :
+            'text-neon-green'
           }`}>
-            {word}
+            {phase.name} - {phase.tag}
           </span>
         </div>
-      );
-    });
+      </div>
+    );
   };
 
   return (
@@ -261,15 +233,15 @@ const OrbitDialVisionSection = () => {
         </div>
 
           {/* Phase Indicators */}
-        <div className="absolute top-16 left-1/2 transform -translate-x-1/2 flex space-x-4 z-20">
+        <div className="absolute top-16 left-1/2 transform -translate-x-1/2 flex space-x-6 z-20">
           {phases.map((phase, index) => (
             <div key={index} className="flex flex-col items-center space-y-2">
-              <div className={`w-3 h-3 rounded-full transition-all duration-500 ${
+              <div className={`w-3 h-3 rounded-full transition-all duration-700 ease-out ${
                 currentPhase === index 
                   ? 'bg-neon-green shadow-lg shadow-neon-green/50 scale-125' 
                   : 'bg-gray-600'
               }`} />
-              <span className={`text-xs font-medium transition-all duration-500 ${
+              <span className={`text-xs font-semibold transition-all duration-700 tracking-wide ${
                 currentPhase === index 
                   ? phase.color === 'neon-green' ? 'text-neon-green' :
                     phase.color === 'soft-purple' ? 'text-soft-purple' :
@@ -383,9 +355,6 @@ const OrbitDialVisionSection = () => {
 
           {/* App Chips */}
           {phases.map((phase, phaseIndex) => renderAppChips(phase.apps, phaseIndex))}
-          
-          {/* Cue Words */}
-          {renderCueWords()}
 
           {/* 2027 Phase - Lock and routing animation */}
           {currentPhase === 2 && (
@@ -445,12 +414,16 @@ const OrbitDialVisionSection = () => {
           )}
         </div>
 
-        {/* Bottom Caption */}
-        {showCaption && (
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-fade-in">
-            <div className="bg-gray-900/80 border border-gray-700 rounded-xl p-4 text-center backdrop-blur-sm max-w-sm">
-              <p className="text-base font-bold text-white leading-tight">
-                Deepest personal context. You choose where it flows.
+        {/* Bottom Tag */}
+        {renderBottomTag()}
+
+        {/* Typewriter Final Message */}
+        {showTypewriter && (
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 mt-16">
+            <div className="text-center">
+              <p className="text-xl font-bold text-white leading-tight tracking-wide">
+                {typewriterText}
+                <span className="animate-pulse">|</span>
               </p>
             </div>
           </div>
