@@ -134,12 +134,15 @@ const OrbitDialVisionSection = () => {
         const text = "Deepest Personal context. You choose where it flows";
         setShowTypewriter(true);
         setShowAllIcons(true); // Show all icons when typewriter starts
-        setShowCompleteContextTag(true); // Show tag exactly when typing begins
         let index = 0;
         
         const typeInterval = setInterval(() => {
           if (index <= text.length) {
             setTypewriterText(text.slice(0, index));
+            // Show complete context tag when first character appears
+            if (index === 1) {
+              setShowCompleteContextTag(true);
+            }
             index++;
           } else {
             clearInterval(typeInterval);
@@ -238,8 +241,6 @@ const OrbitDialVisionSection = () => {
         </div>
       );
     }
-    // Hide tag during typewriter phase
-    if (showTypewriter) return null;
     
     return (
       <div className={`absolute ${isMobile ? 'top-24' : 'top-32'} left-1/2 transform -translate-x-1/2 animate-fade-in z-10`}>
