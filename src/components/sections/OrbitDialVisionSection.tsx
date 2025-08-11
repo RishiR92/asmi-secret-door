@@ -159,22 +159,12 @@ const OrbitDialVisionSection = () => {
       let startAngle, startRadius, startX, startY;
       
       if (showInSummary) {
-        // Three distinct circular layers to prevent overlap
-        let layerRadius;
-        if (phaseIndex === 0) {
-          // Inner circle for 2025 apps
-          layerRadius = isMobile ? 60 : 120;
-        } else if (phaseIndex === 1) {
-          // Middle circle for 2026 apps  
-          layerRadius = isMobile ? 90 : 160;
-        } else {
-          // Outer circle for 2027 apps
-          layerRadius = isMobile ? 120 : 200;
-        }
-        
-        const appsInPhase = phases[phaseIndex].apps.length;
-        startAngle = (index * (360 / appsInPhase)) - 90;
-        startRadius = layerRadius;
+        // Neat circular arrangement for all icons during typewriter
+        const totalIcons = phases.reduce((sum, p) => sum + p.apps.length, 0);
+        const globalIndex = phases.slice(0, phaseIndex).reduce((sum, p) => sum + p.apps.length, 0) + index;
+        const gridRadius = isMobile ? 80 : 180;
+        startAngle = (globalIndex * (360 / totalIcons)) - 90;
+        startRadius = gridRadius;
         startX = Math.cos((startAngle * Math.PI) / 180) * startRadius;
         startY = Math.sin((startAngle * Math.PI) / 180) * startRadius;
       } else {
@@ -235,7 +225,7 @@ const OrbitDialVisionSection = () => {
   const renderTopTag = () => {
     const phase = phases[currentPhase];
     return (
-      <div className={`absolute ${isMobile ? 'top-16' : 'top-20'} left-1/2 transform -translate-x-1/2 animate-fade-in z-10`}>
+      <div className={`absolute ${isMobile ? 'top-24' : 'top-32'} left-1/2 transform -translate-x-1/2 animate-fade-in z-10`}>
         <div className={`${isMobile ? 'px-4 py-2' : 'px-6 py-3'} rounded-xl backdrop-blur-md border transition-all duration-700 ${
           phase.color === 'green' ? 'bg-green-500/10 border-green-400/40 shadow-lg shadow-green-400/20' :
           phase.color === 'emerald' ? 'bg-emerald-500/10 border-emerald-400/40 shadow-lg shadow-emerald-400/20' :
@@ -332,7 +322,7 @@ const OrbitDialVisionSection = () => {
           {renderTopTag()}
 
           {/* Central Orbit Dial - Mobile Optimized */}
-          <div className="relative w-full flex items-center justify-center" style={{ height: '40vh' }}>
+          <div className="relative w-full flex items-center justify-center" style={{ height: '50vh' }}>
             {/* Concentric Arcs */}
             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
               {phases.map((phase, index) => {
@@ -510,8 +500,8 @@ const OrbitDialVisionSection = () => {
           ))}
         </div>
         
-            {/* Tags above animation */}
-            {renderTopTag()}
+        {/* Tags above animation */}
+        {renderTopTag()}
 
         {/* Central Orbit Dial */}
         <div className="relative w-full h-full flex items-center justify-center">
@@ -675,10 +665,11 @@ const OrbitDialVisionSection = () => {
 
         {/* Typewriter Final Message - Below Animation */}
         {showTypewriter && (
-          <div className="mt-8 text-center z-20">
-            <div className="animate-fade-in">
-              <p className="text-xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent tracking-wide max-w-md mx-auto leading-relaxed">
+          <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 z-30">
+            <div className="text-center">
+              <p className="text-xl font-bold text-white leading-tight tracking-wide">
                 {typewriterText}
+                <span className="animate-pulse">|</span>
               </p>
             </div>
           </div>
