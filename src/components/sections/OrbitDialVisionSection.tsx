@@ -134,15 +134,13 @@ const OrbitDialVisionSection = () => {
         const text = "Deepest Personal context. You choose where it flows";
         setShowTypewriter(true);
         setShowAllIcons(true); // Show all icons when typewriter starts
+        // Show complete context tag immediately when typewriter starts
+        setShowCompleteContextTag(true);
         let index = 0;
         
         const typeInterval = setInterval(() => {
           if (index <= text.length) {
             setTypewriterText(text.slice(0, index));
-            // Show complete context tag when first character appears
-            if (index === 1) {
-              setShowCompleteContextTag(true);
-            }
             index++;
           } else {
             clearInterval(typeInterval);
