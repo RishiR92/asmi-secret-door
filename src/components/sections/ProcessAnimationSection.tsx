@@ -10,7 +10,6 @@ const ProcessAnimationSection = () => {
   const [showKnowledgeGraph, setShowKnowledgeGraph] = useState(false);
   const [showFloatingCards, setShowFloatingCards] = useState(false);
   const [showEndMessage, setShowEndMessage] = useState(false);
-  const [animationComplete, setAnimationComplete] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const zones = [
@@ -79,9 +78,8 @@ const ProcessAnimationSection = () => {
         setTimeout(() => setShowZoneLabel(false), 1000);
       }, 6500);
 
-      // End message and show all zones (9s+)
+      // End message (9s+)
       setTimeout(() => {
-        setAnimationComplete(true);
         setShowEndMessage(true);
       }, 9500);
     };
@@ -109,11 +107,11 @@ const ProcessAnimationSection = () => {
   };
 
   const renderKnowledgeGraph = () => {
-    const centerNode = { id: 'raj', label: 'Raj', x: 60, y: 50 };
+    const centerNode = { id: 'raj', label: 'Raj', x: 50, y: 50 };
     const nodes = [
-      { id: 'partnership', label: 'Partnership', emoji: '🤝', x: 100, y: 20 },
-      { id: 'api', label: 'API', emoji: '⚡', x: 130, y: 50 },
-      { id: 'roadmap', label: 'Roadmap', emoji: '🗺️', x: 100, y: 80 },
+      { id: 'partnership', label: 'Partnership', emoji: '🤝', x: 80, y: 20 },
+      { id: 'api', label: 'API', emoji: '⚡', x: 120, y: 50 },
+      { id: 'roadmap', label: 'Roadmap', emoji: '🗺️', x: 80, y: 80 },
       { id: 'emails', label: 'Emails', emoji: '📧', x: 20, y: 80 },
       { id: 'calendar', label: 'Calendar', emoji: '📅', x: 20, y: 20 }
     ];
@@ -129,21 +127,22 @@ const ProcessAnimationSection = () => {
               x2={node.x}
               y2={node.y}
               stroke="hsl(var(--neon-green))"
-              strokeWidth="2"
+              strokeWidth="1"
               className={`transition-all duration-500 ${
-                showKnowledgeGraph || animationComplete ? 'opacity-80' : 'opacity-0'
+                showKnowledgeGraph ? 'opacity-80' : 'opacity-0'
               }`}
               style={{ 
-                animationDelay: `${index * 200}ms`
+                animationDelay: `${index * 200}ms`,
+                strokeDasharray: showKnowledgeGraph ? '4 4' : '0 4'
               }}
             />
           ))}
         </svg>
 
-        {/* Center node - Raj (Prominent) */}
+        {/* Center node - Raj */}
         <div
-          className={`absolute text-sm font-bold text-black bg-neon-green px-4 py-2 rounded-full border-2 border-white shadow-lg shadow-neon-green/50 transition-all duration-500 ${
-            showKnowledgeGraph || animationComplete ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          className={`absolute text-xs text-white bg-black/80 px-3 py-1 rounded-full border border-neon-green/50 transition-all duration-500 ${
+            showKnowledgeGraph ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
           }`}
           style={{
             left: `${centerNode.x}px`,
@@ -159,7 +158,7 @@ const ProcessAnimationSection = () => {
           <div
             key={node.id}
             className={`absolute text-xs text-white bg-black/80 px-2 py-1 rounded-lg border border-neon-green/30 transition-all duration-500 flex items-center gap-1 ${
-              showKnowledgeGraph || animationComplete ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+              showKnowledgeGraph ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
             }`}
             style={{
               left: `${node.x}px`,
@@ -174,7 +173,7 @@ const ProcessAnimationSection = () => {
         ))}
 
         {/* Privacy lock animation */}
-        {(showKnowledgeGraph || animationComplete) && (
+        {showKnowledgeGraph && (
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-fade-in">
             <Lock size={10} className="text-neon-green/70 animate-pulse" />
           </div>
@@ -184,76 +183,41 @@ const ProcessAnimationSection = () => {
   };
 
   const renderFloatingCards = () => {
-    const insightCards = [
-      { 
-        title: "Optimal Timing", 
-        value: "2–4 PM", 
-        detail: "87% response rate",
-        emoji: "🕒", 
-        delay: 0 
-      },
-      { 
-        title: "Decision Authority", 
-        value: "$50k+ budget", 
-        detail: "VP level contact",
-        emoji: "🎯", 
-        delay: 200 
-      },
-      { 
-        title: "Engagement Score", 
-        value: "94/100", 
-        detail: "High interest signals",
-        emoji: "📈", 
-        delay: 300 
-      }
+    const cards = [
+      { text: "Best time: 2–4 PM", emoji: "🕒", delay: 0 },
+      { text: "Decision-maker ($50k+)", emoji: "🎯", delay: 200 }
     ];
 
     return (
       <div className="space-y-3">
-        {insightCards.map((card, index) => (
+        {cards.map((card, index) => (
           <div
             key={index}
             className={`transition-all duration-500 ${
-              showFloatingCards || animationComplete ? 'animate-slide-up opacity-100' : 'opacity-0 translate-y-8'
+              showFloatingCards ? 'animate-slide-up opacity-100' : 'opacity-0 translate-y-8'
             }`}
             style={{ animationDelay: `${card.delay}ms` }}
           >
-            <div className="bg-black/70 border border-gray-600/50 rounded-xl p-3 backdrop-blur-sm shadow-lg">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm">{card.emoji}</span>
-                  <div>
-                    <p className="text-xs text-gray-400">{card.title}</p>
-                    <p className="text-sm text-white font-bold">{card.value}</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-xs text-gray-300">{card.detail}</p>
-                </div>
+            <div className="bg-black/60 border border-gray-600/50 rounded-xl p-3 backdrop-blur-sm shadow-lg">
+              <div className="flex items-center gap-2">
+                <span className="text-sm">{card.emoji}</span>
+                <p className="text-sm text-white font-medium">{card.text}</p>
               </div>
             </div>
           </div>
         ))}
         
-        {/* Enhanced Action CTA */}
+        {/* Action CTA Pill */}
         <div
           className={`transition-all duration-500 ${
-            showFloatingCards || animationComplete ? 'animate-slide-up opacity-100' : 'opacity-0 translate-y-8'
+            showFloatingCards ? 'animate-slide-up opacity-100' : 'opacity-0 translate-y-8'
           }`}
-          style={{ animationDelay: '500ms' }}
+          style={{ animationDelay: '400ms' }}
         >
-          <div className="bg-gradient-to-r from-neon-green/20 to-soft-purple/20 border border-neon-green/50 rounded-2xl p-4 text-center backdrop-blur-sm shadow-lg shadow-neon-green/20">
-            <div className="space-y-2">
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-lg">🚀</span>
-                <p className="text-sm text-white font-bold">Send AI-crafted pitch</p>
-              </div>
-              <p className="text-xs text-gray-300">Personalized for Raj's context & timing</p>
-              <div className="flex justify-center gap-4 text-xs text-gray-400">
-                <span>• 94% match</span>
-                <span>• Optimal timing</span>
-                <span>• Data-driven</span>
-              </div>
+          <div className="bg-neon-green/10 border border-neon-green/50 rounded-full px-4 py-3 text-center backdrop-blur-sm shadow-lg shadow-neon-green/20">
+            <div className="flex items-center justify-center gap-2">
+              <span className="text-sm">✈️</span>
+              <p className="text-sm text-white font-bold">Send data-driven pitch?</p>
             </div>
           </div>
         </div>
@@ -268,7 +232,7 @@ const ProcessAnimationSection = () => {
         {/* TOP ZONE - Capture */}
         <div className="relative min-h-[120px]">
           {/* Zone Label */}
-          {(currentZone === 0 && showZoneLabel) || animationComplete && (
+          {currentZone === 0 && showZoneLabel && (
             <div className="absolute top-0 left-0 text-xs font-medium text-neon-green animate-fade-in">
               Capture
             </div>
@@ -278,13 +242,13 @@ const ProcessAnimationSection = () => {
             {/* Mic and Waveform */}
             <div className="flex items-center">
               <div className={`transition-all duration-300 ${
-                currentZone === 0 || animationComplete ? 'animate-pulse' : 'opacity-30'
+                currentZone === 0 ? 'animate-pulse' : 'opacity-30'
               }`}>
                 <Mic size={18} className="text-neon-green" />
               </div>
               
               <div className={`transition-all duration-300 ${
-                currentZone === 0 || animationComplete ? 'opacity-100' : 'opacity-30'
+                currentZone === 0 ? 'opacity-100' : 'opacity-30'
               }`}>
                 {renderWaveform()}
               </div>
@@ -292,7 +256,7 @@ const ProcessAnimationSection = () => {
             
             {/* Voice Note Label */}
             <div className={`transition-all duration-300 ${
-              currentZone === 0 || animationComplete ? 'opacity-100' : 'opacity-30'
+              currentZone === 0 ? 'opacity-100' : 'opacity-30'
             }`}>
               <div className="inline-block bg-gray-700/50 text-white text-xs px-2 py-1 rounded-full border border-gray-600/50">
                 Voice Note
@@ -302,7 +266,7 @@ const ProcessAnimationSection = () => {
             {/* WhatsApp Chat Bubble */}
             {showTypewriter && (
               <div className={`transition-all duration-500 ${
-                currentZone === 0 || animationComplete ? 'opacity-100' : 'opacity-30'
+                currentZone === 0 ? 'opacity-100' : 'opacity-30'
               }`}>
                 <div className="bg-gray-800/80 border border-gray-600/50 rounded-2xl rounded-bl-md p-3 max-w-xs backdrop-blur-sm">
                   <p className="text-sm text-white">
@@ -317,14 +281,14 @@ const ProcessAnimationSection = () => {
         {/* MIDDLE ZONE - Link */}
         <div className="relative min-h-[120px]">
           {/* Zone Label */}
-          {(currentZone === 1 && showZoneLabel) || animationComplete && (
+          {currentZone === 1 && showZoneLabel && (
             <div className="absolute top-0 left-0 text-xs font-medium text-soft-purple animate-fade-in">
               Link
             </div>
           )}
           
           <div className={`pt-6 transition-all duration-500 ${
-            currentZone === 1 || animationComplete ? 'opacity-100' : 'opacity-30'
+            currentZone === 1 ? 'opacity-100' : 'opacity-30'
           }`}>
             {renderKnowledgeGraph()}
           </div>
@@ -333,14 +297,14 @@ const ProcessAnimationSection = () => {
         {/* BOTTOM ZONE - Act */}
         <div className="relative min-h-[160px]">
           {/* Zone Label */}
-          {(currentZone === 2 && showZoneLabel) || animationComplete && (
+          {currentZone === 2 && showZoneLabel && (
             <div className="absolute top-0 left-0 text-xs font-medium text-neon-green animate-fade-in">
               Act
             </div>
           )}
           
           <div className={`pt-6 transition-all duration-500 ${
-            currentZone === 2 || animationComplete ? 'opacity-100' : 'opacity-30'
+            currentZone === 2 ? 'opacity-100' : 'opacity-30'
           }`}>
             {renderFloatingCards()}
           </div>
