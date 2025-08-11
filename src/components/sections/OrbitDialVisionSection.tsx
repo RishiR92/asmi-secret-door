@@ -156,30 +156,22 @@ const OrbitDialVisionSection = () => {
       const showInSummary = showAllIcons && showTypewriter;
       const phase = phases[phaseIndex];
       
-      let startAngle, startRadius, startX, startY;
-      
+      // Don't show icons during the summary/typewriter phase
       if (showInSummary) {
-        // Neat circular arrangement for all icons during typewriter
-        const totalIcons = phases.reduce((sum, p) => sum + p.apps.length, 0);
-        const globalIndex = phases.slice(0, phaseIndex).reduce((sum, p) => sum + p.apps.length, 0) + index;
-        const gridRadius = isMobile ? 80 : 180;
-        startAngle = (globalIndex * (360 / totalIcons)) - 90;
-        startRadius = gridRadius;
-        startX = Math.cos((startAngle * Math.PI) / 180) * startRadius;
-        startY = Math.sin((startAngle * Math.PI) / 180) * startRadius;
-      } else {
-        // Original positioning for individual phases
-        startAngle = (index * 90) + (phaseIndex * 25) - 45;
-        startRadius = isMobile ? phase.radius * window.innerWidth * 0.01 : phase.radius;
-        startX = Math.cos((startAngle * Math.PI) / 180) * startRadius;
-        startY = Math.sin((startAngle * Math.PI) / 180) * startRadius;
+        return null;
       }
+      
+      // Original positioning for individual phases
+      const startAngle = (index * 90) + (phaseIndex * 25) - 45;
+      const startRadius = isMobile ? phase.radius * window.innerWidth * 0.01 : phase.radius;
+      const startX = Math.cos((startAngle * Math.PI) / 180) * startRadius;
+      const startY = Math.sin((startAngle * Math.PI) / 180) * startRadius;
 
       return (
         <div
           key={`${phaseIndex}-${index}`}
           className={`absolute transition-all duration-[1200ms] ease-out ${
-            isFlowing || showInSummary ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+            isFlowing ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
           }`}
           style={{
             left: `calc(50% + ${startX}px)`,
@@ -224,6 +216,9 @@ const OrbitDialVisionSection = () => {
 
   const renderTopTag = () => {
     const phase = phases[currentPhase];
+    // Hide tag during typewriter phase to prevent overlap
+    if (showTypewriter) return null;
+    
     return (
       <div className={`absolute ${isMobile ? 'top-24' : 'top-32'} left-1/2 transform -translate-x-1/2 animate-fade-in z-10`}>
         <div className={`${isMobile ? 'px-4 py-2' : 'px-6 py-3'} rounded-xl backdrop-blur-md border transition-all duration-700 ${
@@ -445,11 +440,11 @@ const OrbitDialVisionSection = () => {
             )}
           </div>
 
-          {/* Typewriter Final Message - Below Animation */}
+          {/* Typewriter Final Message - Well below animation */}
           {showTypewriter && (
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-30 px-4">
+            <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 z-30 px-4">
               <div className="text-center">
-                <p className="text-sm font-bold text-white leading-tight tracking-wide">
+                <p className="text-sm font-bold text-white leading-tight tracking-wide bg-black/40 backdrop-blur-sm px-4 py-2 rounded-lg border border-green-400/20">
                   {typewriterText}
                   <span className="animate-pulse">|</span>
                 </p>
@@ -663,11 +658,11 @@ const OrbitDialVisionSection = () => {
           )}
         </div>
 
-        {/* Typewriter Final Message - Below Animation */}
+        {/* Typewriter Final Message - Well below animation */}
         {showTypewriter && (
-          <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 z-30">
+          <div className="absolute -bottom-24 left-1/2 transform -translate-x-1/2 z-30">
             <div className="text-center">
-              <p className="text-xl font-bold text-white leading-tight tracking-wide">
+              <p className="text-xl font-bold text-white leading-tight tracking-wide bg-black/40 backdrop-blur-sm px-6 py-3 rounded-lg border border-green-400/20">
                 {typewriterText}
                 <span className="animate-pulse">|</span>
               </p>
