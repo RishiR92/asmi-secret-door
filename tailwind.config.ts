@@ -140,7 +140,12 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.3s ease-out',
 				'orbit-rotate': 'orbit-rotate 20s linear infinite',
-				'icon-flow': 'icon-flow 2s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+				'flow-radial': 'flow-radial 3s ease-out forwards',
+				'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+				'pulse-orb': 'pulse-orb 3s ease-in-out infinite',
+				'fade-in-scale': 'fade-in-scale 0.8s ease-out forwards',
+				'draw-arrow': 'draw-arrow 1.5s ease-out forwards',
+				'rotate-slow': 'rotate-slow 20s linear infinite',
 				'orb-pulse': 'orb-pulse 3s ease-in-out infinite',
 				'typing-bubble': 'typing-bubble 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards',
 				'card-float-in': 'card-float-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards'
