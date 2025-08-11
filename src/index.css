@@ -750,6 +750,46 @@ All colors MUST be HSL.
   }
 }
 
+/* Chip flow animation */
+@keyframes chip-flow {
+  0% { 
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  50% { 
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  100% { 
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Draw line animation */
+@keyframes draw-line {
+  0% { 
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  100% { 
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* Orb halo pulse animation */
+@keyframes orb-halo-pulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 0 0 40px rgba(0, 255, 138, 0.4);
+  }
+  50% { 
+    transform: scale(1.05);
+    box-shadow: 0 0 60px rgba(0, 255, 138, 0.6);
+  }
+}
+
 /* Slow rotation for arcs */
 @keyframes rotate-slow {
   from {

@@ -148,7 +148,10 @@ export default {
 				'rotate-slow': 'rotate-slow 20s linear infinite',
 				'orb-pulse': 'orb-pulse 3s ease-in-out infinite',
 				'typing-bubble': 'typing-bubble 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards',
-				'card-float-in': 'card-float-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards'
+				'card-float-in': 'card-float-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+				'chip-flow': 'chip-flow 2s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+				'draw-line': 'draw-line 1s ease-out forwards',
+				'orb-halo-pulse': 'orb-halo-pulse 2s ease-in-out infinite'
 			}
 		}
 	},
