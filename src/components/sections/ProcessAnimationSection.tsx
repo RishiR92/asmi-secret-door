@@ -109,6 +109,17 @@ const ProcessAnimationSection = () => {
     runAnimation();
   }, [isVisible]);
 
+  // Handle connections animation cycle
+  useEffect(() => {
+    if (!showConnections) return;
+    
+    const interval = setInterval(() => {
+      setActiveConnection(prev => (prev + 1) % 4); // 4 data points
+    }, 800);
+
+    return () => clearInterval(interval);
+  }, [showConnections]);
+
   const renderWaveform = () => {
     return (
       <div className="flex items-center space-x-1">
@@ -133,16 +144,6 @@ const ProcessAnimationSection = () => {
       { type: "Meetings", position: { x: 25, y: 75 }, color: "bg-purple-400", label: "Meetings" },
       { type: "Conversations", position: { x: 75, y: 75 }, color: "bg-yellow-400", label: "Conversations" }
     ];
-
-    useEffect(() => {
-      if (!showConnections) return;
-      
-      const interval = setInterval(() => {
-        setActiveConnection(prev => (prev + 1) % dataPoints.length);
-      }, 800);
-
-      return () => clearInterval(interval);
-    }, [showConnections]);
 
     return (
       <div className="relative h-32 mb-4">
