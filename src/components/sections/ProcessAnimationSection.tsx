@@ -2,16 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import { Mic, Link2, Target } from 'lucide-react';
 
 const ProcessAnimationSection = () => {
-  const [currentZone, setCurrentZone] = useState(0);
+  const [currentZone, setCurrentZone] = useState(-1); // -1 = not started, 0-2 = zones, 3 = summary
   const [isVisible, setIsVisible] = useState(false);
-  const [showZoneLabel, setShowZoneLabel] = useState(false);
   const [chatText, setChatText] = useState('');
-  const [showTypewriter, setShowTypewriter] = useState(false);
   const [showKnowledgeGraph, setShowKnowledgeGraph] = useState(false);
   const [showInsights, setShowInsights] = useState(false);
-  const [showFinalMessage, setShowFinalMessage] = useState(false);
   const [finalMessageText, setFinalMessageText] = useState('');
-  const [animationComplete, setAnimationComplete] = useState(false);
+  const [knowledgeConnections, setKnowledgeConnections] = useState<number[]>([]);
+  const [visibleInsights, setVisibleInsights] = useState<number[]>([]);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const zones = [
@@ -41,11 +39,9 @@ const ProcessAnimationSection = () => {
     if (!isVisible) return;
 
     const runAnimation = () => {
-      // Zone 1: Capture (0-2.5s)
+      // Zone 1: Capture (0-2.5s) - Full screen
       setTimeout(() => {
         setCurrentZone(0);
-        setShowZoneLabel(true);
-        setShowTypewriter(true);
         // Type out WhatsApp message (faster)
         const message = "Great call with Raj...interested in API integration";
         let index = 0;
@@ -57,33 +53,47 @@ const ProcessAnimationSection = () => {
             clearInterval(typeInterval);
           }
         }, 40);
-        
-        // Hide zone label after 1s
-        setTimeout(() => setShowZoneLabel(false), 1000);
       }, 500);
 
-      // Zone 2: Link (2.5-8s)
+      // Zone 2: Link (2.5-8s) - Full screen
       setTimeout(() => {
         setCurrentZone(1);
-        setShowZoneLabel(true);
+        setChatText(''); // Clear previous content
         setShowKnowledgeGraph(true);
-        // Hide zone label after 1s
-        setTimeout(() => setShowZoneLabel(false), 1000);
+        
+        // Animate connections sequentially
+        const connections = [0, 1, 2, 3, 4, 5];
+        connections.forEach((connectionIndex, i) => {
+          setTimeout(() => {
+            setKnowledgeConnections(prev => [...prev, connectionIndex]);
+          }, i * 500);
+        });
       }, 3000);
 
-      // Zone 3: Act (8-13.5s)
+      // Zone 3: Act (8-13.5s) - Full screen
       setTimeout(() => {
         setCurrentZone(2);
-        setShowZoneLabel(true);
+        setShowKnowledgeGraph(false);
+        setKnowledgeConnections([]);
         setShowInsights(true);
-        // Hide zone label after 1s
-        setTimeout(() => setShowZoneLabel(false), 1000);
+        
+        // Animate insights sequentially (slower for reading)
+        const insights = [0, 1, 2, 3, 4, 5, 6];
+        insights.forEach((insightIndex, i) => {
+          setTimeout(() => {
+            setVisibleInsights(prev => [...prev, insightIndex]);
+          }, i * 400);
+        });
       }, 8000);
 
-      // Final typewriter message (13.5s+)
+      // Final Summary (13.5s+) - All zones condensed
       setTimeout(() => {
-        setShowFinalMessage(true);
-        const finalMessage = "This is how Asmi works in the backend - connecting everything to create in-depth insights on each user/conversation";
+        setCurrentZone(3);
+        setShowInsights(false);
+        setVisibleInsights([]);
+        
+        // Typewriter for final message
+        const finalMessage = "This is how Asmi connects everything";
         let index = 0;
         const typeInterval = setInterval(() => {
           if (index <= finalMessage.length) {
@@ -91,10 +101,6 @@ const ProcessAnimationSection = () => {
             index++;
           } else {
             clearInterval(typeInterval);
-            // Show all zones at once after completion
-            setTimeout(() => {
-              setAnimationComplete(true);
-            }, 1000);
           }
         }, 50);
       }, 13500);
@@ -103,114 +109,151 @@ const ProcessAnimationSection = () => {
     runAnimation();
   }, [isVisible]);
 
-  const renderWaveform = () => {
+  const renderFullScreenCapture = () => {
     return (
-      <div className="flex items-center space-x-1 ml-2">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className={`w-1 bg-neon-green rounded-full transition-all duration-300 ${
-              currentZone === 0 ? 'animate-pulse' : 'opacity-30'
-            }`}
-            style={{
-              height: `${6 + Math.sin(i * 0.8) * 3}px`,
-              animationDelay: `${i * 120}ms`
-            }}
-          />
-        ))}
+      <div className="flex flex-col items-center justify-center h-full space-y-8">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-neon-green mb-2">Voice Captured</h1>
+          <p className="text-white/70 text-lg">Step 1 of 3</p>
+        </div>
+        
+        <div className="flex flex-col items-center space-y-6">
+          {/* Large Mic with Pulse */}
+          <div className="relative">
+            <div className="absolute inset-0 bg-neon-green/20 rounded-full animate-ping"></div>
+            <div className="relative bg-neon-green/10 p-8 rounded-full border-2 border-neon-green">
+              <Mic size={48} className="text-neon-green" />
+            </div>
+          </div>
+          
+          {/* Enhanced Waveform */}
+          <div className="flex items-center space-x-2">
+            {[...Array(12)].map((_, i) => (
+              <div
+                key={i}
+                className="w-2 bg-neon-green rounded-full animate-pulse"
+                style={{
+                  height: `${12 + Math.sin(i * 0.8) * 8}px`,
+                  animationDelay: `${i * 150}ms`
+                }}
+              />
+            ))}
+          </div>
+          
+          {/* Voice Note Label */}
+          <div className="bg-gray-800/80 text-white px-4 py-2 rounded-full border border-gray-600/50">
+            <span className="text-sm font-medium">Voice Note Recording</span>
+          </div>
+        </div>
+        
+        {/* WhatsApp Message */}
+        {chatText && (
+          <div className="max-w-sm mx-auto">
+            <div className="bg-gray-800/90 border border-gray-600/50 rounded-2xl rounded-bl-md p-4 backdrop-blur-sm">
+              <p className="text-white text-base leading-relaxed">
+                "{chatText}"
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     );
   };
 
-  const renderKnowledgeGraph = () => {
-    const centerNode = { id: 'raj', label: 'Raj', x: 150, y: 80 };
+  const renderFullScreenLink = () => {
+    const centerNode = { id: 'raj', label: 'Raj', x: 150, y: 120 };
     const connections = [
-      { id: 'partnership', label: 'Partnership', x: 50, y: 40 },
-      { id: 'api', label: 'API', x: 250, y: 40 },
-      { id: 'roadmap', label: 'Your roadmap', x: 250, y: 120 },
-      { id: 'discussions', label: 'Previous technical discussions', x: 50, y: 120 },
-      { id: 'emails', label: 'Email thread about API specs', x: 20, y: 80 },
-      { id: 'calendar', label: 'Calendar meetings with Raj', x: 280, y: 80 }
+      { id: 'partnership', label: 'Partnership discussions', x: 75, y: 60 },
+      { id: 'api', label: 'API documentation', x: 225, y: 60 },
+      { id: 'roadmap', label: 'Your product roadmap', x: 225, y: 180 },
+      { id: 'discussions', label: 'Previous technical calls', x: 75, y: 180 },
+      { id: 'emails', label: 'Email threads about API specs', x: 40, y: 120 },
+      { id: 'calendar', label: 'Calendar meetings with Raj', x: 260, y: 120 }
     ];
 
     return (
-      <div className="space-y-4">
+      <div className="flex flex-col items-center justify-center h-full space-y-8">
         <div className="text-center">
-          <h3 className="text-sm font-medium text-soft-purple mb-2">Step 2: Context linked</h3>
-          <Link2 size={16} className="text-soft-purple mx-auto" />
+          <h1 className="text-3xl font-bold text-soft-purple mb-2">Context Linked</h1>
+          <p className="text-white/70 text-lg">Step 2 of 3</p>
         </div>
         
-        <div className="relative w-full h-40 mx-auto">
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 160">
-            {connections.map((node, index) => (
-              <g key={index}>
-                <line
-                  x1={centerNode.x}
-                  y1={centerNode.y}
-                  x2={node.x}
-                  y2={node.y}
-                  stroke="hsl(var(--neon-green))"
-                  strokeWidth="2"
-                  className={`transition-all duration-1000 ${
-                    showKnowledgeGraph ? 'opacity-80' : 'opacity-0'
-                  }`}
-                  style={{ 
-                    animationDelay: `${index * 400}ms`,
-                  }}
-                />
-                <circle
-                  cx={node.x}
-                  cy={node.y}
-                  r="3"
-                  fill="hsl(var(--neon-green))"
-                  className={`transition-all duration-500 ${
-                    showKnowledgeGraph ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  style={{ animationDelay: `${index * 400 + 200}ms` }}
-                />
-              </g>
-            ))}
-          </svg>
-
-          {/* Center node - Raj (prominent) */}
-          <div
-            className={`absolute text-sm font-bold text-white bg-neon-green/20 px-4 py-2 rounded-full border-2 border-neon-green transition-all duration-500 ${
-              showKnowledgeGraph ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-            }`}
-            style={{
-              left: `${centerNode.x}px`,
-              top: `${centerNode.y}px`,
-              transform: 'translate(-50%, -50%)'
-            }}
-          >
-            {centerNode.label}
+        <div className="relative w-full max-w-sm mx-auto">
+          <div className="text-center mb-6">
+            <Link2 size={32} className="text-soft-purple mx-auto mb-2" />
+            <p className="text-white/80 text-sm">Connecting all relevant data sources</p>
           </div>
+          
+          <div className="relative h-64">
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 240">
+              {connections.map((node, index) => (
+                <g key={index}>
+                  <line
+                    x1={centerNode.x}
+                    y1={centerNode.y}
+                    x2={node.x}
+                    y2={node.y}
+                    stroke="hsl(var(--neon-green))"
+                    strokeWidth="3"
+                    className={`transition-all duration-1000 ${
+                      knowledgeConnections.includes(index) ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    style={{ 
+                      strokeDasharray: knowledgeConnections.includes(index) ? 'none' : '10,5',
+                      animation: knowledgeConnections.includes(index) ? 'none' : 'pulse 2s infinite'
+                    }}
+                  />
+                  <circle
+                    cx={node.x}
+                    cy={node.y}
+                    r="4"
+                    fill="hsl(var(--neon-green))"
+                    className={`transition-all duration-500 ${
+                      knowledgeConnections.includes(index) ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  />
+                </g>
+              ))}
+            </svg>
 
-          {/* Connected data sources */}
-          {connections.map((node, index) => (
+            {/* Center node - Raj (prominent) */}
             <div
-              key={node.id}
-              className={`absolute text-xs text-white bg-black/90 px-2 py-1 rounded border border-soft-purple/50 transition-all duration-500 ${
-                showKnowledgeGraph ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-              }`}
+              className="absolute text-lg font-bold text-white bg-neon-green/20 px-6 py-3 rounded-full border-2 border-neon-green"
               style={{
-                left: `${node.x}px`,
-                top: `${node.y}px`,
-                transform: 'translate(-50%, -50%)',
-                animationDelay: `${index * 400 + 500}ms`,
-                maxWidth: '80px',
-                fontSize: '10px'
+                left: `${centerNode.x}px`,
+                top: `${centerNode.y}px`,
+                transform: 'translate(-50%, -50%)'
               }}
             >
-              {node.label}
+              {centerNode.label}
             </div>
-          ))}
+
+            {/* Connected data sources */}
+            {connections.map((node, index) => (
+              <div
+                key={node.id}
+                className={`absolute text-xs text-white bg-black/95 px-3 py-2 rounded-lg border border-soft-purple/50 transition-all duration-500 ${
+                  knowledgeConnections.includes(index) ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                }`}
+                style={{
+                  left: `${node.x}px`,
+                  top: `${node.y}px`,
+                  transform: 'translate(-50%, -50%)',
+                  maxWidth: '100px',
+                  fontSize: '10px',
+                  textAlign: 'center'
+                }}
+              >
+                {node.label}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
   };
 
-  const renderInsights = () => {
+  const renderFullScreenAct = () => {
     const insights = [
       "Raj (CTO at TechCorp)",
       "Met 3x this quarter",
@@ -222,29 +265,30 @@ const ProcessAnimationSection = () => {
     ];
 
     return (
-      <div className="space-y-4">
+      <div className="flex flex-col items-center justify-center h-full space-y-8">
         <div className="text-center">
-          <h3 className="text-sm font-medium text-neon-green mb-2">Step 3: Deep insights generated</h3>
-          <Target size={16} className="text-neon-green mx-auto" />
+          <h1 className="text-3xl font-bold text-neon-green mb-2">Deep Insights Generated</h1>
+          <p className="text-white/70 text-lg">Step 3 of 3</p>
         </div>
         
-        <div className="space-y-2">
+        <div className="text-center mb-6">
+          <Target size={32} className="text-neon-green mx-auto mb-2" />
+          <p className="text-white/80 text-sm">AI-powered insights about Raj</p>
+        </div>
+        
+        <div className="w-full max-w-sm space-y-4">
           {insights.map((insight, index) => (
             <div
               key={index}
-              className={`transition-all duration-500 ${
-                showInsights ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
+              className={`transition-all duration-700 ${
+                visibleInsights.includes(index) ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
               }`}
-              style={{ animationDelay: `${index * 350}ms` }}
             >
-              <div className="flex items-center gap-2 text-xs text-white">
-                {index < insights.length - 1 && (
-                  <span className="text-neon-green">→</span>
-                )}
-                {index === insights.length - 1 && (
-                  <span className="text-neon-green font-bold">→</span>
-                )}
-                <span className={index === 0 ? 'font-bold text-neon-green' : ''}>{insight}</span>
+              <div className="flex items-center gap-3 bg-gray-800/50 border border-gray-600/30 rounded-lg p-4 backdrop-blur-sm">
+                <span className="text-neon-green text-lg">→</span>
+                <span className={`text-sm ${index === 0 ? 'font-bold text-neon-green' : 'text-white'}`}>
+                  {insight}
+                </span>
               </div>
             </div>
           ))}
@@ -253,85 +297,79 @@ const ProcessAnimationSection = () => {
     );
   };
 
-  return (
-    <div ref={sectionRef} className="min-h-screen bg-black flex flex-col justify-center py-8 px-4">
-      <div className="w-full max-w-sm mx-auto space-y-8">
-        
-        {/* TOP ZONE - Capture */}
-        <div className="relative min-h-[140px]">
-          {/* Zone Label */}
-          {((currentZone === 0 && showZoneLabel) || animationComplete) && (
-            <div className="text-center mb-3">
-              <h3 className="text-sm font-medium text-neon-green">Step 1: Voice captured</h3>
-              <Mic size={16} className="text-neon-green mx-auto mt-1" />
+  const renderSummary = () => {
+    return (
+      <div className="flex flex-col items-center justify-center h-full space-y-8">
+        {/* Condensed 3-step flow */}
+        <div className="flex items-center justify-between w-full max-w-xs space-x-4">
+          <div className="flex flex-col items-center space-y-2">
+            <div className="bg-neon-green/20 p-3 rounded-full border border-neon-green">
+              <Mic size={20} className="text-neon-green" />
             </div>
-          )}
+            <span className="text-xs text-white/70">Capture</span>
+          </div>
           
-          <div className={`space-y-3 transition-all duration-500 ${
-            animationComplete ? 'opacity-100' : (currentZone === 0 ? 'opacity-100' : 'opacity-30')
-          }`}>
-            {/* Mic and Waveform */}
-            <div className="flex items-center justify-center">
-              <div className={`transition-all duration-300 ${
-                (currentZone === 0 || animationComplete) ? 'animate-pulse' : 'opacity-30'
-              }`}>
-                <Mic size={18} className="text-neon-green" />
-              </div>
-              
-              <div className={`transition-all duration-300 ${
-                (currentZone === 0 || animationComplete) ? 'opacity-100' : 'opacity-30'
-              }`}>
-                {renderWaveform()}
-              </div>
+          <div className="flex-1 h-px bg-gradient-to-r from-neon-green to-soft-purple"></div>
+          
+          <div className="flex flex-col items-center space-y-2">
+            <div className="bg-soft-purple/20 p-3 rounded-full border border-soft-purple">
+              <Link2 size={20} className="text-soft-purple" />
             </div>
-            
-            {/* Voice Note Label */}
-            <div className="text-center">
-              <div className="inline-block bg-gray-700/50 text-white text-xs px-2 py-1 rounded-full border border-gray-600/50">
-                Voice Note
-              </div>
+            <span className="text-xs text-white/70">Link</span>
+          </div>
+          
+          <div className="flex-1 h-px bg-gradient-to-r from-soft-purple to-neon-green"></div>
+          
+          <div className="flex flex-col items-center space-y-2">
+            <div className="bg-neon-green/20 p-3 rounded-full border border-neon-green">
+              <Target size={20} className="text-neon-green" />
             </div>
-            
-            {/* WhatsApp Chat Bubble */}
-            {showTypewriter && (
-              <div className="flex justify-center">
-                <div className="bg-gray-800/80 border border-gray-600/50 rounded-2xl rounded-bl-md p-3 max-w-xs backdrop-blur-sm">
-                  <p className="text-sm text-white">
-                    "{chatText}"
-                  </p>
-                </div>
-              </div>
-            )}
+            <span className="text-xs text-white/70">Act</span>
           </div>
         </div>
-
-        {/* MIDDLE ZONE - Link */}
-        <div className="relative min-h-[180px]">
-          <div className={`transition-all duration-500 ${
-            animationComplete ? 'opacity-100' : (currentZone === 1 ? 'opacity-100' : 'opacity-30')
-          }`}>
-            {renderKnowledgeGraph()}
+        
+        {/* Final message */}
+        <div className="text-center">
+          <div className="bg-gradient-to-r from-neon-green/10 to-soft-purple/10 border border-neon-green/30 rounded-xl p-6 backdrop-blur-sm">
+            <p className="text-2xl font-bold text-white leading-tight">
+              {finalMessageText}
+              <span className="animate-pulse">|</span>
+            </p>
           </div>
         </div>
+      </div>
+    );
+  };
 
-        {/* BOTTOM ZONE - Act */}
-        <div className="relative min-h-[200px]">
-          <div className={`transition-all duration-500 ${
-            animationComplete ? 'opacity-100' : (currentZone === 2 ? 'opacity-100' : 'opacity-30')
-          }`}>
-            {renderInsights()}
+  return (
+    <div ref={sectionRef} className="min-h-screen bg-black flex items-center justify-center p-4">
+      <div className="w-full max-w-sm mx-auto h-[80vh] relative">
+        
+        {/* Zone 1 - Full Screen Capture */}
+        {currentZone === 0 && (
+          <div className="absolute inset-0 animate-fade-in">
+            {renderFullScreenCapture()}
           </div>
-        </div>
+        )}
 
-        {/* FINAL TYPEWRITER MESSAGE */}
-        {showFinalMessage && (
-          <div className="text-center animate-fade-in pt-6">
-            <div className="bg-gradient-to-r from-neon-green/10 to-soft-purple/10 border border-neon-green/30 rounded-xl p-6 text-center backdrop-blur-sm">
-              <p className="text-lg font-bold text-white leading-tight">
-                {finalMessageText}
-                <span className="animate-pulse">|</span>
-              </p>
-            </div>
+        {/* Zone 2 - Full Screen Link */}
+        {currentZone === 1 && (
+          <div className="absolute inset-0 animate-fade-in">
+            {renderFullScreenLink()}
+          </div>
+        )}
+
+        {/* Zone 3 - Full Screen Act */}
+        {currentZone === 2 && (
+          <div className="absolute inset-0 animate-fade-in">
+            {renderFullScreenAct()}
+          </div>
+        )}
+
+        {/* Summary Screen */}
+        {currentZone === 3 && (
+          <div className="absolute inset-0 animate-fade-in">
+            {renderSummary()}
           </div>
         )}
       </div>
