@@ -90,8 +90,8 @@ const ProcessAnimationSection = () => {
           // Phase 3: Dynamic Actions Taken (7-8s)
           setTimeout(() => {
             const actionsList = [
-              "✓ Sent follow-up with technical demo link and API docs",
-              "✓ Scheduled next meeting \"API architecture deep-dive\" on Monday 2PM at Raj's office in Palo Alto"
+              "Sent follow-up with technical demo link and API docs",
+              "Scheduled next meeting \"API architecture deep-dive\" on Monday 2PM at Raj's office in Palo Alto"
             ];
             
             actionsList.forEach((action, index) => {
@@ -278,15 +278,30 @@ const ProcessAnimationSection = () => {
                 className="transition-all duration-300"
               />
               
-              {/* Flowing particles */}
+              {/* Enhanced flowing particles */}
               {activeFetchingSource === index && showDataFetching && (
                 <>
-                  <circle r="1.5" fill="#22c55e" className="opacity-80">
-                    <animateMotion dur="1s" repeatCount="indefinite">
-                      <mpath xlinkHref={`#path-${index}`} />
-                    </animateMotion>
-                  </circle>
+                  {/* Multiple particles for more scientific effect */}
+                  {[0, 0.3, 0.6].map((delay, particleIndex) => (
+                    <circle key={particleIndex} r="1.5" fill="#22c55e" className="opacity-80">
+                      <animateMotion dur="1.2s" repeatCount="indefinite" begin={`${delay}s`}>
+                        <mpath xlinkHref={`#path-${index}`} />
+                      </animateMotion>
+                    </circle>
+                  ))}
                   <path id={`path-${index}`} d={`M${point.position.x},${point.position.y} L50,50`} className="opacity-0" />
+                  
+                  {/* Energy ring around active source */}
+                  <circle 
+                    cx={point.position.x} 
+                    cy={point.position.y} 
+                    r="4" 
+                    fill="none" 
+                    stroke="#22c55e" 
+                    strokeWidth="1" 
+                    opacity="0.6"
+                    className="animate-ping"
+                  />
                 </>
               )}
             </g>
@@ -309,7 +324,10 @@ const ProcessAnimationSection = () => {
           >
             <div className={`w-3 h-3 ${point.color} rounded-full flex items-center justify-center relative shadow-lg`}>
               {activeFetchingSource === index && showDataFetching && (
-                <div className={`absolute inset-0 rounded-full ${point.color} opacity-40 animate-ping scale-150`}></div>
+                <>
+                  <div className={`absolute inset-0 rounded-full ${point.color} opacity-40 animate-ping scale-150`}></div>
+                  <div className={`absolute inset-0 rounded-full ${point.color} opacity-20 animate-ping scale-200`} style={{ animationDelay: '0.2s' }}></div>
+                </>
               )}
             </div>
             <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
@@ -320,16 +338,11 @@ const ProcessAnimationSection = () => {
               }`}>
                 {point.label}
               </span>
-              {activeFetchingSource === index && showDataFetching && (
-                <div className="text-xs text-green-400 mt-1 font-medium animate-pulse">
-                  {point.data}
-                </div>
-              )}
             </div>
           </div>
         ))}
 
-        {/* Center Asmi Node */}
+        {/* Center Asmi Node with enhanced glow */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <div 
             className={`bg-white rounded-full flex items-center justify-center shadow-xl transition-all duration-500 ${
@@ -338,10 +351,13 @@ const ProcessAnimationSection = () => {
             style={{
               width: '32px',
               height: '32px',
-              boxShadow: showDataFetching ? '0 0 20px rgba(34, 197, 94, 0.5)' : '0 0 15px rgba(34, 197, 94, 0.3)'
+              boxShadow: showDataFetching ? '0 0 25px rgba(34, 197, 94, 0.7), 0 0 45px rgba(34, 197, 94, 0.3)' : '0 0 15px rgba(34, 197, 94, 0.3)'
             }}
           >
             <span className="text-black font-bold text-xs">Asmi</span>
+            {showDataFetching && (
+              <div className="absolute inset-0 rounded-full bg-green-400/20 animate-pulse scale-150"></div>
+            )}
           </div>
         </div>
       </div>
