@@ -135,10 +135,7 @@ const ProcessAnimationSection = () => {
         }, 300); // Complete transition after opacity change
       }, 10000);
 
-      // Loop the animation
-      setTimeout(() => {
-        runAnimation();
-      }, 20000); // 20s total cycle for proper viewing time
+      // Animation runs once, no loop
     };
 
     runAnimation();
@@ -359,12 +356,12 @@ const ProcessAnimationSection = () => {
                       fill={point.strokeColor} 
                       opacity={particle.opacity}
                     >
-                      <animateMotion dur="1.5s" repeatCount="indefinite" begin={`${particle.delay}s`}>
-                        <mpath xlinkHref={`#data-path-${index}`} />
-                      </animateMotion>
-                    </circle>
-                  ))}
-                  <path id={`data-path-${index}`} d={`M${point.position.x},${point.position.y} L50,50`} className="opacity-0" />
+                       <animateMotion dur="1.5s" repeatCount="indefinite" begin={`${particle.delay}s`}>
+                         <mpath xlinkHref={`#data-path-${index}`} />
+                       </animateMotion>
+                     </circle>
+                   ))}
+                   <path id={`data-path-${index}`} d={`M${point.position.x},${point.position.y} L50,50`} className="opacity-0" />
                   
                   {/* Multiple expanding energy rings with different timing */}
                   <circle 
