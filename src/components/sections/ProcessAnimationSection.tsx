@@ -1,26 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
-import { Mic, Link2, Target } from 'lucide-react';
+import { Mic } from 'lucide-react';
 import MobileOptimizedSection from './MobileOptimizedSection';
 
 const ProcessAnimationSection = () => {
-  const [currentPhase, setCurrentPhase] = useState(0); // 0: Zone1, 1: Zones2&3, 2: Complete
+  const [currentScreen, setCurrentScreen] = useState(0); // 0: Screen1, 1: Screen2
   const [isVisible, setIsVisible] = useState(false);
-  const [showZoneLabel, setShowZoneLabel] = useState(false);
-  const [chatText, setChatText] = useState('');
-  const [showTypewriter, setShowTypewriter] = useState(false);
-  const [showKnowledgeGraph, setShowKnowledgeGraph] = useState(false);
+  const [showWaveform, setShowWaveform] = useState(false);
+  const [voiceText, setVoiceText] = useState('');
+  const [showConnections, setShowConnections] = useState(false);
+  const [showNeural, setShowNeural] = useState(false);
+  const [insights, setInsights] = useState<string[]>([]);
   const [showInsights, setShowInsights] = useState(false);
-  const [showFinalMessage, setShowFinalMessage] = useState(false);
-  const [finalMessageText, setFinalMessageText] = useState('');
-  const [zone2Label, setZone2Label] = useState(false);
-  const [zone3Label, setZone3Label] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-
-  const zones = [
-    { label: "Capture", duration: 2000 },
-    { label: "Link", duration: 2000 },
-    { label: "Act", duration: 2000 }
-  ];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -43,62 +34,41 @@ const ProcessAnimationSection = () => {
     if (!isVisible) return;
 
     const runAnimation = () => {
-      // Phase 1: Zone 1 only (0-3s)
+      // Screen 1: Voice Capture & Context Linking (0-4s)
       setTimeout(() => {
-        setCurrentPhase(0);
-        setShowZoneLabel(true);
-        setShowTypewriter(true);
-        // Type out WhatsApp message
-        const message = "Great call with Raj...API integration";
+        setCurrentScreen(0);
+        setShowWaveform(true);
+        
+        // Type out voice message
+        const message = "Great call with Raj";
         let index = 0;
         const typeInterval = setInterval(() => {
           if (index <= message.length) {
-            setChatText(message.slice(0, index));
+            setVoiceText(message.slice(0, index));
             index++;
           } else {
             clearInterval(typeInterval);
+            // Show connections after voice text completes
+            setTimeout(() => setShowConnections(true), 500);
           }
-        }, 40);
-        
-        // Hide zone label after 1s
-        setTimeout(() => setShowZoneLabel(false), 1000);
+        }, 80);
       }, 500);
 
-      // Phase 2: Transition to Zones 2 & 3 (3s)
+      // Screen 2: Intelligence Generation (4-8s)
       setTimeout(() => {
-        setCurrentPhase(1);
+        setCurrentScreen(1);
+        setShowNeural(true);
         
-        // Start Zone 2 first
-        setTimeout(() => {
-          setZone2Label(true);
-          setShowKnowledgeGraph(true);
-          setTimeout(() => setZone2Label(false), 1000);
-        }, 200);
+        // Show insights sequentially
+        const insightList = ["CTO at TechCorp", "$50K+ decision maker", "Best time: 2-4 PM"];
+        insightList.forEach((insight, index) => {
+          setTimeout(() => {
+            setInsights(prev => [...prev, insight]);
+          }, index * 800 + 1000);
+        });
         
-        // Then Zone 3
-        setTimeout(() => {
-          setZone3Label(true);
-          setShowInsights(true);
-          setTimeout(() => setZone3Label(false), 1000);
-        }, 1500);
-        
-      }, 3000);
-
-      // Phase 3: Final message (6s)
-      setTimeout(() => {
-        setCurrentPhase(2);
-        setShowFinalMessage(true);
-        const finalMessage = "Asmi connects everything to create deep insights";
-        let index = 0;
-        const typeInterval = setInterval(() => {
-          if (index <= finalMessage.length) {
-            setFinalMessageText(finalMessage.slice(0, index));
-            index++;
-          } else {
-            clearInterval(typeInterval);
-          }
-        }, 60);
-      }, 6000);
+        setTimeout(() => setShowInsights(true), 1000);
+      }, 4000);
     };
 
     runAnimation();
@@ -106,14 +76,14 @@ const ProcessAnimationSection = () => {
 
   const renderWaveform = () => {
     return (
-      <div className="flex items-center space-x-2">
-        {[...Array(8)].map((_, i) => (
+      <div className="flex items-center space-x-1">
+        {[...Array(6)].map((_, i) => (
           <div
             key={i}
-            className="w-1.5 bg-neon-green rounded-full animate-pulse"
+            className="w-0.5 bg-white rounded-full animate-pulse"
             style={{
-              height: `${8 + Math.sin(i * 0.8) * 4}px`,
-              animationDelay: `${i * 120}ms`
+              height: `${6 + Math.sin(i * 0.8) * 3}px`,
+              animationDelay: `${i * 100}ms`
             }}
           />
         ))}
@@ -121,213 +91,173 @@ const ProcessAnimationSection = () => {
     );
   };
 
-  const renderKnowledgeGraph = () => {
-    const centerNode = { id: 'raj', label: 'Raj', x: 150, y: 70 };
-    const connections = [
-      { id: 'api', label: 'API Docs', x: 80, y: 30 },
-      { id: 'emails', label: 'Email Thread', x: 220, y: 30 },
-      { id: 'meetings', label: 'Past Meetings', x: 150, y: 110 }
+  const renderConnectionsNetwork = () => {
+    const centerNode = { x: 120, y: 60 };
+    const dataPoints = [
+      { label: 'Emails', x: 60, y: 30 },
+      { label: 'Calendar', x: 180, y: 30 },
+      { label: 'Meetings', x: 120, y: 90 }
     ];
 
     return (
-      <div className="space-y-6">
-        <div className="text-center">
-          <p className="text-lg text-soft-purple font-medium mb-4">
-            Linking relevant context from your data...
-          </p>
-        </div>
+      <div className="relative w-full h-32 mx-auto">
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 240 120">
+          {dataPoints.map((point, index) => (
+            <line
+              key={index}
+              x1={centerNode.x}
+              y1={centerNode.y}
+              x2={point.x}
+              y2={point.y}
+              stroke="hsl(var(--accent-positive))"
+              strokeWidth="1"
+              className={`transition-all duration-500 ${
+                showConnections ? 'opacity-60' : 'opacity-0'
+              }`}
+              style={{ animationDelay: `${index * 200}ms` }}
+            />
+          ))}
+          
+          {/* Center node */}
+          <circle
+            cx={centerNode.x}
+            cy={centerNode.y}
+            r="4"
+            fill="white"
+            className={`transition-all duration-300 ${
+              showConnections ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+          
+          {/* Data points */}
+          {dataPoints.map((point, index) => (
+            <circle
+              key={index}
+              cx={point.x}
+              cy={point.y}
+              r="2"
+              fill="hsl(var(--accent-positive))"
+              className={`transition-all duration-300 ${
+                showConnections ? 'opacity-100' : 'opacity-0'
+              }`}
+              style={{ animationDelay: `${index * 200 + 100}ms` }}
+            />
+          ))}
+        </svg>
         
-        <div className="relative w-full h-36 mx-auto">
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 140">
-            {connections.map((node, index) => (
-              <g key={index}>
-                <line
-                  x1={centerNode.x}
-                  y1={centerNode.y}
-                  x2={node.x}
-                  y2={node.y}
-                  stroke="hsl(var(--neon-green))"
-                  strokeWidth="2"
-                  className={`transition-all duration-1000 ${
-                    showKnowledgeGraph ? 'opacity-80' : 'opacity-0'
-                  }`}
-                  style={{ 
-                    animationDelay: `${index * 300}ms`,
-                  }}
-                />
-                <circle
-                  cx={node.x}
-                  cy={node.y}
-                  r="3"
-                  fill="hsl(var(--neon-green))"
-                  className={`transition-all duration-500 ${
-                    showKnowledgeGraph ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  style={{ animationDelay: `${index * 300 + 200}ms` }}
-                />
-              </g>
-            ))}
-          </svg>
-
-          {/* Center node - Raj (prominent) */}
+        {/* Labels */}
+        {dataPoints.map((point, index) => (
           <div
-            className={`absolute text-lg font-bold text-white bg-neon-green/20 px-5 py-3 rounded-full border-2 border-neon-green transition-all duration-500 ${
-              showKnowledgeGraph ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            key={index}
+            className={`absolute text-xs text-white transition-all duration-300 ${
+              showConnections ? 'opacity-70' : 'opacity-0'
             }`}
             style={{
-              left: `${centerNode.x}px`,
-              top: `${centerNode.y}px`,
-              transform: 'translate(-50%, -50%)'
+              left: `${point.x}px`,
+              top: `${point.y + 12}px`,
+              transform: 'translateX(-50%)',
+              animationDelay: `${index * 200 + 200}ms`
             }}
           >
-            {centerNode.label}
+            {point.label}
           </div>
-
-          {/* Connected data sources */}
-          {connections.map((node, index) => (
-            <div
-              key={node.id}
-              className={`absolute text-base text-white bg-black/90 px-4 py-2 rounded border border-soft-purple/50 transition-all duration-500 ${
-                showKnowledgeGraph ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-              }`}
-              style={{
-                left: `${node.x}px`,
-                top: `${node.y}px`,
-                transform: 'translate(-50%, -50%)',
-                animationDelay: `${index * 400 + 500}ms`,
-                maxWidth: '100px'
-              }}
-            >
-              {node.label}
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
     );
   };
 
-  const renderInsights = () => {
-    const insights = [
-      "CTO at TechCorp",
-      "Decision maker for $50K+ deals",
-      "Best contact time: 2-4 PM",
-      "Prefers technical demos"
-    ];
-
+  const renderNeuralNetwork = () => {
     return (
-      <div className="space-y-6">
-        <div className="text-center">
-          <p className="text-lg text-neon-green font-medium mb-4">
-            Generating actionable insights...
-          </p>
-        </div>
-        
-        <div className="space-y-4">
-          {insights.map((insight, index) => (
-            <div
-              key={index}
+      <div className="relative w-full h-24 mx-auto">
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 240 96">
+          {/* Neural connections */}
+          {[...Array(6)].map((_, i) => (
+            <line
+              key={i}
+              x1={40 + i * 32}
+              y1={20}
+              x2={60 + i * 28}
+              y2={76}
+              stroke="white"
+              strokeWidth="0.5"
               className={`transition-all duration-500 ${
-                showInsights ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
+                showNeural ? 'opacity-30' : 'opacity-0'
               }`}
-              style={{ animationDelay: `${index * 250}ms` }}
-            >
-              <div className="flex items-center gap-4 text-base text-white">
-                <span className="text-neon-green font-bold text-lg">→</span>
-                <span className={index === 0 ? 'font-bold text-neon-green' : ''}>{insight}</span>
-              </div>
-            </div>
+              style={{ animationDelay: `${i * 100}ms` }}
+            />
           ))}
-        </div>
+          
+          {/* Neural nodes */}
+          {[...Array(8)].map((_, i) => (
+            <circle
+              key={i}
+              cx={30 + i * 26}
+              cy={i % 2 === 0 ? 20 : 76}
+              r="2"
+              fill="white"
+              className={`transition-all duration-300 ${
+                showNeural ? 'opacity-60' : 'opacity-0'
+              }`}
+              style={{ animationDelay: `${i * 80}ms` }}
+            />
+          ))}
+        </svg>
       </div>
     );
   };
 
   return (
-    <MobileOptimizedSection maxWidth="sm" padding="sm">
-      <div ref={sectionRef} className="space-y-8">
+    <MobileOptimizedSection maxWidth="md" padding="sm">
+      <div ref={sectionRef} className="max-h-[400px] space-y-8">
         
-        {/* PHASE 1: Zone 1 Only */}
-        {currentPhase === 0 && (
-          <div className="min-h-[400px] flex flex-col justify-center space-y-6">
-            {/* Zone Label */}
-            {showZoneLabel && (
-              <div className="text-center animate-fade-in">
-                <h2 className="text-xl font-bold text-neon-green mb-3">Step 1: Voice Captured</h2>
-                <Mic size={24} className="text-neon-green mx-auto" />
+        {/* Screen 1: Voice Capture & Context Linking */}
+        {currentScreen === 0 && (
+          <div className="flex flex-col justify-center space-y-6">
+            {/* Voice input */}
+            <div className="text-center space-y-3">
+              <p className="text-xs text-white font-medium">Voice captured</p>
+              <div className="flex items-center justify-center space-x-3">
+                <Mic size={16} className="text-white" />
+                {showWaveform && renderWaveform()}
+              </div>
+              {voiceText && (
+                <p className="text-sm text-white font-normal">"{voiceText}"</p>
+              )}
+            </div>
+            
+            {/* Memory connections */}
+            {showConnections && (
+              <div className="space-y-3">
+                <p className="text-xs text-center text-white/70">Linking to Raj's context</p>
+                {renderConnectionsNetwork()}
               </div>
             )}
+          </div>
+        )}
+
+        {/* Screen 2: Intelligence Generation */}
+        {currentScreen === 1 && (
+          <div className="flex flex-col justify-center space-y-6">
+            {/* Neural processing */}
+            <div className="space-y-3">
+              <p className="text-xs text-center text-white font-medium">Generating insights</p>
+              {renderNeuralNetwork()}
+            </div>
             
-            <div className="space-y-6">
-              {/* Mic and Waveform */}
-              <div className="flex items-center justify-center space-x-4">
-                <div className="animate-pulse">
-                  <Mic size={28} className="text-neon-green" />
-                </div>
-                {renderWaveform()}
-              </div>
-              
-              {/* WhatsApp Chat Bubble */}
-              {showTypewriter && (
-                <div className="flex justify-center animate-fade-in">
-                  <div className="bg-gray-800/90 border border-gray-600/50 rounded-2xl rounded-bl-md p-6 max-w-sm backdrop-blur-sm">
-                    <p className="text-lg text-white font-medium">
-                      "{chatText}"
-                    </p>
+            {/* Key insights */}
+            {showInsights && (
+              <div className="space-y-2">
+                {insights.map((insight, index) => (
+                  <div
+                    key={index}
+                    className="text-xs text-white transition-all duration-300"
+                    style={{ animationDelay: `${index * 200}ms` }}
+                  >
+                    <span className="text-accent-positive">• </span>{insight}
                   </div>
-                </div>
-              )}
-              
-              <div className="text-center">
-                <p className="text-base text-gray-300">
-                  Asmi listens and processes your voice input...
-                </p>
+                ))}
               </div>
-            </div>
-          </div>
-        )}
-
-        {/* PHASE 2: Zones 2 & 3 Together */}
-        {currentPhase === 1 && (
-          <div className="space-y-8 animate-fade-in">
-            {/* Zone 2 - Link */}
-            <div className="min-h-[200px]">
-              {zone2Label && (
-                <div className="text-center mb-4 animate-fade-in">
-                  <h2 className="text-xl font-bold text-soft-purple mb-3">Step 2: Context Linked</h2>
-                  <Link2 size={24} className="text-soft-purple mx-auto" />
-                </div>
-              )}
-              {renderKnowledgeGraph()}
-            </div>
-
-            {/* Zone 3 - Act */}
-            <div className="min-h-[160px]">
-              {zone3Label && (
-                <div className="text-center mb-4 animate-fade-in">
-                  <h2 className="text-xl font-bold text-neon-green mb-3">Step 3: Deep Insights</h2>
-                  <Target size={24} className="text-neon-green mx-auto" />
-                </div>
-              )}
-              {renderInsights()}
-            </div>
-          </div>
-        )}
-
-        {/* PHASE 3: Final Message */}
-        {currentPhase === 2 && showFinalMessage && (
-          <div className="min-h-[400px] flex flex-col justify-center animate-fade-in">
-            <div className="bg-gradient-to-r from-neon-green/10 to-soft-purple/10 border border-neon-green/30 rounded-xl p-8 text-center backdrop-blur-sm">
-              <p className="text-xl font-bold text-white leading-relaxed">
-                {finalMessageText}
-                <span className="animate-pulse">|</span>
-              </p>
-            </div>
-            
-            <div className="text-center mt-6">
-              <p className="text-base text-gray-300">
-                This is how Asmi creates intelligent connections
-              </p>
-            </div>
+            )}
           </div>
         )}
       </div>
