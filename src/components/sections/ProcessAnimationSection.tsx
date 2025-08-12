@@ -81,58 +81,56 @@ const ProcessAnimationSection = () => {
       setTimeout(() => {
         // Start fade transition
         setScreenOpacity({ screen1: 0, screen2: 1 });
+        setCurrentScreen(1);
         
-        // Clean screen 1 states during transition
+        // Phase 1: Sequential Data Fetching Animation (6s total: 1.5s per source)
+        setShowDataFetching(true);
+        setCenterNodeScale(1.2);
+        
+        // Sequential activation of data sources (NO INTERVALS)
+        const sources = [0, 1, 2, 3];
+        sources.forEach((sourceIndex, i) => {
+          setTimeout(() => {
+            setActiveFetchingSource(sourceIndex);
+          }, i * 1500); // 1.5s per source
+        });
+        
+        // Clean up Screen 1 states after transition is complete
         setTimeout(() => {
           setShowWaveform(false);
           setShowConnections(false);
-        }, 150);
+        }, 1000);
         
-        // Switch screen after opacity transition
         setTimeout(() => {
-          setCurrentScreen(1);
+          setShowDataFetching(false);
+          setCenterNodeScale(1.4);
           
-          // Phase 1: Data Fetching Animation (3s duration)
-          setShowDataFetching(true);
-          setCenterNodeScale(1.2);
+          // Phase 2: Smart Insights Generation (slower reveal + viewing time)
+          const insightsList = [
+            "Raj is CTO at TechCorp",
+            "Last mail: shared $50K+ budget range",
+            "Loves technical demos. I am creating a detailed script for you"
+          ];
           
-          const dataFetchingInterval = setInterval(() => {
-            setActiveFetchingSource(prev => (prev + 1) % 4);
-            setParticleCount(prev => prev + 1);
-          }, 500);
-          
-          setTimeout(() => {
-            clearInterval(dataFetchingInterval);
-            setShowDataFetching(false);
-            setCenterNodeScale(1.4);
-            
-            // Phase 2: Smart Insights Generation (slower reveal + viewing time)
-            const insightsList = [
-              "Raj is CTO at TechCorp",
-              "Last mail: shared $50K+ budget range",
-              "Loves technical demos. I am creating a detailed script for you"
-            ];
-            
-            insightsList.forEach((insight, index) => {
-              setTimeout(() => {
-                setInsights(prev => [...prev, insight]);
-              }, index * 600);
-            });
-            
-            setTimeout(() => setShowInsights(true), 100);
-            
-            // Phase 3: Dynamic Actions Taken (truly sequential)
+          insightsList.forEach((insight, index) => {
             setTimeout(() => {
-              // First action appears
-              setShowAction1(true);
-              
-              // Second action appears after delay
-              setTimeout(() => {
-                setShowAction2(true);
-              }, 1000);
-            }, 2000);
-          }, 3000);
-        }, 300); // Complete transition after opacity change
+              setInsights(prev => [...prev, insight]);
+            }, index * 600);
+          });
+          
+          setTimeout(() => setShowInsights(true), 100);
+          
+          // Phase 3: Dynamic Actions Taken (truly sequential)
+          setTimeout(() => {
+            // First action appears
+            setShowAction1(true);
+            
+            // Second action appears after delay
+            setTimeout(() => {
+              setShowAction2(true);
+            }, 1000);
+          }, 2000);
+        }, 6000); // 6s for sequential data fetching
       }, 10000);
 
       // Animation runs once, no loop
@@ -141,13 +139,13 @@ const ProcessAnimationSection = () => {
     runAnimation();
   }, [isVisible]);
 
-  // Handle connections animation cycle
+  // Handle connections animation cycle - slower, more deliberate
   useEffect(() => {
     if (!showConnections) return;
     
     const interval = setInterval(() => {
       setActiveConnection(prev => (prev + 1) % 4); // 4 data points
-    }, 800);
+    }, 1200); // Slower cycling for better visibility
 
     return () => clearInterval(interval);
   }, [showConnections]);
