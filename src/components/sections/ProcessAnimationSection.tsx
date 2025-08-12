@@ -3,7 +3,7 @@ import { Mic, Link2, Target } from 'lucide-react';
 import MobileOptimizedSection from './MobileOptimizedSection';
 
 const ProcessAnimationSection = () => {
-  const [currentZone, setCurrentZone] = useState(0);
+  const [currentPhase, setCurrentPhase] = useState(0); // 0: Zone1, 1: Zones2&3, 2: Complete
   const [isVisible, setIsVisible] = useState(false);
   const [showZoneLabel, setShowZoneLabel] = useState(false);
   const [chatText, setChatText] = useState('');
@@ -12,7 +12,8 @@ const ProcessAnimationSection = () => {
   const [showInsights, setShowInsights] = useState(false);
   const [showFinalMessage, setShowFinalMessage] = useState(false);
   const [finalMessageText, setFinalMessageText] = useState('');
-  const [animationComplete, setAnimationComplete] = useState(false);
+  const [zone2Label, setZone2Label] = useState(false);
+  const [zone3Label, setZone3Label] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const zones = [
@@ -42,9 +43,9 @@ const ProcessAnimationSection = () => {
     if (!isVisible) return;
 
     const runAnimation = () => {
-      // Zone 1: Capture (0-2s)
+      // Phase 1: Zone 1 only (0-3s)
       setTimeout(() => {
-        setCurrentZone(0);
+        setCurrentPhase(0);
         setShowZoneLabel(true);
         setShowTypewriter(true);
         // Type out WhatsApp message
@@ -59,30 +60,33 @@ const ProcessAnimationSection = () => {
           }
         }, 40);
         
-        // Hide zone label after 800ms
-        setTimeout(() => setShowZoneLabel(false), 800);
+        // Hide zone label after 1s
+        setTimeout(() => setShowZoneLabel(false), 1000);
       }, 500);
 
-      // Zone 2: Link (2-4s)
+      // Phase 2: Transition to Zones 2 & 3 (3s)
       setTimeout(() => {
-        setCurrentZone(1);
-        setShowZoneLabel(true);
-        setShowKnowledgeGraph(true);
-        // Hide zone label after 800ms
-        setTimeout(() => setShowZoneLabel(false), 800);
-      }, 2500);
+        setCurrentPhase(1);
+        
+        // Start Zone 2 first
+        setTimeout(() => {
+          setZone2Label(true);
+          setShowKnowledgeGraph(true);
+          setTimeout(() => setZone2Label(false), 1000);
+        }, 200);
+        
+        // Then Zone 3
+        setTimeout(() => {
+          setZone3Label(true);
+          setShowInsights(true);
+          setTimeout(() => setZone3Label(false), 1000);
+        }, 1500);
+        
+      }, 3000);
 
-      // Zone 3: Act (4-6s)
+      // Phase 3: Final message (6s)
       setTimeout(() => {
-        setCurrentZone(2);
-        setShowZoneLabel(true);
-        setShowInsights(true);
-        // Hide zone label after 800ms
-        setTimeout(() => setShowZoneLabel(false), 800);
-      }, 4500);
-
-      // Final typewriter message (6s+)
-      setTimeout(() => {
+        setCurrentPhase(2);
         setShowFinalMessage(true);
         const finalMessage = "Asmi connects everything to create deep insights";
         let index = 0;
@@ -92,13 +96,9 @@ const ProcessAnimationSection = () => {
             index++;
           } else {
             clearInterval(typeInterval);
-            // Show all zones at once after completion
-            setTimeout(() => {
-              setAnimationComplete(true);
-            }, 1000);
           }
         }, 60);
-      }, 6500);
+      }, 6000);
     };
 
     runAnimation();
@@ -106,15 +106,13 @@ const ProcessAnimationSection = () => {
 
   const renderWaveform = () => {
     return (
-      <div className="flex items-center space-x-1 ml-2">
-        {[...Array(6)].map((_, i) => (
+      <div className="flex items-center space-x-2">
+        {[...Array(8)].map((_, i) => (
           <div
             key={i}
-            className={`w-1 bg-neon-green rounded-full transition-all duration-300 ${
-              currentZone === 0 ? 'animate-pulse' : 'opacity-30'
-            }`}
+            className="w-1.5 bg-neon-green rounded-full animate-pulse"
             style={{
-              height: `${6 + Math.sin(i * 0.8) * 3}px`,
+              height: `${8 + Math.sin(i * 0.8) * 4}px`,
               animationDelay: `${i * 120}ms`
             }}
           />
@@ -132,13 +130,14 @@ const ProcessAnimationSection = () => {
     ];
 
     return (
-      <div className="space-y-4">
+      <div className="space-y-6">
         <div className="text-center">
-          <h3 className="text-base font-medium text-soft-purple mb-2">Step 2: Context linked</h3>
-          <Link2 size={18} className="text-soft-purple mx-auto" />
+          <p className="text-lg text-soft-purple font-medium mb-4">
+            Linking relevant context from your data...
+          </p>
         </div>
         
-        <div className="relative w-full h-32 mx-auto">
+        <div className="relative w-full h-36 mx-auto">
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 140">
             {connections.map((node, index) => (
               <g key={index}>
@@ -172,7 +171,7 @@ const ProcessAnimationSection = () => {
 
           {/* Center node - Raj (prominent) */}
           <div
-            className={`absolute text-base font-bold text-white bg-neon-green/20 px-4 py-2 rounded-full border-2 border-neon-green transition-all duration-500 ${
+            className={`absolute text-lg font-bold text-white bg-neon-green/20 px-5 py-3 rounded-full border-2 border-neon-green transition-all duration-500 ${
               showKnowledgeGraph ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
             }`}
             style={{
@@ -188,7 +187,7 @@ const ProcessAnimationSection = () => {
           {connections.map((node, index) => (
             <div
               key={node.id}
-              className={`absolute text-sm text-white bg-black/90 px-3 py-2 rounded border border-soft-purple/50 transition-all duration-500 ${
+              className={`absolute text-base text-white bg-black/90 px-4 py-2 rounded border border-soft-purple/50 transition-all duration-500 ${
                 showKnowledgeGraph ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
               }`}
               style={{
@@ -216,13 +215,14 @@ const ProcessAnimationSection = () => {
     ];
 
     return (
-      <div className="space-y-4">
+      <div className="space-y-6">
         <div className="text-center">
-          <h3 className="text-base font-medium text-neon-green mb-2">Step 3: Deep insights generated</h3>
-          <Target size={18} className="text-neon-green mx-auto" />
+          <p className="text-lg text-neon-green font-medium mb-4">
+            Generating actionable insights...
+          </p>
         </div>
         
-        <div className="space-y-3">
+        <div className="space-y-4">
           {insights.map((insight, index) => (
             <div
               key={index}
@@ -231,8 +231,8 @@ const ProcessAnimationSection = () => {
               }`}
               style={{ animationDelay: `${index * 250}ms` }}
             >
-              <div className="flex items-center gap-3 text-sm text-white">
-                <span className="text-neon-green font-bold">→</span>
+              <div className="flex items-center gap-4 text-base text-white">
+                <span className="text-neon-green font-bold text-lg">→</span>
                 <span className={index === 0 ? 'font-bold text-neon-green' : ''}>{insight}</span>
               </div>
             </div>
@@ -244,74 +244,88 @@ const ProcessAnimationSection = () => {
 
   return (
     <MobileOptimizedSection maxWidth="sm" padding="sm">
-      <div ref={sectionRef} className="space-y-6">
+      <div ref={sectionRef} className="space-y-8">
         
-        {/* TOP ZONE - Capture */}
-        <div className="relative min-h-[100px]">
-          {/* Zone Label */}
-          {((currentZone === 0 && showZoneLabel) || animationComplete) && (
-            <div className="text-center mb-3">
-              <h3 className="text-base font-medium text-neon-green">Step 1: Voice captured</h3>
-              <Mic size={20} className="text-neon-green mx-auto mt-1" />
-            </div>
-          )}
-          
-          <div className={`space-y-3 transition-all duration-500 ${
-            animationComplete ? 'opacity-100' : (currentZone === 0 ? 'opacity-100' : 'opacity-30')
-          }`}>
-            {/* Mic and Waveform */}
-            <div className="flex items-center justify-center">
-              <div className={`transition-all duration-300 ${
-                (currentZone === 0 || animationComplete) ? 'animate-pulse' : 'opacity-30'
-              }`}>
-                <Mic size={20} className="text-neon-green" />
-              </div>
-              
-              <div className={`transition-all duration-300 ${
-                (currentZone === 0 || animationComplete) ? 'opacity-100' : 'opacity-30'
-              }`}>
-                {renderWaveform()}
-              </div>
-            </div>
-            
-            {/* WhatsApp Chat Bubble */}
-            {showTypewriter && (
-              <div className="flex justify-center">
-                <div className="bg-gray-800/80 border border-gray-600/50 rounded-2xl rounded-bl-md p-4 max-w-xs backdrop-blur-sm">
-                  <p className="text-base text-white">
-                    "{chatText}"
-                  </p>
-                </div>
+        {/* PHASE 1: Zone 1 Only */}
+        {currentPhase === 0 && (
+          <div className="min-h-[400px] flex flex-col justify-center space-y-6">
+            {/* Zone Label */}
+            {showZoneLabel && (
+              <div className="text-center animate-fade-in">
+                <h2 className="text-xl font-bold text-neon-green mb-3">Step 1: Voice Captured</h2>
+                <Mic size={24} className="text-neon-green mx-auto" />
               </div>
             )}
+            
+            <div className="space-y-6">
+              {/* Mic and Waveform */}
+              <div className="flex items-center justify-center space-x-4">
+                <div className="animate-pulse">
+                  <Mic size={28} className="text-neon-green" />
+                </div>
+                {renderWaveform()}
+              </div>
+              
+              {/* WhatsApp Chat Bubble */}
+              {showTypewriter && (
+                <div className="flex justify-center animate-fade-in">
+                  <div className="bg-gray-800/90 border border-gray-600/50 rounded-2xl rounded-bl-md p-6 max-w-sm backdrop-blur-sm">
+                    <p className="text-lg text-white font-medium">
+                      "{chatText}"
+                    </p>
+                  </div>
+                </div>
+              )}
+              
+              <div className="text-center">
+                <p className="text-base text-gray-300">
+                  Asmi listens and processes your voice input...
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* MIDDLE ZONE - Link */}
-        <div className="relative min-h-[150px]">
-          <div className={`transition-all duration-500 ${
-            animationComplete ? 'opacity-100' : (currentZone === 1 ? 'opacity-100' : 'opacity-30')
-          }`}>
-            {renderKnowledgeGraph()}
+        {/* PHASE 2: Zones 2 & 3 Together */}
+        {currentPhase === 1 && (
+          <div className="space-y-8 animate-fade-in">
+            {/* Zone 2 - Link */}
+            <div className="min-h-[200px]">
+              {zone2Label && (
+                <div className="text-center mb-4 animate-fade-in">
+                  <h2 className="text-xl font-bold text-soft-purple mb-3">Step 2: Context Linked</h2>
+                  <Link2 size={24} className="text-soft-purple mx-auto" />
+                </div>
+              )}
+              {renderKnowledgeGraph()}
+            </div>
+
+            {/* Zone 3 - Act */}
+            <div className="min-h-[160px]">
+              {zone3Label && (
+                <div className="text-center mb-4 animate-fade-in">
+                  <h2 className="text-xl font-bold text-neon-green mb-3">Step 3: Deep Insights</h2>
+                  <Target size={24} className="text-neon-green mx-auto" />
+                </div>
+              )}
+              {renderInsights()}
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* BOTTOM ZONE - Act */}
-        <div className="relative min-h-[120px]">
-          <div className={`transition-all duration-500 ${
-            animationComplete ? 'opacity-100' : (currentZone === 2 ? 'opacity-100' : 'opacity-30')
-          }`}>
-            {renderInsights()}
-          </div>
-        </div>
-
-        {/* FINAL TYPEWRITER MESSAGE */}
-        {showFinalMessage && (
-          <div className="text-center animate-fade-in pt-4">
-            <div className="bg-gradient-to-r from-neon-green/10 to-soft-purple/10 border border-neon-green/30 rounded-xl p-4 text-center backdrop-blur-sm">
-              <p className="text-lg font-bold text-white leading-tight">
+        {/* PHASE 3: Final Message */}
+        {currentPhase === 2 && showFinalMessage && (
+          <div className="min-h-[400px] flex flex-col justify-center animate-fade-in">
+            <div className="bg-gradient-to-r from-neon-green/10 to-soft-purple/10 border border-neon-green/30 rounded-xl p-8 text-center backdrop-blur-sm">
+              <p className="text-xl font-bold text-white leading-relaxed">
                 {finalMessageText}
                 <span className="animate-pulse">|</span>
+              </p>
+            </div>
+            
+            <div className="text-center mt-6">
+              <p className="text-base text-gray-300">
+                This is how Asmi creates intelligent connections
               </p>
             </div>
           </div>
