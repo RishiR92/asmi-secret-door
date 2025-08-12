@@ -34,13 +34,13 @@ const ProcessAnimationSection = () => {
     if (!isVisible) return;
 
     const runAnimation = () => {
-      // Screen 1: Voice Capture & Context Linking (0-4s)
+      // Screen 1: Voice Processing & Memory Activation (0-4s)
       setTimeout(() => {
         setCurrentScreen(0);
         setShowWaveform(true);
         
-        // Type out voice message
-        const message = "Great call with Raj";
+        // Type out realistic voice message
+        const message = "Hey Asmi, I just had a great call with Raj from TechCorp. He seemed really interested in our API solutions and mentioned they're looking to make a decision by next month. Can you help me prepare for our follow-up?";
         let index = 0;
         const typeInterval = setInterval(() => {
           if (index <= message.length) {
@@ -48,23 +48,30 @@ const ProcessAnimationSection = () => {
             index++;
           } else {
             clearInterval(typeInterval);
-            // Show connections after voice text completes
-            setTimeout(() => setShowConnections(true), 500);
+            // Show memory connections after voice text completes
+            setTimeout(() => setShowConnections(true), 800);
           }
-        }, 80);
+        }, 50); // Faster typing for longer message
       }, 500);
 
-      // Screen 2: Intelligence Generation (4-8s)
+      // Screen 2: Intelligence Generation & Actionable Output (4-8s)
       setTimeout(() => {
         setCurrentScreen(1);
         setShowNeural(true);
         
-        // Show insights sequentially
-        const insightList = ["CTO at TechCorp", "$50K+ decision maker", "Best time: 2-4 PM"];
+        // Show 5 specific business insights sequentially
+        const insightList = [
+          "Raj is CTO at TechCorp (from email signature)",
+          "Last meeting: discussed $50K+ budget range",
+          "Best contact time: 2-4 PM (from calendar patterns)",
+          "Send follow-up with technical demo link",
+          "Suggested next meeting: API architecture deep-dive"
+        ];
+        
         insightList.forEach((insight, index) => {
           setTimeout(() => {
             setInsights(prev => [...prev, insight]);
-          }, index * 800 + 1000);
+          }, index * 600 + 1000);
         });
         
         setTimeout(() => setShowInsights(true), 1000);
@@ -92,16 +99,17 @@ const ProcessAnimationSection = () => {
   };
 
   const renderConnectionsNetwork = () => {
-    const centerNode = { x: 120, y: 60 };
+    const centerNode = { x: 120, y: 70 };
     const dataPoints = [
-      { label: 'Emails', x: 60, y: 30 },
-      { label: 'Calendar', x: 180, y: 30 },
-      { label: 'Meetings', x: 120, y: 90 }
+      { label: 'Emails', x: 60, y: 40 },
+      { label: 'Calendar', x: 180, y: 40 },
+      { label: 'Meetings', x: 60, y: 100 },
+      { label: 'Conversations', x: 180, y: 100 }
     ];
 
     return (
-      <div className="relative w-full h-32 mx-auto">
-        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 240 120">
+      <div className="relative w-full h-40 mx-auto">
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 240 140">
           {dataPoints.map((point, index) => (
             <line
               key={index}
@@ -109,7 +117,7 @@ const ProcessAnimationSection = () => {
               y1={centerNode.y}
               x2={point.x}
               y2={point.y}
-              stroke="hsl(var(--accent-positive))"
+              stroke="#37D67A"
               strokeWidth="1"
               className={`transition-all duration-500 ${
                 showConnections ? 'opacity-60' : 'opacity-0'
@@ -136,7 +144,7 @@ const ProcessAnimationSection = () => {
               cx={point.x}
               cy={point.y}
               r="2"
-              fill="hsl(var(--accent-positive))"
+              fill="#37D67A"
               className={`transition-all duration-300 ${
                 showConnections ? 'opacity-100' : 'opacity-0'
               }`}
@@ -208,27 +216,30 @@ const ProcessAnimationSection = () => {
 
   return (
     <MobileOptimizedSection maxWidth="md" padding="sm">
-      <div ref={sectionRef} className="max-h-[400px] space-y-8">
+      <div ref={sectionRef} className="max-h-[420px] space-y-8">
         
         {/* Screen 1: Voice Capture & Context Linking */}
         {currentScreen === 0 && (
           <div className="flex flex-col justify-center space-y-6">
             {/* Voice input */}
-            <div className="text-center space-y-3">
-              <p className="text-xs text-white font-medium">Voice captured</p>
+            <div className="text-center space-y-4">
+              <p className="text-sm text-white font-semibold font-inter">Voice Processing</p>
               <div className="flex items-center justify-center space-x-3">
                 <Mic size={16} className="text-white" />
                 {showWaveform && renderWaveform()}
               </div>
               {voiceText && (
-                <p className="text-sm text-white font-normal">"{voiceText}"</p>
+                <div className="bg-white/10 rounded-lg p-3 border border-white/20">
+                  <p className="text-sm text-white font-inter leading-relaxed">"{voiceText}"</p>
+                </div>
               )}
             </div>
             
-            {/* Memory connections */}
+            {/* Memory Engine Activation */}
             {showConnections && (
-              <div className="space-y-3">
-                <p className="text-xs text-center text-white/70">Linking to Raj's context</p>
+              <div className="space-y-4">
+                <p className="text-sm text-center text-white font-inter">Memory Engine Activating</p>
+                <p className="text-xs text-center text-white/70">Connecting to Raj's business context</p>
                 {renderConnectionsNetwork()}
               </div>
             )}
@@ -238,22 +249,26 @@ const ProcessAnimationSection = () => {
         {/* Screen 2: Intelligence Generation */}
         {currentScreen === 1 && (
           <div className="flex flex-col justify-center space-y-6">
-            {/* Neural processing */}
-            <div className="space-y-3">
-              <p className="text-xs text-center text-white font-medium">Generating insights</p>
+            {/* Intelligence Synthesis */}
+            <div className="space-y-4">
+              <p className="text-sm text-center text-white font-semibold font-inter">Intelligence Generation</p>
               {renderNeuralNetwork()}
             </div>
             
-            {/* Key insights */}
+            {/* Actionable Business Insights */}
             {showInsights && (
-              <div className="space-y-2">
+              <div className="space-y-3">
+                <p className="text-sm text-white font-inter mb-3">Actionable Insights:</p>
                 {insights.map((insight, index) => (
                   <div
                     key={index}
-                    className="text-xs text-white transition-all duration-300"
-                    style={{ animationDelay: `${index * 200}ms` }}
+                    className="bg-white/5 rounded-lg p-3 border border-white/10 transition-all duration-500 animate-fade-in"
+                    style={{ animationDelay: `${index * 600}ms` }}
                   >
-                    <span className="text-accent-positive">• </span>{insight}
+                    <div className="flex items-start space-x-2">
+                      <span className="text-[#37D67A] text-sm">•</span>
+                      <p className="text-xs text-white font-inter leading-relaxed">{insight}</p>
+                    </div>
                   </div>
                 ))}
               </div>
