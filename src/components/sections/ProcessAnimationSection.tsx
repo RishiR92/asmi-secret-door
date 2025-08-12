@@ -10,13 +10,14 @@ const ProcessAnimationSection = () => {
   const [showConnections, setShowConnections] = useState(false);
   const [showDataFetching, setShowDataFetching] = useState(false);
   const [insights, setInsights] = useState<string[]>([]);
-  const [actions, setActions] = useState<string[]>([]);
   const [showInsights, setShowInsights] = useState(false);
-  const [showActions, setShowActions] = useState(false);
+  const [showAction1, setShowAction1] = useState(false);
+  const [showAction2, setShowAction2] = useState(false);
   const [activeConnection, setActiveConnection] = useState(0);
   const [activeFetchingSource, setActiveFetchingSource] = useState(0);
   const [centerNodeScale, setCenterNodeScale] = useState(1);
   const [particleCount, setParticleCount] = useState(0);
+  const [screenOpacity, setScreenOpacity] = useState({ screen1: 1, screen2: 0 });
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -47,13 +48,14 @@ const ProcessAnimationSection = () => {
       setShowConnections(false);
       setShowDataFetching(false);
       setInsights([]);
-      setActions([]);
       setShowInsights(false);
-      setShowActions(false);
+      setShowAction1(false);
+      setShowAction2(false);
       setActiveConnection(0);
       setActiveFetchingSource(0);
       setCenterNodeScale(1);
       setParticleCount(0);
+      setScreenOpacity({ screen1: 1, screen2: 0 });
 
       // Screen 1: Voice Processing & Memory Activation (0-4s)
       setTimeout(() => {
@@ -75,13 +77,18 @@ const ProcessAnimationSection = () => {
         }, 80);
       }, 500);
 
-      // Screen 2: Intelligence Generation & Actionable Output (10s - with proper cleanup)
+      // Screen 2: Intelligence Generation & Actionable Output (10s - with smooth transition)
       setTimeout(() => {
-        // Clean screen 1 states before transitioning
-        setShowWaveform(false);
-        setShowConnections(false);
+        // Start fade transition
+        setScreenOpacity({ screen1: 0, screen2: 1 });
         
-        // Add slight transition delay to prevent flash
+        // Clean screen 1 states during transition
+        setTimeout(() => {
+          setShowWaveform(false);
+          setShowConnections(false);
+        }, 150);
+        
+        // Switch screen after opacity transition
         setTimeout(() => {
           setCurrentScreen(1);
           
@@ -114,26 +121,18 @@ const ProcessAnimationSection = () => {
             
             setTimeout(() => setShowInsights(true), 100);
             
-            // Phase 3: Dynamic Actions Taken (sequential reveal with proper timing)
+            // Phase 3: Dynamic Actions Taken (truly sequential)
             setTimeout(() => {
-              const actionsList = [
-                "Sent follow-up with technical demo link and API docs",
-                "Scheduled next meeting \"API architecture deep-dive\" on Monday 2PM at Raj's office in Palo Alto"
-              ];
+              // First action appears
+              setShowAction1(true);
               
-              // First action appears immediately
+              // Second action appears after delay
               setTimeout(() => {
-                setActions([actionsList[0]]);
-                setShowActions(true);
-                
-                // Second action appears after delay
-                setTimeout(() => {
-                  setActions([actionsList[0], actionsList[1]]);
-                }, 800);
-              }, 100);
+                setShowAction2(true);
+              }, 1000);
             }, 2000);
           }, 3000);
-        }, 200); // 200ms transition buffer to prevent flash
+        }, 300); // Complete transition after opacity change
       }, 10000);
 
       // Loop the animation
@@ -491,7 +490,10 @@ const ProcessAnimationSection = () => {
         
         {/* Screen 1: Voice Capture & Context Linking */}
         {currentScreen === 0 && (
-          <div className="flex flex-col justify-center space-y-6">
+          <div 
+            className="flex flex-col justify-center space-y-6 transition-opacity duration-300"
+            style={{ opacity: screenOpacity.screen1 }}
+          >
             {/* Voice input */}
             <div className="text-center space-y-4">
               <p className="text-sm text-white font-semibold font-inter">Voice Processing</p>
@@ -519,7 +521,10 @@ const ProcessAnimationSection = () => {
 
         {/* Screen 2: Intelligence Generation */}
         {currentScreen === 1 && (
-          <div className="flex flex-col justify-center space-y-6">
+          <div 
+            className="flex flex-col justify-center space-y-6 transition-opacity duration-300"
+            style={{ opacity: screenOpacity.screen2 }}
+          >
             
             {/* Phase 1: Data Fetching Animation */}
             {showDataFetching && (
@@ -556,30 +561,39 @@ const ProcessAnimationSection = () => {
             )}
             
             {/* Phase 3: Dynamic Actions Taken */}
-            {showActions && actions.length > 0 && (
+            {(showAction1 || showAction2) && (
               <div className="space-y-3">
                 <p className="text-sm text-white font-inter mb-3">Actions Taken by Asmi:</p>
-                {actions.map((action, index) => (
-                  <div
-                    key={index}
-                    className="bg-[#37D67A]/15 rounded-lg p-3 border border-[#37D67A]/30 transition-all duration-500 animate-fade-in relative"
-                    style={{ animationDelay: `${index * 600}ms` }}
-                  >
+                
+                {/* Action 1 */}
+                {showAction1 && (
+                  <div className="bg-[#37D67A]/15 rounded-lg p-3 border border-[#37D67A]/30 transition-all duration-500 animate-fade-in relative">
                     <div className="flex items-start space-x-2">
                       <span className="text-[#37D67A] text-sm animate-pulse">✓</span>
-                      <p className="text-xs text-white font-inter leading-relaxed font-medium">{action}</p>
+                      <p className="text-xs text-white font-inter leading-relaxed font-medium">
+                        Sent follow-up with technical demo link and API docs
+                      </p>
                     </div>
                     {/* Completion pulse effect */}
-                    <div 
-                      className="absolute inset-0 bg-[#37D67A]/10 rounded-lg opacity-0 animate-ping"
-                      style={{ 
-                        animationDelay: `${index * 600 + 300}ms`,
-                        animationDuration: '1s',
-                        animationIterationCount: '2'
-                      }}
-                    />
+                    <div className="absolute inset-0 bg-[#37D67A]/10 rounded-lg opacity-0 animate-ping" 
+                         style={{ animationDuration: '1s', animationIterationCount: '2' }} />
                   </div>
-                ))}
+                )}
+                
+                {/* Action 2 */}
+                {showAction2 && (
+                  <div className="bg-[#37D67A]/15 rounded-lg p-3 border border-[#37D67A]/30 transition-all duration-500 animate-fade-in relative">
+                    <div className="flex items-start space-x-2">
+                      <span className="text-[#37D67A] text-sm animate-pulse">✓</span>
+                      <p className="text-xs text-white font-inter leading-relaxed font-medium">
+                        Scheduled next meeting "API architecture deep-dive" on Monday 2PM at Raj's office in Palo Alto
+                      </p>
+                    </div>
+                    {/* Completion pulse effect */}
+                    <div className="absolute inset-0 bg-[#37D67A]/10 rounded-lg opacity-0 animate-ping" 
+                         style={{ animationDuration: '1s', animationIterationCount: '2' }} />
+                  </div>
+                )}
               </div>
             )}
           </div>
