@@ -11,6 +11,7 @@ const ProcessAnimationSection = () => {
   const [showNeural, setShowNeural] = useState(false);
   const [insights, setInsights] = useState<string[]>([]);
   const [showInsights, setShowInsights] = useState(false);
+  const [activeConnection, setActiveConnection] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -39,8 +40,8 @@ const ProcessAnimationSection = () => {
         setCurrentScreen(0);
         setShowWaveform(true);
         
-        // Type out realistic voice message
-        const message = "Hey Asmi, I just had a great call with Raj from TechCorp. He seemed really interested in our API solutions and mentioned they're looking to make a decision by next month. Can you help me prepare for our follow-up?";
+        // Type out shorter, more natural voice message
+        const message = "Asmi, I just had a great call with Raj. He seemed really interested in our API solutions and mentioned they're looking to make a decision by next month. Help me prepare a follow-up.";
         let index = 0;
         const typeInterval = setInterval(() => {
           if (index <= message.length) {
@@ -59,13 +60,13 @@ const ProcessAnimationSection = () => {
         setCurrentScreen(1);
         setShowNeural(true);
         
-        // Show 5 specific business insights sequentially
+        // Show insights and actions Asmi takes
         const insightList = [
-          "Raj is CTO at TechCorp (from email signature)",
-          "Last meeting: discussed $50K+ budget range",
-          "Best contact time: 2-4 PM (from calendar patterns)",
-          "Send follow-up with technical demo link",
-          "Suggested next meeting: API architecture deep-dive"
+          "Raj is CTO at TechCorp",
+          "Last mail: shared $50K+ budget range",
+          "Loves technical demos. I am creating a detailed script for you",
+          "Send follow-up with technical demo link and API docs",
+          "Scheduling next meeting \"API architecture deep-dive\" on Monday 2PM at Raj's office in Palo Alto."
         ];
         
         insightList.forEach((insight, index) => {
@@ -99,77 +100,119 @@ const ProcessAnimationSection = () => {
   };
 
   const renderConnectionsNetwork = () => {
-    const centerNode = { x: 120, y: 70 };
     const dataPoints = [
-      { label: 'Emails', x: 60, y: 40 },
-      { label: 'Calendar', x: 180, y: 40 },
-      { label: 'Meetings', x: 60, y: 100 },
-      { label: 'Conversations', x: 180, y: 100 }
+      { type: "Emails", position: { x: 25, y: 25 }, color: "bg-green-400", label: "Emails" },
+      { type: "Calendar", position: { x: 75, y: 25 }, color: "bg-blue-400", label: "Calendar" },
+      { type: "Meetings", position: { x: 25, y: 75 }, color: "bg-purple-400", label: "Meetings" },
+      { type: "Conversations", position: { x: 75, y: 75 }, color: "bg-yellow-400", label: "Conversations" }
     ];
 
+    useEffect(() => {
+      if (!showConnections) return;
+      
+      const interval = setInterval(() => {
+        setActiveConnection(prev => (prev + 1) % dataPoints.length);
+      }, 800);
+
+      return () => clearInterval(interval);
+    }, [showConnections]);
+
     return (
-      <div className="relative w-full h-40 mx-auto">
-        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 240 140">
-          {dataPoints.map((point, index) => (
-            <line
-              key={index}
-              x1={centerNode.x}
-              y1={centerNode.y}
-              x2={point.x}
-              y2={point.y}
-              stroke="#37D67A"
-              strokeWidth="1"
-              className={`transition-all duration-500 ${
-                showConnections ? 'opacity-60' : 'opacity-0'
-              }`}
-              style={{ animationDelay: `${index * 200}ms` }}
-            />
-          ))}
+      <div className="relative h-32 mb-4">
+        {/* Connection Lines */}
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="flow-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#22c55e" stopOpacity="0">
+                <animate attributeName="stop-opacity" values="0;1;0" dur="1s" repeatCount="indefinite" />
+              </stop>
+              <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.8">
+                <animate attributeName="stop-opacity" values="0.2;1;0.2" dur="1s" repeatCount="indefinite" />
+              </stop>
+              <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0">
+                <animate attributeName="stop-opacity" values="0;1;0" dur="1s" repeatCount="indefinite" />
+              </stop>
+            </linearGradient>
+          </defs>
           
-          {/* Center node */}
-          <circle
-            cx={centerNode.x}
-            cy={centerNode.y}
-            r="4"
-            fill="white"
-            className={`transition-all duration-300 ${
-              showConnections ? 'opacity-100' : 'opacity-0'
-            }`}
-          />
-          
-          {/* Data points */}
+          {/* Dynamic connections */}
           {dataPoints.map((point, index) => (
-            <circle
-              key={index}
-              cx={point.x}
-              cy={point.y}
-              r="2"
-              fill="#37D67A"
-              className={`transition-all duration-300 ${
-                showConnections ? 'opacity-100' : 'opacity-0'
-              }`}
-              style={{ animationDelay: `${index * 200 + 100}ms` }}
-            />
+            <g key={index}>
+              <line
+                x1={point.position.x}
+                y1={point.position.y}
+                x2="50"
+                y2="50"
+                stroke="#22c55e"
+                strokeWidth={activeConnection === index ? "2" : "1"}
+                strokeOpacity={showConnections ? (activeConnection === index ? "0.9" : "0.3") : "0"}
+                className="transition-all duration-500"
+              />
+              
+              {activeConnection === index && showConnections && (
+                <line
+                  x1={point.position.x}
+                  y1={point.position.y}
+                  x2="50"
+                  y2="50"
+                  stroke="url(#flow-gradient)"
+                  strokeWidth="3"
+                  className="animate-pulse"
+                />
+              )}
+            </g>
           ))}
         </svg>
-        
-        {/* Labels */}
+
+        {/* Data Points with Labels */}
         {dataPoints.map((point, index) => (
           <div
             key={index}
-            className={`absolute text-xs text-white transition-all duration-300 ${
-              showConnections ? 'opacity-70' : 'opacity-0'
+            className={`absolute transform -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ${
+              activeConnection === index && showConnections
+                ? 'animate-pulse scale-125 z-10' 
+                : 'scale-100 opacity-70'
             }`}
             style={{
-              left: `${point.x}px`,
-              top: `${point.y + 12}px`,
-              transform: 'translateX(-50%)',
-              animationDelay: `${index * 200 + 200}ms`
+              left: `${point.position.x}%`,
+              top: `${point.position.y}%`
             }}
           >
-            {point.label}
+            <div className={`w-3 h-3 ${point.color} rounded-full flex items-center justify-center relative shadow-lg`}>
+              {activeConnection === index && showConnections && (
+                <>
+                  <div className={`absolute inset-0 rounded-full ${point.color} opacity-40 animate-ping scale-150`}></div>
+                  <div className={`absolute inset-0 rounded-full ${point.color} opacity-60 animate-ping scale-125 animation-delay-200`}></div>
+                </>
+              )}
+            </div>
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
+              <span className={`text-xs whitespace-nowrap transition-all duration-300 ${
+                activeConnection === index && showConnections
+                  ? 'text-white font-semibold scale-110' 
+                  : 'text-gray-400'
+              }`}>
+                {point.label}
+              </span>
+            </div>
           </div>
         ))}
+
+        {/* Center Asmi Node */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <div 
+            className={`bg-white rounded-full flex items-center justify-center shadow-xl transition-all duration-1000 ${
+              showConnections ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
+            }`}
+            style={{
+              width: '32px',
+              height: '32px',
+              boxShadow: '0 0 15px rgba(34, 197, 94, 0.3)'
+            }}
+          >
+            <span className="text-black font-bold text-xs">Asmi</span>
+          </div>
+        </div>
       </div>
     );
   };
@@ -255,11 +298,11 @@ const ProcessAnimationSection = () => {
               {renderNeuralNetwork()}
             </div>
             
-            {/* Actionable Business Insights */}
+            {/* Smart Insights & Actions */}
             {showInsights && (
               <div className="space-y-3">
-                <p className="text-sm text-white font-inter mb-3">Actionable Insights:</p>
-                {insights.map((insight, index) => (
+                <p className="text-sm text-white font-inter mb-3">Smart Insights:</p>
+                {insights.slice(0, 3).map((insight, index) => (
                   <div
                     key={index}
                     className="bg-white/5 rounded-lg p-3 border border-white/10 transition-all duration-500 animate-fade-in"
@@ -271,6 +314,24 @@ const ProcessAnimationSection = () => {
                     </div>
                   </div>
                 ))}
+                
+                {insights.length > 3 && (
+                  <div className="mt-4 space-y-3">
+                    <p className="text-sm text-white font-inter mb-3">Actions Taken:</p>
+                    {insights.slice(3).map((action, index) => (
+                      <div
+                        key={index + 3}
+                        className="bg-[#37D67A]/10 rounded-lg p-3 border border-[#37D67A]/20 transition-all duration-500 animate-fade-in"
+                        style={{ animationDelay: `${(index + 3) * 600}ms` }}
+                      >
+                        <div className="flex items-start space-x-2">
+                          <span className="text-[#37D67A] text-sm">✓</span>
+                          <p className="text-xs text-white font-inter leading-relaxed">{action}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
