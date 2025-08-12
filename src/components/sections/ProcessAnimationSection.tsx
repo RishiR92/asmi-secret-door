@@ -8,10 +8,13 @@ const ProcessAnimationSection = () => {
   const [showWaveform, setShowWaveform] = useState(false);
   const [voiceText, setVoiceText] = useState('');
   const [showConnections, setShowConnections] = useState(false);
-  const [showNeural, setShowNeural] = useState(false);
+  const [showDataFetching, setShowDataFetching] = useState(false);
   const [insights, setInsights] = useState<string[]>([]);
+  const [actions, setActions] = useState<string[]>([]);
   const [showInsights, setShowInsights] = useState(false);
+  const [showActions, setShowActions] = useState(false);
   const [activeConnection, setActiveConnection] = useState(0);
+  const [activeFetchingSource, setActiveFetchingSource] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -58,24 +61,48 @@ const ProcessAnimationSection = () => {
       // Screen 2: Intelligence Generation & Actionable Output (4-8s)
       setTimeout(() => {
         setCurrentScreen(1);
-        setShowNeural(true);
         
-        // Show insights and actions Asmi takes
-        const insightList = [
-          "Raj is CTO at TechCorp",
-          "Last mail: shared $50K+ budget range",
-          "Loves technical demos. I am creating a detailed script for you",
-          "Send follow-up with technical demo link and API docs",
-          "Scheduling next meeting \"API architecture deep-dive\" on Monday 2PM at Raj's office in Palo Alto."
-        ];
+        // Phase 1: Data Fetching Animation (4-6s)
+        setShowDataFetching(true);
+        const dataFetchingInterval = setInterval(() => {
+          setActiveFetchingSource(prev => (prev + 1) % 4);
+        }, 500);
         
-        insightList.forEach((insight, index) => {
+        setTimeout(() => {
+          clearInterval(dataFetchingInterval);
+          setShowDataFetching(false);
+          
+          // Phase 2: Smart Insights Generation (6-7s)
+          const insightsList = [
+            "Raj is CTO at TechCorp",
+            "Last mail: shared $50K+ budget range",
+            "Loves technical demos. I am creating a detailed script for you"
+          ];
+          
+          insightsList.forEach((insight, index) => {
+            setTimeout(() => {
+              setInsights(prev => [...prev, insight]);
+            }, index * 400);
+          });
+          
+          setTimeout(() => setShowInsights(true), 100);
+          
+          // Phase 3: Dynamic Actions Taken (7-8s)
           setTimeout(() => {
-            setInsights(prev => [...prev, insight]);
-          }, index * 600 + 1000);
-        });
-        
-        setTimeout(() => setShowInsights(true), 1000);
+            const actionsList = [
+              "✓ Sent follow-up with technical demo link and API docs",
+              "✓ Scheduled next meeting \"API architecture deep-dive\" on Monday 2PM at Raj's office in Palo Alto"
+            ];
+            
+            actionsList.forEach((action, index) => {
+              setTimeout(() => {
+                setActions(prev => [...prev, action]);
+              }, index * 600);
+            });
+            
+            setShowActions(true);
+          }, 1200);
+        }, 2000); // Data fetching lasts 2 seconds
       }, 4000);
     };
 
@@ -217,42 +244,106 @@ const ProcessAnimationSection = () => {
     );
   };
 
-  const renderNeuralNetwork = () => {
+  const renderDataFetchingAnimation = () => {
+    const dataPoints = [
+      { type: "Emails", position: { x: 25, y: 25 }, color: "bg-green-400", label: "Emails", data: "Previous emails with Raj" },
+      { type: "Calendar", position: { x: 75, y: 25 }, color: "bg-blue-400", label: "Calendar", data: "Upcoming meetings" },
+      { type: "Meetings", position: { x: 25, y: 75 }, color: "bg-purple-400", label: "Meetings", data: "Past meeting notes" },
+      { type: "Conversations", position: { x: 75, y: 75 }, color: "bg-yellow-400", label: "Conversations", data: "Chat history" }
+    ];
+
     return (
-      <div className="relative w-full h-24 mx-auto">
-        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 240 96">
-          {/* Neural connections */}
-          {[...Array(6)].map((_, i) => (
-            <line
-              key={i}
-              x1={40 + i * 32}
-              y1={20}
-              x2={60 + i * 28}
-              y2={76}
-              stroke="white"
-              strokeWidth="0.5"
-              className={`transition-all duration-500 ${
-                showNeural ? 'opacity-30' : 'opacity-0'
-              }`}
-              style={{ animationDelay: `${i * 100}ms` }}
-            />
-          ))}
+      <div className="relative h-32 mb-4">
+        {/* Connection Lines with flowing data */}
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="data-flow" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#22c55e" stopOpacity="0.8" />
+              <stop offset="50%" stopColor="#3b82f6" stopOpacity="1" />
+              <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.8" />
+            </linearGradient>
+          </defs>
           
-          {/* Neural nodes */}
-          {[...Array(8)].map((_, i) => (
-            <circle
-              key={i}
-              cx={30 + i * 26}
-              cy={i % 2 === 0 ? 20 : 76}
-              r="2"
-              fill="white"
-              className={`transition-all duration-300 ${
-                showNeural ? 'opacity-60' : 'opacity-0'
-              }`}
-              style={{ animationDelay: `${i * 80}ms` }}
-            />
+          {/* Animated data flow lines */}
+          {dataPoints.map((point, index) => (
+            <g key={index}>
+              <line
+                x1={point.position.x}
+                y1={point.position.y}
+                x2="50"
+                y2="50"
+                stroke="#22c55e"
+                strokeWidth={activeFetchingSource === index ? "3" : "1"}
+                strokeOpacity={showDataFetching ? (activeFetchingSource === index ? "1" : "0.2") : "0"}
+                className="transition-all duration-300"
+              />
+              
+              {/* Flowing particles */}
+              {activeFetchingSource === index && showDataFetching && (
+                <>
+                  <circle r="1.5" fill="#22c55e" className="opacity-80">
+                    <animateMotion dur="1s" repeatCount="indefinite">
+                      <mpath xlinkHref={`#path-${index}`} />
+                    </animateMotion>
+                  </circle>
+                  <path id={`path-${index}`} d={`M${point.position.x},${point.position.y} L50,50`} className="opacity-0" />
+                </>
+              )}
+            </g>
           ))}
         </svg>
+
+        {/* Data Points */}
+        {dataPoints.map((point, index) => (
+          <div
+            key={index}
+            className={`absolute transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+              activeFetchingSource === index && showDataFetching
+                ? 'scale-125 z-10' 
+                : 'scale-100 opacity-70'
+            }`}
+            style={{
+              left: `${point.position.x}%`,
+              top: `${point.position.y}%`
+            }}
+          >
+            <div className={`w-3 h-3 ${point.color} rounded-full flex items-center justify-center relative shadow-lg`}>
+              {activeFetchingSource === index && showDataFetching && (
+                <div className={`absolute inset-0 rounded-full ${point.color} opacity-40 animate-ping scale-150`}></div>
+              )}
+            </div>
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
+              <span className={`text-xs whitespace-nowrap transition-all duration-300 ${
+                activeFetchingSource === index && showDataFetching
+                  ? 'text-white font-semibold' 
+                  : 'text-gray-400'
+              }`}>
+                {point.label}
+              </span>
+              {activeFetchingSource === index && showDataFetching && (
+                <div className="text-xs text-green-400 mt-1 font-medium animate-pulse">
+                  {point.data}
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+
+        {/* Center Asmi Node */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <div 
+            className={`bg-white rounded-full flex items-center justify-center shadow-xl transition-all duration-500 ${
+              showDataFetching ? 'scale-110 opacity-100' : 'scale-100 opacity-80'
+            }`}
+            style={{
+              width: '32px',
+              height: '32px',
+              boxShadow: showDataFetching ? '0 0 20px rgba(34, 197, 94, 0.5)' : '0 0 15px rgba(34, 197, 94, 0.3)'
+            }}
+          >
+            <span className="text-black font-bold text-xs">Asmi</span>
+          </div>
+        </div>
       </div>
     );
   };
@@ -292,46 +383,60 @@ const ProcessAnimationSection = () => {
         {/* Screen 2: Intelligence Generation */}
         {currentScreen === 1 && (
           <div className="flex flex-col justify-center space-y-6">
-            {/* Intelligence Synthesis */}
-            <div className="space-y-4">
-              <p className="text-sm text-center text-white font-semibold font-inter">Intelligence Generation</p>
-              {renderNeuralNetwork()}
-            </div>
             
-            {/* Smart Insights & Actions */}
-            {showInsights && (
+            {/* Phase 1: Data Fetching Animation */}
+            {showDataFetching && (
+              <div className="space-y-4">
+                <p className="text-sm text-center text-white font-semibold font-inter">Intelligence Generation</p>
+                <p className="text-xs text-center text-white/70">Fetching context from memory sources</p>
+                {renderDataFetchingAnimation()}
+              </div>
+            )}
+            
+            {/* Phase 2: Smart Insights */}
+            {showInsights && insights.length > 0 && (
               <div className="space-y-3">
-                <p className="text-sm text-white font-inter mb-3">Smart Insights:</p>
-                {insights.slice(0, 3).map((insight, index) => (
+                <p className="text-sm text-white font-inter mb-3">Smart Insights Generated:</p>
+                {insights.map((insight, index) => (
                   <div
                     key={index}
                     className="bg-white/5 rounded-lg p-3 border border-white/10 transition-all duration-500 animate-fade-in"
-                    style={{ animationDelay: `${index * 600}ms` }}
+                    style={{ animationDelay: `${index * 400}ms` }}
                   >
                     <div className="flex items-start space-x-2">
                       <span className="text-[#37D67A] text-sm">•</span>
-                      <p className="text-xs text-white font-inter leading-relaxed">{insight}</p>
+                      <p className="text-xs text-white font-inter leading-relaxed">"{insight}"</p>
                     </div>
                   </div>
                 ))}
-                
-                {insights.length > 3 && (
-                  <div className="mt-4 space-y-3">
-                    <p className="text-sm text-white font-inter mb-3">Actions Taken:</p>
-                    {insights.slice(3).map((action, index) => (
-                      <div
-                        key={index + 3}
-                        className="bg-[#37D67A]/10 rounded-lg p-3 border border-[#37D67A]/20 transition-all duration-500 animate-fade-in"
-                        style={{ animationDelay: `${(index + 3) * 600}ms` }}
-                      >
-                        <div className="flex items-start space-x-2">
-                          <span className="text-[#37D67A] text-sm">✓</span>
-                          <p className="text-xs text-white font-inter leading-relaxed">{action}</p>
-                        </div>
-                      </div>
-                    ))}
+              </div>
+            )}
+            
+            {/* Phase 3: Dynamic Actions Taken */}
+            {showActions && actions.length > 0 && (
+              <div className="space-y-3">
+                <p className="text-sm text-white font-inter mb-3">Actions Taken by Asmi:</p>
+                {actions.map((action, index) => (
+                  <div
+                    key={index}
+                    className="bg-[#37D67A]/15 rounded-lg p-3 border border-[#37D67A]/30 transition-all duration-500 animate-fade-in relative"
+                    style={{ animationDelay: `${index * 600}ms` }}
+                  >
+                    <div className="flex items-start space-x-2">
+                      <span className="text-[#37D67A] text-sm animate-pulse">✓</span>
+                      <p className="text-xs text-white font-inter leading-relaxed font-medium">{action}</p>
+                    </div>
+                    {/* Completion pulse effect */}
+                    <div 
+                      className="absolute inset-0 bg-[#37D67A]/10 rounded-lg opacity-0 animate-ping"
+                      style={{ 
+                        animationDelay: `${index * 600 + 300}ms`,
+                        animationDuration: '1s',
+                        animationIterationCount: '2'
+                      }}
+                    />
                   </div>
-                )}
+                ))}
               </div>
             )}
           </div>
