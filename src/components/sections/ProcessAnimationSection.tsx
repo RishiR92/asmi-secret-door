@@ -356,7 +356,7 @@ const ProcessAnimationSection = () => {
                       fill={point.strokeColor} 
                       opacity={particle.opacity}
                     >
-                       <animateMotion dur="1.5s" repeatCount="indefinite" begin={`${particle.delay}s`}>
+                       <animateMotion dur="1.5s" repeatCount="1" fill="freeze" begin={`${particle.delay}s`}>
                          <mpath xlinkHref={`#data-path-${index}`} />
                        </animateMotion>
                      </circle>
