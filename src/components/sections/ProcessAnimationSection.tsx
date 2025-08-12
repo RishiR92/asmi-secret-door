@@ -183,15 +183,9 @@ const ProcessAnimationSection = () => {
           <defs>
             {dataPoints.map((point, index) => (
               <linearGradient key={index} id={`flow-gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor={point.strokeColor} stopOpacity="0">
-                  <animate attributeName="stop-opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin={`${index * 0.2}s`} />
-                </stop>
-                <stop offset="50%" stopColor={point.strokeColor} stopOpacity="1">
-                  <animate attributeName="stop-opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" begin={`${index * 0.2}s`} />
-                </stop>
-                <stop offset="100%" stopColor={point.strokeColor} stopOpacity="0">
-                  <animate attributeName="stop-opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin={`${index * 0.2}s`} />
-                </stop>
+                <stop offset="0%" stopColor={point.strokeColor} stopOpacity="0.2" />
+                <stop offset="50%" stopColor={point.strokeColor} stopOpacity="1" />
+                <stop offset="100%" stopColor={point.strokeColor} stopOpacity="0.2" />
               </linearGradient>
             ))}
           </defs>
@@ -215,7 +209,7 @@ const ProcessAnimationSection = () => {
                   {/* Multiple flowing particles */}
                   {[0, 0.3, 0.6, 0.9].map((delay, particleIndex) => (
                     <circle key={particleIndex} r="1.5" fill={point.strokeColor} className="opacity-80">
-                      <animateMotion dur="2s" repeatCount="indefinite" begin={`${delay}s`}>
+                      <animateMotion dur="2s" repeatCount="1" fill="freeze" begin={`${delay}s`}>
                         <mpath xlinkHref={`#connection-path-${index}`} />
                       </animateMotion>
                     </circle>
@@ -483,118 +477,116 @@ const ProcessAnimationSection = () => {
 
   return (
     <MobileOptimizedSection maxWidth="md" padding="sm">
-      <div ref={sectionRef} className="max-h-[420px] space-y-8">
+      <div ref={sectionRef} className="relative min-h-[420px]">
         
         {/* Screen 1: Voice Capture & Context Linking */}
-        {currentScreen === 0 && (
-          <div 
-            className="flex flex-col justify-center space-y-6 transition-opacity duration-300"
-            style={{ opacity: screenOpacity.screen1 }}
-          >
-            {/* Voice input */}
-            <div className="text-center space-y-4">
-              <p className="text-sm text-white font-semibold font-inter">Voice Processing</p>
-              <div className="flex items-center justify-center space-x-3">
-                <Mic size={16} className="text-white" />
-                {showWaveform && renderWaveform()}
+        {/* Screen 1: Voice Capture & Context Linking */}
+        <div 
+          className="absolute inset-0 flex flex-col justify-center space-y-6 transition-opacity duration-300"
+          style={{ opacity: screenOpacity.screen1, pointerEvents: screenOpacity.screen1 > 0.05 ? 'auto' : 'none' }}
+        >
+          {/* Voice input */}
+          <div className="text-center space-y-4">
+            <p className="text-sm text-white font-semibold font-inter">Voice Processing</p>
+            <div className="flex items-center justify-center space-x-3">
+              <Mic size={16} className="text-white" />
+              {showWaveform && renderWaveform()}
+            </div>
+            {voiceText && (
+              <div className="bg-white/10 rounded-lg p-3 border border-white/20">
+                <p className="text-sm text-white font-inter leading-relaxed">"{voiceText}"</p>
               </div>
-              {voiceText && (
-                <div className="bg-white/10 rounded-lg p-3 border border-white/20">
-                  <p className="text-sm text-white font-inter leading-relaxed">"{voiceText}"</p>
+            )}
+          </div>
+          
+          {/* Memory Engine Activation */}
+          {showConnections && (
+            <div className="space-y-4">
+              <p className="text-sm text-center text-white font-inter">Memory Engine Activating</p>
+              <p className="text-xs text-center text-white/70">Connecting to Raj's business context</p>
+              {renderConnectionsNetwork()}
+            </div>
+          )}
+        </div>
+
+        {/* Screen 2: Intelligence Generation */}
+        {/* Screen 2: Intelligence Generation */}
+        <div 
+          className="absolute inset-0 flex flex-col justify-center space-y-6 transition-opacity duration-300"
+          style={{ opacity: screenOpacity.screen2, pointerEvents: screenOpacity.screen2 > 0.05 ? 'auto' : 'none' }}
+        >
+          
+          {/* Phase 1: Data Fetching Animation */}
+          {showDataFetching && (
+            <div className="space-y-4">
+              <p className="text-sm text-center text-white font-semibold font-inter">Intelligence Generation</p>
+              <p className="text-xs text-center text-white/70">Fetching context from memory sources</p>
+              {renderDataFetchingAnimation()}
+            </div>
+          )}
+          
+          {/* Phase 2: Smart Insights - Fixed positioning container */}
+          {showInsights && (
+            <div className="space-y-3">
+              <p className="text-sm text-white font-inter mb-3">Smart Insights Generated:</p>
+              <div className="relative min-h-[120px]">
+                {insights.map((insight, index) => (
+                  <div
+                    key={index}
+                    className="absolute top-0 left-0 right-0 bg-white/5 rounded-lg p-3 border border-white/10 transition-all duration-500 animate-fade-in opacity-0"
+                    style={{ 
+                      animationDelay: `${index * 400}ms`,
+                      animationFillMode: 'forwards',
+                      top: `${index * 40}px`
+                    }}
+                  >
+                    <div className="flex items-start space-x-2">
+                      <span className="text-[#37D67A] text-sm">•</span>
+                      <p className="text-xs text-white font-inter leading-relaxed">"{insight}"</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Phase 3: Dynamic Actions Taken */}
+          {(showAction1 || showAction2) && (
+            <div className="space-y-3">
+              <p className="text-sm text-white font-inter mb-3">Actions Taken by Asmi:</p>
+              
+              {/* Action 1 */}
+              {showAction1 && (
+                <div className="bg-[#37D67A]/15 rounded-lg p-3 border border-[#37D67A]/30 transition-all duration-500 animate-fade-in relative">
+                  <div className="flex items-start space-x-2">
+                    <span className="text-[#37D67A] text-sm animate-pulse">✓</span>
+                    <p className="text-xs text-white font-inter leading-relaxed font-medium">
+                      Sent follow-up with technical demo link and API docs
+                    </p>
+                  </div>
+                  {/* Completion pulse effect */}
+                  <div className="absolute inset-0 bg-[#37D67A]/10 rounded-lg opacity-0 animate-ping" 
+                       style={{ animationDuration: '1s', animationIterationCount: '2' }} />
+                </div>
+              )}
+              
+              {/* Action 2 */}
+              {showAction2 && (
+                <div className="bg-[#37D67A]/15 rounded-lg p-3 border border-[#37D67A]/30 transition-all duration-500 animate-fade-in relative">
+                  <div className="flex items-start space-x-2">
+                    <span className="text-[#37D67A] text-sm animate-pulse">✓</span>
+                    <p className="text-xs text-white font-inter leading-relaxed font-medium">
+                      Scheduled next meeting "API architecture deep-dive" on Monday 2PM at Raj's office in Palo Alto
+                    </p>
+                  </div>
+                  {/* Completion pulse effect */}
+                  <div className="absolute inset-0 bg-[#37D67A]/10 rounded-lg opacity-0 animate-ping" 
+                       style={{ animationDuration: '1s', animationIterationCount: '2' }} />
                 </div>
               )}
             </div>
-            
-            {/* Memory Engine Activation */}
-            {showConnections && (
-              <div className="space-y-4">
-                <p className="text-sm text-center text-white font-inter">Memory Engine Activating</p>
-                <p className="text-xs text-center text-white/70">Connecting to Raj's business context</p>
-                {renderConnectionsNetwork()}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Screen 2: Intelligence Generation */}
-        {currentScreen === 1 && (
-          <div 
-            className="flex flex-col justify-center space-y-6 transition-opacity duration-300"
-            style={{ opacity: screenOpacity.screen2 }}
-          >
-            
-            {/* Phase 1: Data Fetching Animation */}
-            {showDataFetching && (
-              <div className="space-y-4">
-                <p className="text-sm text-center text-white font-semibold font-inter">Intelligence Generation</p>
-                <p className="text-xs text-center text-white/70">Fetching context from memory sources</p>
-                {renderDataFetchingAnimation()}
-              </div>
-            )}
-            
-            {/* Phase 2: Smart Insights - Fixed positioning container */}
-            {showInsights && (
-              <div className="space-y-3">
-                <p className="text-sm text-white font-inter mb-3">Smart Insights Generated:</p>
-                <div className="relative min-h-[120px]">
-                  {insights.map((insight, index) => (
-                    <div
-                      key={index}
-                      className="absolute top-0 left-0 right-0 bg-white/5 rounded-lg p-3 border border-white/10 transition-all duration-500 animate-fade-in opacity-0"
-                      style={{ 
-                        animationDelay: `${index * 400}ms`,
-                        animationFillMode: 'forwards',
-                        top: `${index * 40}px`
-                      }}
-                    >
-                      <div className="flex items-start space-x-2">
-                        <span className="text-[#37D67A] text-sm">•</span>
-                        <p className="text-xs text-white font-inter leading-relaxed">"{insight}"</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            {/* Phase 3: Dynamic Actions Taken */}
-            {(showAction1 || showAction2) && (
-              <div className="space-y-3">
-                <p className="text-sm text-white font-inter mb-3">Actions Taken by Asmi:</p>
-                
-                {/* Action 1 */}
-                {showAction1 && (
-                  <div className="bg-[#37D67A]/15 rounded-lg p-3 border border-[#37D67A]/30 transition-all duration-500 animate-fade-in relative">
-                    <div className="flex items-start space-x-2">
-                      <span className="text-[#37D67A] text-sm animate-pulse">✓</span>
-                      <p className="text-xs text-white font-inter leading-relaxed font-medium">
-                        Sent follow-up with technical demo link and API docs
-                      </p>
-                    </div>
-                    {/* Completion pulse effect */}
-                    <div className="absolute inset-0 bg-[#37D67A]/10 rounded-lg opacity-0 animate-ping" 
-                         style={{ animationDuration: '1s', animationIterationCount: '2' }} />
-                  </div>
-                )}
-                
-                {/* Action 2 */}
-                {showAction2 && (
-                  <div className="bg-[#37D67A]/15 rounded-lg p-3 border border-[#37D67A]/30 transition-all duration-500 animate-fade-in relative">
-                    <div className="flex items-start space-x-2">
-                      <span className="text-[#37D67A] text-sm animate-pulse">✓</span>
-                      <p className="text-xs text-white font-inter leading-relaxed font-medium">
-                        Scheduled next meeting "API architecture deep-dive" on Monday 2PM at Raj's office in Palo Alto
-                      </p>
-                    </div>
-                    {/* Completion pulse effect */}
-                    <div className="absolute inset-0 bg-[#37D67A]/10 rounded-lg opacity-0 animate-ping" 
-                         style={{ animationDuration: '1s', animationIterationCount: '2' }} />
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </MobileOptimizedSection>
   );
