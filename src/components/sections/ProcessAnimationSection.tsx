@@ -61,7 +61,7 @@ const ProcessAnimationSection = () => {
         setShowWaveform(true);
         
         // Type out shorter, more natural voice message
-        const message = "Asmi, I just had a great call with Raj. He seemed really interested in our API solutions and mentioned they're looking to make a decision by next month. Help me prepare a follow-up.";
+        const message = "Asmi, I just had a great call with Raj about our API solutions. Help me prepare a follow-up.";
         let index = 0;
         const typeInterval = setInterval(() => {
           if (index <= message.length) {
@@ -69,17 +69,17 @@ const ProcessAnimationSection = () => {
             index++;
           } else {
             clearInterval(typeInterval);
-            // Show memory connections after voice text completes
-            setTimeout(() => setShowConnections(true), 800);
+            // Show memory connections after voice text completes with viewing time
+            setTimeout(() => setShowConnections(true), 1500);
           }
-        }, 50);
+        }, 80);
       }, 500);
 
-      // Screen 2: Intelligence Generation & Actionable Output (5.5s - with 1.5s gap)
+      // Screen 2: Intelligence Generation & Actionable Output (10s - with 2s gap)
       setTimeout(() => {
         setCurrentScreen(1);
         
-        // Phase 1: Data Fetching Animation
+        // Phase 1: Data Fetching Animation (3s duration)
         setShowDataFetching(true);
         setCenterNodeScale(1.2);
         
@@ -93,7 +93,7 @@ const ProcessAnimationSection = () => {
           setShowDataFetching(false);
           setCenterNodeScale(1.4);
           
-          // Phase 2: Smart Insights Generation
+          // Phase 2: Smart Insights Generation (slower reveal + viewing time)
           const insightsList = [
             "Raj is CTO at TechCorp",
             "Last mail: shared $50K+ budget range",
@@ -103,12 +103,12 @@ const ProcessAnimationSection = () => {
           insightsList.forEach((insight, index) => {
             setTimeout(() => {
               setInsights(prev => [...prev, insight]);
-            }, index * 400);
+            }, index * 600);
           });
           
           setTimeout(() => setShowInsights(true), 100);
           
-          // Phase 3: Dynamic Actions Taken
+          // Phase 3: Dynamic Actions Taken (slower reveal + viewing time)
           setTimeout(() => {
             const actionsList = [
               "Sent follow-up with technical demo link and API docs",
@@ -118,18 +118,18 @@ const ProcessAnimationSection = () => {
             actionsList.forEach((action, index) => {
               setTimeout(() => {
                 setActions(prev => [...prev, action]);
-              }, index * 600);
+              }, index * 800);
             });
             
             setShowActions(true);
-          }, 1200);
-        }, 2000);
-      }, 5500); // Added 1.5s gap
+          }, 2000);
+        }, 3000);
+      }, 10000);
 
       // Loop the animation
       setTimeout(() => {
         runAnimation();
-      }, 12000); // 12s total cycle
+      }, 20000); // 20s total cycle for proper viewing time
     };
 
     runAnimation();
