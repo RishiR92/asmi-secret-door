@@ -15,9 +15,9 @@ const ProcessAnimationSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const zones = [
-    { label: "Capture", duration: 3000 },
-    { label: "Link", duration: 3000 },
-    { label: "Act", duration: 3000 }
+    { label: "Capture", duration: 2500 },
+    { label: "Link", duration: 5500 },
+    { label: "Act", duration: 5500 }
   ];
 
   useEffect(() => {
@@ -41,12 +41,12 @@ const ProcessAnimationSection = () => {
     if (!isVisible) return;
 
     const runAnimation = () => {
-      // Zone 1: Capture (0-3s)
+      // Zone 1: Capture (0-2.5s)
       setTimeout(() => {
         setCurrentZone(0);
         setShowZoneLabel(true);
         setShowTypewriter(true);
-        // Type out WhatsApp message
+        // Type out WhatsApp message (faster)
         const message = "Great call with Raj...interested in API integration";
         let index = 0;
         const typeInterval = setInterval(() => {
@@ -56,31 +56,31 @@ const ProcessAnimationSection = () => {
           } else {
             clearInterval(typeInterval);
           }
-        }, 60);
+        }, 40);
         
         // Hide zone label after 1s
         setTimeout(() => setShowZoneLabel(false), 1000);
       }, 500);
 
-      // Zone 2: Link (3-6s)
+      // Zone 2: Link (2.5-8s)
       setTimeout(() => {
         setCurrentZone(1);
         setShowZoneLabel(true);
         setShowKnowledgeGraph(true);
         // Hide zone label after 1s
         setTimeout(() => setShowZoneLabel(false), 1000);
-      }, 3500);
+      }, 3000);
 
-      // Zone 3: Act (6-9s)
+      // Zone 3: Act (8-13.5s)
       setTimeout(() => {
         setCurrentZone(2);
         setShowZoneLabel(true);
         setShowInsights(true);
         // Hide zone label after 1s
         setTimeout(() => setShowZoneLabel(false), 1000);
-      }, 6500);
+      }, 8000);
 
-      // Final typewriter message (9s+)
+      // Final typewriter message (13.5s+)
       setTimeout(() => {
         setShowFinalMessage(true);
         const finalMessage = "This is how Asmi works in the backend - connecting everything to create in-depth insights on each user/conversation";
@@ -97,7 +97,7 @@ const ProcessAnimationSection = () => {
             }, 1000);
           }
         }, 50);
-      }, 9500);
+      }, 13500);
     };
 
     runAnimation();
@@ -155,7 +155,7 @@ const ProcessAnimationSection = () => {
                     showKnowledgeGraph ? 'opacity-80' : 'opacity-0'
                   }`}
                   style={{ 
-                    animationDelay: `${index * 300}ms`,
+                    animationDelay: `${index * 400}ms`,
                   }}
                 />
                 <circle
@@ -166,7 +166,7 @@ const ProcessAnimationSection = () => {
                   className={`transition-all duration-500 ${
                     showKnowledgeGraph ? 'opacity-100' : 'opacity-0'
                   }`}
-                  style={{ animationDelay: `${index * 300 + 200}ms` }}
+                  style={{ animationDelay: `${index * 400 + 200}ms` }}
                 />
               </g>
             ))}
@@ -197,7 +197,7 @@ const ProcessAnimationSection = () => {
                 left: `${node.x}px`,
                 top: `${node.y}px`,
                 transform: 'translate(-50%, -50%)',
-                animationDelay: `${index * 300 + 500}ms`,
+                animationDelay: `${index * 400 + 500}ms`,
                 maxWidth: '80px',
                 fontSize: '10px'
               }}
@@ -235,7 +235,7 @@ const ProcessAnimationSection = () => {
               className={`transition-all duration-500 ${
                 showInsights ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
               }`}
-              style={{ animationDelay: `${index * 200}ms` }}
+              style={{ animationDelay: `${index * 350}ms` }}
             >
               <div className="flex items-center gap-2 text-xs text-white">
                 {index < insights.length - 1 && (
