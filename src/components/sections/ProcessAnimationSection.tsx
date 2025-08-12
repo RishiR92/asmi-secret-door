@@ -51,7 +51,7 @@ const ProcessAnimationSection = () => {
       setActiveConnection(0);
       setActiveFetchingSource(0);
 
-      // Screen 1: Voice Processing & Memory Activation (0-4s)
+      // Screen 1: Voice Processing & Memory Activation (0-5.5s)
       setTimeout(() => {
         setCurrentScreen(0);
         setShowWaveform(true);
@@ -71,7 +71,7 @@ const ProcessAnimationSection = () => {
         }, 50); // Faster typing for longer message
       }, 500);
 
-      // Screen 2: Intelligence Generation & Actionable Output (4-8s)
+      // Screen 2: Intelligence Generation & Actionable Output (7s with 1.5s gap)
       setTimeout(() => {
         setCurrentScreen(1);
         
@@ -114,13 +114,13 @@ const ProcessAnimationSection = () => {
             });
           }, 1200);
         }, 2000); // Data fetching lasts 2 seconds
-      }, 4000);
+      }, 7000); // 5.5s (screen 1 duration) + 1.5s gap
     };
 
     runAnimation();
     
-    // Loop the animation every 12 seconds
-    const loopInterval = setInterval(runAnimation, 12000);
+    // Loop the animation every 15 seconds (adjusted for longer timing)
+    const loopInterval = setInterval(runAnimation, 15000);
     
     return () => clearInterval(loopInterval);
   }, [isVisible]);
