@@ -75,55 +75,65 @@ const ProcessAnimationSection = () => {
         }, 80);
       }, 500);
 
-      // Screen 2: Intelligence Generation & Actionable Output (10s - with 2s gap)
+      // Screen 2: Intelligence Generation & Actionable Output (10s - with proper cleanup)
       setTimeout(() => {
-        setCurrentScreen(1);
+        // Clean screen 1 states before transitioning
+        setShowWaveform(false);
+        setShowConnections(false);
         
-        // Phase 1: Data Fetching Animation (3s duration)
-        setShowDataFetching(true);
-        setCenterNodeScale(1.2);
-        
-        const dataFetchingInterval = setInterval(() => {
-          setActiveFetchingSource(prev => (prev + 1) % 4);
-          setParticleCount(prev => prev + 1);
-        }, 500);
-        
+        // Add slight transition delay to prevent flash
         setTimeout(() => {
-          clearInterval(dataFetchingInterval);
-          setShowDataFetching(false);
-          setCenterNodeScale(1.4);
+          setCurrentScreen(1);
           
-          // Phase 2: Smart Insights Generation (slower reveal + viewing time)
-          const insightsList = [
-            "Raj is CTO at TechCorp",
-            "Last mail: shared $50K+ budget range",
-            "Loves technical demos. I am creating a detailed script for you"
-          ];
+          // Phase 1: Data Fetching Animation (3s duration)
+          setShowDataFetching(true);
+          setCenterNodeScale(1.2);
           
-          insightsList.forEach((insight, index) => {
-            setTimeout(() => {
-              setInsights(prev => [...prev, insight]);
-            }, index * 600);
-          });
+          const dataFetchingInterval = setInterval(() => {
+            setActiveFetchingSource(prev => (prev + 1) % 4);
+            setParticleCount(prev => prev + 1);
+          }, 500);
           
-          setTimeout(() => setShowInsights(true), 100);
-          
-          // Phase 3: Dynamic Actions Taken (slower reveal + viewing time)
           setTimeout(() => {
-            const actionsList = [
-              "Sent follow-up with technical demo link and API docs",
-              "Scheduled next meeting \"API architecture deep-dive\" on Monday 2PM at Raj's office in Palo Alto"
+            clearInterval(dataFetchingInterval);
+            setShowDataFetching(false);
+            setCenterNodeScale(1.4);
+            
+            // Phase 2: Smart Insights Generation (slower reveal + viewing time)
+            const insightsList = [
+              "Raj is CTO at TechCorp",
+              "Last mail: shared $50K+ budget range",
+              "Loves technical demos. I am creating a detailed script for you"
             ];
             
-            actionsList.forEach((action, index) => {
+            insightsList.forEach((insight, index) => {
               setTimeout(() => {
-                setActions(prev => [...prev, action]);
-              }, index * 800);
+                setInsights(prev => [...prev, insight]);
+              }, index * 600);
             });
             
-            setShowActions(true);
-          }, 2000);
-        }, 3000);
+            setTimeout(() => setShowInsights(true), 100);
+            
+            // Phase 3: Dynamic Actions Taken (sequential reveal with proper timing)
+            setTimeout(() => {
+              const actionsList = [
+                "Sent follow-up with technical demo link and API docs",
+                "Scheduled next meeting \"API architecture deep-dive\" on Monday 2PM at Raj's office in Palo Alto"
+              ];
+              
+              // First action appears immediately
+              setTimeout(() => {
+                setActions([actionsList[0]]);
+                setShowActions(true);
+                
+                // Second action appears after delay
+                setTimeout(() => {
+                  setActions([actionsList[0], actionsList[1]]);
+                }, 800);
+              }, 100);
+            }, 2000);
+          }, 3000);
+        }, 200); // 200ms transition buffer to prevent flash
       }, 10000);
 
       // Loop the animation
