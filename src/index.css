@@ -884,4 +884,32 @@ All colors MUST be HSL.
   .space-y-12 > * + * {
     margin-top: 2rem !important;
   }
+  
+  /* Enhanced mobile performance optimizations */
+  .animate-pulse-orb,
+  .animate-orb-halo-pulse,
+  .animate-spin-slow,
+  .animate-fade-in-scale,
+  .animate-draw-line,
+  .animate-draw-arrow {
+    will-change: transform, opacity;
+    transform: translateZ(0); /* Force GPU layer */
+  }
+  
+  /* Optimize performance */
+  .orbit-dial-app-chip {
+    contain: layout style;
+    backface-visibility: hidden;
+  }
+  
+  /* Ensure all elements stay within viewport */
+  .min-h-screen {
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for mobile */
+  }
+  
+  /* Mobile-specific animation constraints */
+  svg {
+    transform: translateZ(0); /* Force GPU layer for SVG */
+  }
 }

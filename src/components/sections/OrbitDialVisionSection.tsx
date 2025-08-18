@@ -313,70 +313,110 @@ const OrbitDialVisionSection = () => {
 
   if (isMobile) {
     return (
-      <MobileOptimizedSection className="bg-black" padding="sm">
-        <div ref={sectionRef} className="relative w-full min-h-screen">
-          {/* Title */}
-          <div className="text-center mb-8">
-            <h1 className="text-xl font-bold text-white leading-tight">
-              Vision: Personal Superintelligence
-            </h1>
-          </div>
+      <div ref={sectionRef} className="min-h-screen w-full bg-black flex flex-col px-4 py-8">
+        {/* Title */}
+        <div className="text-center mb-6">
+          <h1 className="text-xl font-bold text-white leading-tight">
+            Vision: Personal Superintelligence
+          </h1>
+        </div>
 
-          {/* Phase Indicators - Clickable */}
-          <div className="flex justify-center space-x-4 mb-6 z-20">
-            {phases.map((phase, index) => (
-              <button 
-                key={index} 
-                onClick={() => handlePhaseClick(index)}
-                disabled={!animationComplete}
-                className={`flex flex-col items-center space-y-1 ${animationComplete ? 'cursor-pointer' : 'cursor-default'} transition-all duration-300 ${animationComplete ? 'hover:scale-110' : ''}`}
-              >
-                <div className={`w-4 h-4 rounded-full transition-all duration-700 ease-out ${
-                  currentPhase === index 
-                    ? phase.color === 'green' ? 'bg-green-400 shadow-lg shadow-green-400/50 scale-125' :
-                      phase.color === 'emerald' ? 'bg-emerald-400 shadow-lg shadow-emerald-400/50 scale-125' :
-                      'bg-gradient-to-r from-green-400 to-blue-400 shadow-lg shadow-green-400/50 scale-125'
-                    : animationComplete ? 'bg-gray-500 hover:bg-gray-400' : 'bg-gray-600'
-                }`} />
-                <span className={`text-xs font-semibold transition-all duration-700 tracking-wide ${
-                  currentPhase === index 
-                    ? phase.color === 'green' ? 'text-green-400' :
-                      phase.color === 'emerald' ? 'text-emerald-400' :
-                      'text-green-400'
-                    : animationComplete ? 'text-gray-400' : 'text-gray-500'
+        {/* Phase Indicators - Clickable */}
+        <div className="flex justify-center space-x-6 mb-8">
+          {phases.map((phase, index) => (
+            <button 
+              key={index} 
+              onClick={() => handlePhaseClick(index)}
+              disabled={!animationComplete}
+              className={`flex flex-col items-center space-y-2 ${animationComplete ? 'cursor-pointer' : 'cursor-default'} transition-all duration-300 ${animationComplete ? 'hover:scale-110' : ''} min-w-[44px] min-h-[44px] flex items-center justify-center`}
+            >
+              <div className={`w-4 h-4 rounded-full transition-all duration-700 ease-out ${
+                currentPhase === index 
+                  ? phase.color === 'green' ? 'bg-green-400 shadow-lg shadow-green-400/50 scale-125' :
+                    phase.color === 'emerald' ? 'bg-emerald-400 shadow-lg shadow-emerald-400/50 scale-125' :
+                    'bg-gradient-to-r from-green-400 to-blue-400 shadow-lg shadow-green-400/50 scale-125'
+                  : animationComplete ? 'bg-gray-500 hover:bg-gray-400' : 'bg-gray-600'
+              }`} />
+              <span className={`text-xs font-semibold transition-all duration-700 tracking-wide ${
+                currentPhase === index 
+                  ? phase.color === 'green' ? 'text-green-400' :
+                    phase.color === 'emerald' ? 'text-emerald-400' :
+                    'text-green-400'
+                  : animationComplete ? 'text-gray-400' : 'text-gray-500'
+              }`}>
+                {phase.name}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* Tags - positioned relative to prevent overlap */}
+        <div className="text-center mb-6">
+          {(() => {
+            // Show "The Complete Context" tag when typewriter actually starts typing
+            if (showCompleteContextTag) {
+              return (
+                <div className="animate-fade-in">
+                  <div className="inline-block px-4 py-2 rounded-xl backdrop-blur-md border transition-all duration-700 bg-gradient-to-r from-green-500/10 to-blue-500/10 border-green-400/40 shadow-lg shadow-green-400/20">
+                    <span className="text-sm font-bold tracking-wide text-green-400">
+                      The Complete Context
+                    </span>
+                  </div>
+                </div>
+              );
+            }
+            
+            // During 2027 phase but before typewriter starts, show "Context Amplifier" from previous phase
+            const displayPhase = currentPhase === 2 && showTypewriter && !showCompleteContextTag ? phases[1] : phases[currentPhase];
+            
+            return (
+              <div className="animate-fade-in">
+                <div className={`inline-block px-4 py-2 rounded-xl backdrop-blur-md border transition-all duration-700 ${
+                  displayPhase.color === 'green' ? 'bg-green-500/10 border-green-400/40 shadow-lg shadow-green-400/20' :
+                  displayPhase.color === 'emerald' ? 'bg-emerald-500/10 border-emerald-400/40 shadow-lg shadow-emerald-400/20' :
+                  'bg-gradient-to-r from-green-500/10 to-blue-500/10 border-green-400/40 shadow-lg shadow-green-400/20'
                 }`}>
-                  {phase.name}
-                </span>
-              </button>
-            ))}
-          </div>
-          
-          {/* Tags above animation */}
-          {renderTopTag()}
+                  <span className={`text-sm font-bold tracking-wide ${
+                    displayPhase.color === 'green' ? 'text-green-400' :
+                    displayPhase.color === 'emerald' ? 'text-emerald-400' :
+                    'text-green-400'
+                  }`}>
+                    {displayPhase.tag}
+                  </span>
+                </div>
+              </div>
+            );
+          })()}
+        </div>
 
-          {/* Central Orbit Dial - Mobile Optimized */}
-          <div className="orbit-dial-container relative w-full flex items-center justify-center" style={{ height: '50vh' }}>
+        {/* Central Orbit Dial - Mobile Optimized Container */}
+        <div className="flex-1 flex items-center justify-center min-h-[320px] max-h-[400px] relative">
+          <div className="relative w-80 h-80 max-w-[calc(100vw-2rem)] max-h-[calc(100vw-2rem)]">
             {/* Concentric Arcs */}
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 320" preserveAspectRatio="xMidYMid meet">
               {phases.map((phase, index) => {
-                const radius = (phase.radius / 220) * 35; // Scale to mobile viewBox
+                // Mobile-optimized radius - constrained to safe area
+                const radius = Math.min(
+                  (index + 1) * 35, // Base radius progression
+                  120 // Maximum radius for mobile
+                );
                 const isActive = currentPhase === index;
                 
                 return (
                   <g key={index}>
                     {/* Background arc */}
                     <circle
-                      cx="50"
-                      cy="50"
+                      cx="160"
+                      cy="160"
                       r={radius}
                       fill="none"
                       stroke="rgba(255,255,255,0.08)"
-                      strokeWidth="0.5"
+                      strokeWidth="1"
                     />
                     {/* Active arc with glow */}
                     <circle
-                      cx="50"
-                      cy="50"
+                      cx="160"
+                      cy="160"
                       r={radius}
                       fill="none"
                       className={`transition-all duration-1000 ease-out ${
@@ -386,9 +426,9 @@ const OrbitDialVisionSection = () => {
                             : index === 2 ? 'stroke-green-400' : 'stroke-transparent'
                           : 'stroke-transparent'
                       }`}
-                      strokeWidth={isActive ? "1" : "0.5"}
+                      strokeWidth={isActive ? "2" : "1"}
                       style={{
-                        filter: isActive ? `drop-shadow(0 0 4px ${
+                        filter: isActive ? `drop-shadow(0 0 6px ${
                           index === 0 ? '#4ADE80' 
                             : index === 1 ? '#10B981'
                             : '#4ADE80'
@@ -401,7 +441,7 @@ const OrbitDialVisionSection = () => {
             </svg>
 
             {/* Central Asmi Orb - Mobile Sized */}
-            <div className="relative z-10">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
               <div className={`w-16 h-16 rounded-full bg-gradient-to-r from-green-400 to-blue-400 flex items-center justify-center shadow-2xl shadow-green-400/40 relative transition-all duration-500 ${
                 currentPhase === 2 && flowingChips.length > 0 ? 'animate-orb-halo-pulse' : 'animate-pulse-orb'
               }`}>
@@ -417,8 +457,79 @@ const OrbitDialVisionSection = () => {
               </div>
             </div>
 
-            {/* App Chips */}
-            {phases.map((phase, phaseIndex) => renderAppChips(phase.apps, phaseIndex))}
+            {/* App Chips - Mobile Optimized */}
+            {phases.map((phase, phaseIndex) => 
+              phase.apps.map((app, index) => {
+                const isFlowing = currentPhase === phaseIndex && flowingChips.includes(index);
+                const showInSummary = showAllIcons && showTypewriter;
+                
+                let startAngle, startRadius, startX, startY;
+                
+                if (showInSummary) {
+                  // Neat circular arrangement for all icons during typewriter
+                  const totalIcons = phases.reduce((sum, p) => sum + p.apps.length, 0);
+                  const globalIndex = phases.slice(0, phaseIndex).reduce((sum, p) => sum + p.apps.length, 0) + index;
+                  const gridRadius = 80; // Safe mobile radius
+                  startAngle = (globalIndex * (360 / totalIcons)) - 90;
+                  startRadius = gridRadius;
+                  startX = Math.cos((startAngle * Math.PI) / 180) * startRadius;
+                  startY = Math.sin((startAngle * Math.PI) / 180) * startRadius;
+                } else {
+                  // Original positioning for individual phases - constrained for mobile
+                  startAngle = (index * 90) + (phaseIndex * 25) - 45;
+                  const maxRadius = Math.min((phaseIndex + 1) * 35, 120); // Constrained radius
+                  startRadius = maxRadius;
+                  startX = Math.cos((startAngle * Math.PI) / 180) * startRadius;
+                  startY = Math.sin((startAngle * Math.PI) / 180) * startRadius;
+                }
+
+                return (
+                  <div
+                    key={`${phaseIndex}-${index}`}
+                    className={`absolute transition-all duration-[1200ms] ease-out ${
+                      isFlowing || showInSummary ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+                    }`}
+                    style={{
+                      left: `calc(50% + ${startX}px)`,
+                      top: `calc(50% + ${startY}px)`,
+                      transform: 'translate(-50%, -50%)',
+                      transitionDelay: `${index * 200}ms`,
+                    }}
+                  >
+                    <div 
+                      className="orbit-dial-app-chip flex items-center space-x-2 px-2 py-1.5 rounded-xl backdrop-blur-md border transition-all duration-500 hover:scale-105"
+                      style={{
+                        backgroundColor: `${app.color}15`,
+                        borderColor: `${app.color}40`,
+                        boxShadow: `0 8px 32px ${app.color}20`,
+                        willChange: isFlowing || showInSummary ? 'transform, opacity' : 'auto'
+                      }}
+                    >
+                      <span className="text-sm">{app.icon}</span>
+                      <span className="text-white text-xs font-semibold tracking-wide">{app.name}</span>
+                    </div>
+                    
+                    {/* Enhanced connection lines for 2026 */}
+                    {phaseIndex === 1 && connections[index] && (
+                      <div 
+                        className="absolute bg-gradient-to-r from-emerald-400/60 to-transparent animate-draw-line"
+                        style={{
+                          left: '50%',
+                          top: '50%',
+                          transform: 'translate(-50%, -50%)',
+                          transformOrigin: 'left center',
+                          width: `${Math.sqrt(startX * startX + startY * startY)}px`,
+                          height: '2px',
+                          rotate: `${Math.atan2(startY, startX)}rad`,
+                          animationDelay: `${index * 200 + 400}ms`,
+                          filter: 'drop-shadow(0 0 8px #10B981)'
+                        }}
+                      />
+                    )}
+                  </div>
+                );
+              })
+            )}
 
             {/* 2027 Phase - Lock and routing animation - Mobile */}
             {currentPhase === 2 && (
@@ -437,7 +548,7 @@ const OrbitDialVisionSection = () => {
                   <div className="absolute inset-0">
                     {[Smartphone, Zap, Globe, Brain, Database].map((Icon, index) => {
                       const angle = (index * 72) - 90;
-                      const radius = isMobile ? 80 : 180;
+                      const radius = 100; // Safe mobile radius
                       const x = Math.cos((angle * Math.PI) / 180) * radius;
                       const y = Math.sin((angle * Math.PI) / 180) * radius;
                       
@@ -477,20 +588,20 @@ const OrbitDialVisionSection = () => {
               </>
             )}
           </div>
-
-          {/* Typewriter Final Message - Well below animation */}
-          {showTypewriter && (
-            <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 z-30 px-4">
-              <div className="text-center">
-                <p className="text-sm font-bold text-white leading-tight tracking-wide bg-black/40 backdrop-blur-sm px-4 py-2 rounded-lg border border-green-400/20">
-                  {typewriterText}
-                  <span className="animate-pulse">|</span>
-                </p>
-              </div>
-            </div>
-          )}
         </div>
-      </MobileOptimizedSection>
+
+        {/* Typewriter Final Message - Properly spaced at bottom */}
+        {showTypewriter && (
+          <div className="text-center mt-8 px-4">
+            <div className="inline-block">
+              <p className="text-sm font-bold text-white leading-tight tracking-wide bg-black/40 backdrop-blur-sm px-4 py-3 rounded-lg border border-green-400/20">
+                {typewriterText}
+                <span className="animate-pulse">|</span>
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
     );
   }
 
