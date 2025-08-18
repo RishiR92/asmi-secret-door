@@ -804,6 +804,73 @@ All colors MUST be HSL.
   animation: chip-flow 1.0s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
+/* MISSING ANIMATION CLASSES - Critical for Slide 12 */
+.animate-pulse-orb {
+  animation: pulse-orb 3s ease-in-out infinite;
+  will-change: transform, box-shadow;
+}
+
+.animate-fade-in-scale {
+  animation: fade-in-scale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.animate-orb-halo-pulse {
+  animation: orb-halo-pulse 2s ease-in-out infinite;
+  will-change: transform, box-shadow;
+}
+
+.animate-spin-slow {
+  animation: rotate-slow 8s linear infinite;
+  will-change: transform;
+}
+
+.animate-draw-line {
+  animation: draw-line 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  will-change: transform, opacity;
+  transform-origin: left center;
+}
+
+.animate-draw-arrow {
+  animation: draw-arrow 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Performance optimizations */
+.orbit-dial-container {
+  contain: layout style;
+  transform: translateZ(0); /* Force GPU acceleration */
+}
+
+.orbit-dial-app-chip {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Accessibility and browser compatibility */
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-orb,
+  .animate-fade-in-scale,
+  .animate-orb-halo-pulse,
+  .animate-spin-slow,
+  .animate-draw-line,
+  .animate-draw-arrow {
+    animation: none;
+  }
+  
+  .animate-pulse-orb {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Browser compatibility fallbacks */
+@supports not (backdrop-filter: blur(16px)) {
+  .backdrop-blur-md {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
 /* Mobile optimized spacing */
 @media (max-width: 768px) {
   .space-y-6 > * + * {

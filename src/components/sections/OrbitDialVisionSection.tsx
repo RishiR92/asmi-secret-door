@@ -61,15 +61,28 @@ const OrbitDialVisionSection = () => {
           setIsVisible(true);
         }
       },
-      { threshold: 0.3 }
+      { 
+        threshold: 0.1, // Lower threshold for better reliability
+        rootMargin: '50px' // Start animation earlier
+      }
     );
 
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
 
-    return () => observer.disconnect();
-  }, []);
+    // Fallback timeout in case IntersectionObserver fails
+    const fallbackTimeout = setTimeout(() => {
+      if (!isVisible) {
+        setIsVisible(true);
+      }
+    }, 2000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallbackTimeout);
+    };
+  }, [isVisible]);
 
   useEffect(() => {
     if (!isVisible || animationComplete) return;
@@ -171,9 +184,9 @@ const OrbitDialVisionSection = () => {
         startX = Math.cos((startAngle * Math.PI) / 180) * startRadius;
         startY = Math.sin((startAngle * Math.PI) / 180) * startRadius;
       } else {
-        // Original positioning for individual phases
+        // Original positioning for individual phases - optimized for mobile
         startAngle = (index * 90) + (phaseIndex * 25) - 45;
-        startRadius = isMobile ? phase.radius * window.innerWidth * 0.01 : phase.radius;
+        startRadius = isMobile ? Math.min(phase.radius * 0.8, 80) : phase.radius;
         startX = Math.cos((startAngle * Math.PI) / 180) * startRadius;
         startY = Math.sin((startAngle * Math.PI) / 180) * startRadius;
       }
@@ -192,11 +205,12 @@ const OrbitDialVisionSection = () => {
           }}
         >
           <div 
-            className={`flex items-center space-x-2.5 ${isMobile ? 'px-2 py-1.5' : 'px-4 py-2.5'} rounded-xl backdrop-blur-md border transition-all duration-500 hover:scale-105`}
+            className={`orbit-dial-app-chip flex items-center space-x-2.5 ${isMobile ? 'px-2 py-1.5' : 'px-4 py-2.5'} rounded-xl backdrop-blur-md border transition-all duration-500 hover:scale-105`}
             style={{
               backgroundColor: `${app.color}15`,
               borderColor: `${app.color}40`,
-              boxShadow: `0 8px 32px ${app.color}20`
+              boxShadow: `0 8px 32px ${app.color}20`,
+              willChange: isFlowing || showInSummary ? 'transform, opacity' : 'auto'
             }}
           >
             <span className={isMobile ? 'text-sm' : 'text-lg'}>{app.icon}</span>
@@ -341,7 +355,7 @@ const OrbitDialVisionSection = () => {
           {renderTopTag()}
 
           {/* Central Orbit Dial - Mobile Optimized */}
-          <div className="relative w-full flex items-center justify-center" style={{ height: '50vh' }}>
+          <div className="orbit-dial-container relative w-full flex items-center justify-center" style={{ height: '50vh' }}>
             {/* Concentric Arcs */}
             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
               {phases.map((phase, index) => {
@@ -481,7 +495,7 @@ const OrbitDialVisionSection = () => {
   }
 
   return (
-    <div ref={sectionRef} className="h-screen bg-black flex flex-col items-center justify-center py-8 px-4">
+    <div ref={sectionRef} className="orbit-dial-container h-screen bg-black flex flex-col items-center justify-center py-8 px-4">
       <div className="w-full max-w-2xl mx-auto relative h-[500px]">
         {/* Title */}
         <div className="text-center mb-12">
