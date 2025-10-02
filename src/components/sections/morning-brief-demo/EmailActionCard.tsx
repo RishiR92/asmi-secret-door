@@ -14,27 +14,27 @@ const EmailActionCard = ({ sender, subject, snippet, daysOverdue, priority, isVi
 
   return (
     <div className="flex justify-start animate-scale-in">
-      <div className="bg-red-900/40 backdrop-blur-sm px-4 py-4 rounded-2xl text-white border border-red-400/30 max-w-sm shadow-lg">
+      <div className="backdrop-blur-sm px-4 py-4 rounded-2xl border max-w-sm shadow-lg" style={{ backgroundColor: 'rgba(31, 31, 35, 0.8)', borderColor: priority === 'high' ? 'var(--text-alert)' : '#F59E0B' }}>
         <div className="space-y-3">
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-2">
-              <Mail size={14} className="text-red-400" />
-              <span className={`text-xs font-medium ${priority === 'high' ? 'text-red-400' : 'text-orange-400'}`}>
+              <Mail size={14} style={{ color: priority === 'high' ? 'var(--text-alert)' : '#F59E0B' }} />
+              <span className={`text-xs font-medium`} style={{ color: priority === 'high' ? 'var(--text-alert)' : '#F59E0B' }}>
                 {priority === 'high' ? 'High Priority' : 'Medium Priority'}
               </span>
             </div>
             {daysOverdue && (
               <div className="flex items-center space-x-1">
-                <AlertCircle size={12} className="text-red-400" />
-                <span className="text-xs text-red-400">{daysOverdue}d overdue</span>
+                <AlertCircle size={12} style={{ color: 'var(--text-alert)' }} />
+                <span className="text-xs" style={{ color: 'var(--text-alert)' }}>{daysOverdue}d overdue</span>
               </div>
             )}
           </div>
           
           <div>
-            <p className="text-sm font-medium text-white">{sender}</p>
-            <p className="text-xs text-gray-300 mt-1">{subject}</p>
-            <p className="text-xs text-gray-400 mt-2 line-clamp-2">{snippet}</p>
+            <p className="text-sm font-medium" style={{ color: 'var(--text-high)' }}>{sender}</p>
+            <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>{subject}</p>
+            <p className="text-xs mt-2 line-clamp-2" style={{ color: 'var(--text-secondary)' }}>{snippet}</p>
           </div>
         </div>
       </div>

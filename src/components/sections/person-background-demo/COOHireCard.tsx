@@ -7,17 +7,17 @@ interface COOHireCardProps {
 
 const COOHireCard = ({ name, previousRole }: COOHireCardProps) => {
   return (
-    <div className="bg-purple-900/30 border border-purple-400/30 rounded-xl p-3">
+    <div className="border rounded-xl p-3" style={{ backgroundColor: 'rgba(55, 214, 122, 0.1)', borderColor: 'var(--accent-positive)' }}>
       <div className="flex items-start space-x-2">
-        <div className="p-1.5 rounded-lg bg-purple-500/20">
-          <UserPlus size={14} className="text-purple-400" />
+        <div className="p-1.5 rounded-lg" style={{ backgroundColor: 'rgba(55, 214, 122, 0.2)' }}>
+          <UserPlus size={14} style={{ color: 'var(--accent-positive)' }} />
         </div>
         <div className="flex-1">
-          <p className="text-purple-300 text-xs font-medium">New COO Hired</p>
-          <p className="text-white text-sm font-semibold mt-1">{name}</p>
+          <p className="text-xs font-medium" style={{ color: 'var(--accent-positive)' }}>New COO Hired</p>
+          <p className="text-sm font-semibold mt-1" style={{ color: 'var(--text-high)' }}>{name}</p>
           <div className="flex items-center space-x-1 mt-1">
-            <Briefcase size={10} className="text-gray-400" />
-            <p className="text-gray-400 text-xs">{previousRole}</p>
+            <Briefcase size={10} style={{ color: 'var(--text-secondary)' }} />
+            <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{previousRole}</p>
           </div>
         </div>
       </div>

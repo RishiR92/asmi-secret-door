@@ -8,11 +8,11 @@ const TypingIndicator = ({ isVisible }: TypingIndicatorProps) => {
 
   return (
     <div className="flex justify-start animate-fade-in">
-      <div className="bg-gray-800/90 backdrop-blur-sm px-4 py-3 rounded-2xl rounded-tl-sm border border-white/10">
+      <div className="backdrop-blur-sm px-4 py-3 rounded-2xl rounded-tl-sm border" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'rgba(255,255,255,0.1)' }}>
         <div className="flex space-x-1">
-          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+          <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-secondary)' }}></div>
+          <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-secondary)', animationDelay: '0.1s' }}></div>
+          <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-secondary)', animationDelay: '0.2s' }}></div>
         </div>
       </div>
     </div>

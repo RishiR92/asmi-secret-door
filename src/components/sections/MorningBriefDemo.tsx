@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MessageCircle } from 'lucide-react';
 import PhoneHeader from './morning-brief-demo/PhoneHeader';
 import ChatMessage from './morning-brief-demo/ChatMessage';
@@ -12,12 +12,14 @@ const MorningBriefDemo = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const messages = [
     { type: 'user', text: 'Show me today\'s priorities', delay: 400 },
-    { type: 'typing', delay: 500 },
-    { type: 'asmi', text: 'Here are your urgent action items:', delay: 500 },
-    { type: 'typing', delay: 500 },
+    { type: 'typing', delay: 300 },
+    { type: 'asmi', text: 'Here are your urgent action items:', delay: 400 },
+    { type: 'typing', delay: 300 },
     { 
       type: 'email1',
       sender: 'Michael Zhang - Sequoia Capital',
@@ -25,15 +27,33 @@ const MorningBriefDemo = () => {
       snippet: 'I wanted to circle back on our conversation about the Series A round. Would love to...',
       daysOverdue: 3,
       priority: 'high' as const,
-      delay: 400
+      delay: 800
     },
-    { type: 'typing', delay: 500 },
-    { type: 'asmi', text: 'I can draft a reply for you:', delay: 500 },
-    { type: 'typing', delay: 500 },
+    { type: 'typing', delay: 300 },
+    { type: 'asmi', text: 'I can draft a reply for you:', delay: 400 },
+    { type: 'typing', delay: 300 },
     { 
       type: 'draft',
       text: 'Hi Michael, apologies for the delay. I\'d love to continue our discussion about the Series A. How does Thursday at 2pm work for a call? Looking forward to exploring this further.',
-      delay: 400
+      delay: 1200
+    },
+    { type: 'typing', delay: 300 },
+    { 
+      type: 'email2',
+      sender: 'Sarah Chen - Partner at TechVentures',
+      subject: 'Partnership Proposal - Follow-up',
+      snippet: 'Following up on our discussion about the strategic partnership. Would love to...',
+      priority: 'medium' as const,
+      delay: 800
+    },
+    { type: 'typing', delay: 300 },
+    { 
+      type: 'email3',
+      sender: 'Contract Deadline - Acme Corp',
+      subject: 'Client Contract Review Needed',
+      snippet: 'The revised contract needs your final approval before we can proceed. Due today...',
+      priority: 'high' as const,
+      delay: 800
     }
   ];
 
@@ -58,7 +78,7 @@ const MorningBriefDemo = () => {
   }, [hasStarted]);
 
   useEffect(() => {
-    if (!hasStarted || isComplete) return;
+    if (!hasStarted) return;
 
     const timer = setTimeout(() => {
       if (currentMessage < messages.length) {
@@ -69,33 +89,51 @@ const MorningBriefDemo = () => {
           setTimeout(() => {
             setIsTyping(false);
             setCurrentMessage(prev => prev + 1);
-          }, 700); // Faster typing
+          }, 500);
         } else {
           setCurrentMessage(prev => prev + 1);
         }
       } else {
-        setIsComplete(true);
+        // Loop back to start after a pause
+        setTimeout(() => {
+          setCurrentMessage(0);
+          setIsComplete(false);
+          // Scroll to top when restarting
+          if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTop = 0;
+          }
+        }, 2000);
       }
     }, messages[currentMessage]?.delay || 300);
 
     return () => clearTimeout(timer);
-  }, [currentMessage, hasStarted, isComplete]);
+  }, [currentMessage, hasStarted, messages]);
+
+  // Auto-scroll to bottom when new messages appear
+  useEffect(() => {
+    if (messagesEndRef.current && scrollContainerRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [currentMessage]);
 
   return (
-    <div id="morning-brief-demo" className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center px-4 py-12 sm:py-16">
+    <div id="morning-brief-demo" className="min-h-screen flex items-center justify-center px-4 py-12 sm:py-16" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="max-w-xs sm:max-w-sm mx-auto w-full">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
-          <div className="text-yellow-400 mx-auto mb-3 sm:mb-4 text-3xl sm:text-4xl">☀️</div>
-          <h2 className="text-xl sm:text-2xl font-light text-white mb-2 px-2">Start your day smart.</h2>
+          <h2 className="text-xl sm:text-2xl font-light text-white mb-2 px-2">Actionable Updates</h2>
+          <p className="text-sm text-gray-400">Auto-scrolling through your priorities</p>
         </div>
 
         {/* Phone mockup - Fixed size */}
-        <div className="bg-black/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-green-400/30 overflow-hidden shadow-2xl relative w-full max-w-[320px] mx-auto">
+        <div className="backdrop-blur-sm rounded-2xl sm:rounded-3xl border overflow-hidden shadow-2xl relative w-full max-w-[320px] mx-auto" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--accent-positive)' }}>
           <PhoneHeader isTyping={isTyping} />
 
-          {/* Messages - Fixed height container */}
-          <div className="p-3 sm:p-4 space-y-3 sm:space-y-4 bg-gradient-to-b from-gray-900 to-black h-[400px] sm:h-[450px] relative overflow-hidden">
+          {/* Messages - Fixed height container with auto-scroll */}
+          <div 
+            ref={scrollContainerRef}
+            className="p-3 sm:p-4 space-y-3 sm:space-y-4 bg-gradient-to-b from-[#121214] to-[#1F1F23] h-[400px] sm:h-[450px] relative overflow-y-auto scroll-smooth"
+          >
             <ChatMessage 
               type="user" 
               text={messages[0].text} 
@@ -135,6 +173,29 @@ const MorningBriefDemo = () => {
               draftText={messages[8].text}
               isVisible={currentMessage >= 9} 
             />
+
+            <TypingIndicator isVisible={isTyping && currentMessage >= 9 && currentMessage < 11} />
+
+            <EmailActionCard 
+              sender={messages[10].sender}
+              subject={messages[10].subject}
+              snippet={messages[10].snippet}
+              priority={messages[10].priority}
+              isVisible={currentMessage >= 11} 
+            />
+
+            <TypingIndicator isVisible={isTyping && currentMessage >= 11 && currentMessage < 13} />
+
+            <EmailActionCard 
+              sender={messages[12].sender}
+              subject={messages[12].subject}
+              snippet={messages[12].snippet}
+              priority={messages[12].priority}
+              isVisible={currentMessage >= 13} 
+            />
+
+            {/* Scroll anchor */}
+            <div ref={messagesEndRef} />
 
             {/* Floating action indicators */}
             {currentMessage >= 3 && (

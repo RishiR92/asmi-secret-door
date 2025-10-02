@@ -10,25 +10,25 @@ const DraftReplyCard = ({ draftText, isVisible }: DraftReplyCardProps) => {
 
   return (
     <div className="flex justify-start animate-scale-in">
-      <div className="bg-blue-900/40 backdrop-blur-sm px-4 py-4 rounded-2xl text-white border border-blue-400/30 max-w-sm shadow-lg">
+      <div className="backdrop-blur-sm px-4 py-4 rounded-2xl border max-w-sm shadow-lg" style={{ backgroundColor: 'rgba(31, 31, 35, 0.8)', borderColor: 'var(--accent-positive)' }}>
         <div className="space-y-3">
           <div className="flex items-center space-x-2">
-            <Edit size={14} className="text-blue-400" />
-            <span className="text-xs font-medium text-blue-400">Draft Reply</span>
+            <Edit size={14} style={{ color: 'var(--accent-positive)' }} />
+            <span className="text-xs font-medium" style={{ color: 'var(--accent-positive)' }}>Draft Reply</span>
           </div>
           
-          <div className="bg-gray-800/50 rounded-lg p-3">
-            <p className="text-sm text-gray-300 leading-relaxed">{draftText}</p>
+          <div className="rounded-lg p-3" style={{ backgroundColor: 'rgba(18, 18, 20, 0.5)' }}>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{draftText}</p>
           </div>
 
           <div className="flex space-x-2">
-            <button className="flex-1 bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 rounded-lg px-3 py-2 flex items-center justify-center space-x-2 transition-colors">
-              <Send size={12} className="text-green-400" />
-              <span className="text-xs text-green-400 font-medium">Send</span>
+            <button className="flex-1 hover:opacity-80 border rounded-lg px-3 py-2 flex items-center justify-center space-x-2 transition-opacity" style={{ backgroundColor: 'rgba(55, 214, 122, 0.1)', borderColor: 'var(--accent-positive)' }}>
+              <Send size={12} style={{ color: 'var(--accent-positive)' }} />
+              <span className="text-xs font-medium" style={{ color: 'var(--accent-positive)' }}>Send</span>
             </button>
-            <button className="flex-1 bg-gray-700/50 hover:bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 flex items-center justify-center space-x-2 transition-colors">
-              <Edit size={12} className="text-gray-300" />
-              <span className="text-xs text-gray-300 font-medium">Edit</span>
+            <button className="flex-1 hover:opacity-80 border rounded-lg px-3 py-2 flex items-center justify-center space-x-2 transition-opacity" style={{ backgroundColor: 'rgba(179, 179, 184, 0.1)', borderColor: 'var(--text-secondary)' }}>
+              <Edit size={12} style={{ color: 'var(--text-secondary)' }} />
+              <span className="text-xs font-medium" style={{ color: 'var(--text-secondary)' }}>Edit</span>
             </button>
           </div>
         </div>
