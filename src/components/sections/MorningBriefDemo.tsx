@@ -117,21 +117,21 @@ const MorningBriefDemo = () => {
   }, [currentMessage]);
 
   return (
-    <div id="morning-brief-demo" className="min-h-screen flex items-center justify-center px-4 py-12 sm:py-16" style={{ backgroundColor: 'var(--bg-primary)' }}>
-      <div className="max-w-xs sm:max-w-sm mx-auto w-full">
+    <div id="morning-brief-demo" className="min-h-screen w-full flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div className="w-full max-w-[400px] mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center mb-6 sm:mb-8">
-          <h2 className="text-xl sm:text-2xl font-light text-white mb-2 px-2">Actionable Updates</h2>
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold" style={{ color: 'var(--text-high)' }}>Inbox → Actionable Updates</h2>
         </div>
 
-        {/* Phone mockup - Fixed size */}
-        <div className="backdrop-blur-sm rounded-2xl sm:rounded-3xl border overflow-hidden shadow-2xl relative w-full max-w-[320px] mx-auto" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--text-high)' }}>
+        {/* Phone mockup - Mobile optimized */}
+        <div className="rounded-3xl border overflow-hidden shadow-2xl w-full mx-auto" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--text-high)' }}>
           <PhoneHeader isTyping={isTyping} />
 
-          {/* Messages - Fixed height container with auto-scroll */}
+          {/* Messages - Mobile optimized height */}
           <div 
             ref={scrollContainerRef}
-            className="p-3 sm:p-4 space-y-3 sm:space-y-4 bg-gradient-to-b from-[#121214] to-[#1F1F23] h-[400px] sm:h-[450px] relative overflow-y-auto scroll-smooth"
+            className="p-4 space-y-4 bg-gradient-to-b from-[#121214] to-[#1F1F23] h-[500px] relative overflow-y-auto scroll-smooth"
           >
             <ChatMessage 
               type="user" 
@@ -198,9 +198,9 @@ const MorningBriefDemo = () => {
 
             {/* Floating action indicators */}
             {currentMessage >= 3 && (
-              <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 space-y-2">
-                <div className="bg-green-500/20 border border-green-400/40 rounded-full p-1.5 sm:p-2">
-                  <MessageCircle size={10} className="text-green-400 sm:w-3 sm:h-3" />
+              <div className="absolute bottom-4 right-4 space-y-2">
+                <div className="bg-green-500/20 border border-green-400/40 rounded-full p-2">
+                  <MessageCircle size={12} className="text-green-400" />
                 </div>
               </div>
             )}
@@ -208,10 +208,10 @@ const MorningBriefDemo = () => {
         </div>
 
         {/* Bottom text */}
-        <div className="text-center mt-4 sm:mt-6 px-4">
-          <span className="text-gray-400 text-xs sm:text-sm font-light">
+        <div className="text-center mt-6">
+          <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
             Draft replies and send directly from the same interface
-          </span>
+          </p>
         </div>
       </div>
     </div>

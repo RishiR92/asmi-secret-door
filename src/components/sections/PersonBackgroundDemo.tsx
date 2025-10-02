@@ -1,7 +1,6 @@
 
 import { useState } from 'react';
 import { Search, User, Building, Lightbulb } from 'lucide-react';
-import MobileOptimizedSection from './MobileOptimizedSection';
 import FundingCard from './person-background-demo/FundingCard';
 import COOHireCard from './person-background-demo/COOHireCard';
 import NetworkActions from './person-background-demo/NetworkActions';
@@ -27,19 +26,19 @@ const PersonBackgroundDemo = () => {
   };
 
   return (
-    <MobileOptimizedSection maxWidth="sm">
-      <div className="space-y-6">
+    <div className="min-h-screen w-full flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div className="w-full max-w-[400px] mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold leading-tight" style={{ color: 'var(--text-high)' }}>
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold" style={{ color: 'var(--text-high)' }}>
             {steps[currentStep].title}
           </h2>
         </div>
 
         {/* Phone Demo */}
         <div 
-          className="rounded-3xl p-4 mx-auto max-w-xs cursor-pointer transition-transform hover:scale-105"
-          style={{ backgroundColor: 'var(--bg-surface)' }}
+          className="rounded-3xl p-4 w-full cursor-pointer transition-transform active:scale-95"
+          style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--text-high)', border: '1px solid' }}
           onClick={handleCardTap}
         >
           {/* Status Bar */}
@@ -131,7 +130,7 @@ const PersonBackgroundDemo = () => {
         </div>
 
         {/* Progress Indicator */}
-        <div className="flex justify-center space-x-2">
+        <div className="flex justify-center space-x-2 mt-6">
           {steps.map((_, index) => (
             <button
               key={index}
@@ -145,11 +144,11 @@ const PersonBackgroundDemo = () => {
           ))}
         </div>
 
-        <p className="text-xs text-center" style={{ color: 'var(--text-secondary)' }}>
+        <p className="text-xs text-center mt-4" style={{ color: 'var(--text-secondary)' }}>
           Automatic research on high-value connections in your network
         </p>
       </div>
-    </MobileOptimizedSection>
+    </div>
   );
 };
 
