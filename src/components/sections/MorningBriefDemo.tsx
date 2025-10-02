@@ -16,10 +16,10 @@ const MorningBriefDemo = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const messages = [
-    { type: 'user', text: 'Show me today\'s priorities', delay: 400 },
-    { type: 'typing', delay: 300 },
-    { type: 'asmi', text: 'Here are your urgent action items:', delay: 400 },
-    { type: 'typing', delay: 300 },
+    { type: 'user', text: 'Show me today\'s priorities', delay: 520 },
+    { type: 'typing', delay: 390 },
+    { type: 'asmi', text: 'Here are your urgent action items:', delay: 520 },
+    { type: 'typing', delay: 390 },
     { 
       type: 'email1',
       sender: 'Michael Zhang - Sequoia Capital',
@@ -27,33 +27,33 @@ const MorningBriefDemo = () => {
       snippet: 'I wanted to circle back on our conversation about the Series A round. Would love to...',
       daysOverdue: 3,
       priority: 'high' as const,
-      delay: 800
+      delay: 1040
     },
-    { type: 'typing', delay: 300 },
-    { type: 'asmi', text: 'I can draft a reply for you:', delay: 400 },
-    { type: 'typing', delay: 300 },
+    { type: 'typing', delay: 390 },
+    { type: 'asmi', text: 'I can draft a reply for you:', delay: 520 },
+    { type: 'typing', delay: 390 },
     { 
       type: 'draft',
       text: 'Hi Michael, apologies for the delay. I\'d love to continue our discussion about the Series A. How does Thursday at 2pm work for a call? Looking forward to exploring this further.',
-      delay: 1200
+      delay: 1560
     },
-    { type: 'typing', delay: 300 },
+    { type: 'typing', delay: 390 },
     { 
       type: 'email2',
       sender: 'Sarah Chen - Partner at TechVentures',
       subject: 'Partnership Proposal - Follow-up',
       snippet: 'Following up on our discussion about the strategic partnership. Would love to...',
       priority: 'medium' as const,
-      delay: 800
+      delay: 1040
     },
-    { type: 'typing', delay: 300 },
+    { type: 'typing', delay: 390 },
     { 
       type: 'email3',
       sender: 'Contract Deadline - Acme Corp',
       subject: 'Client Contract Review Needed',
       snippet: 'The revised contract needs your final approval before we can proceed. Due today...',
       priority: 'high' as const,
-      delay: 800
+      delay: 1040
     }
   ];
 
@@ -122,11 +122,10 @@ const MorningBriefDemo = () => {
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
           <h2 className="text-xl sm:text-2xl font-light text-white mb-2 px-2">Actionable Updates</h2>
-          <p className="text-sm text-gray-400">Auto-scrolling through your priorities</p>
         </div>
 
         {/* Phone mockup - Fixed size */}
-        <div className="backdrop-blur-sm rounded-2xl sm:rounded-3xl border overflow-hidden shadow-2xl relative w-full max-w-[320px] mx-auto" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--accent-positive)' }}>
+        <div className="backdrop-blur-sm rounded-2xl sm:rounded-3xl border overflow-hidden shadow-2xl relative w-full max-w-[320px] mx-auto" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--text-high)' }}>
           <PhoneHeader isTyping={isTyping} />
 
           {/* Messages - Fixed height container with auto-scroll */}

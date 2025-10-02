@@ -8,28 +8,28 @@ const BuiltForEveryoneSection = () => {
 
   const personas = [
     {
+      icon: <TrendingUp className="text-white" size={20} />,
+      title: "Fast Growing Startups",
+      summary: "Context intelligence",
+      example: "Asmi is pulling meetings, relationships, and email into one place. It preps you before every call, surfaces network intel automatically, and turns your inbox into simple, actionable updates in WhatsApp/iMessage"
+    },
+    {
       icon: <User className="text-white" size={20} />,
       title: "Founders",
-      summary: "Meeting intelligence",
-      example: "Asmi tracks every investor conversation, remembers what each VC cares about, and briefs you before each meeting with their preferences, past discussions, and follow-up items from your calendar and emails."
+      summary: "Leverage on autopilot",
+      example: "Asmi keeps you sharp in the chaos - daily plan in WhatsApp, pre-reads before every call, and missed follow-ups surfaced from your inbox. Think of it as the co-pilot that never misses."
     },
     {
       icon: <Briefcase className="text-white" size={20} />,
-      title: "Sales Teams", 
-      summary: "Pipeline context",
-      example: "Asmi analyzes all client emails and meeting notes, surfaces buying signals from conversations, and provides complete prospect history before each call to help close more deals."
-    },
-    {
-      icon: <TrendingUp className="text-white" size={20} />,
-      title: "Fast Growing Startups",
-      summary: "Team coordination",
-      example: "Asmi keeps track of all team conversations and meetings, ensures nothing falls through cracks, and provides context on every project and client interaction across your growing organization."
+      title: "Operators & Execs", 
+      summary: "Execution speed",
+      example: "Operators don't have time to switch between 10 apps. Asmi brings everything that matters into WhatsApp/iMessage - meetings, inbox, network insights - saving you 1+ hours every day so you can ship faster."
     },
     {
       icon: <Users className="text-white" size={20} />,
-      title: "Knowledge Workers", 
-      summary: "Information flow",
-      example: "Asmi maintains deep context from all your meetings and email threads, surfaces relevant past discussions, and ensures you're always prepared with the right information for every interaction."
+      title: "Investors & Advisors", 
+      summary: "Relationship intelligence",
+      example: "Asmi tracks every founder interaction, surfaces deal-relevant context instantly, and reminds you when to follow up - for both portfolio and new opportunities. Stay ahead of the curve, without the spreadsheet grind."
     }
   ];
 

@@ -64,19 +64,19 @@ const PersonBackgroundDemo = () => {
                 <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>Updates on Alex Rivera?</span>
               </div>
 
-              <div className="border rounded-xl p-3" style={{ backgroundColor: 'rgba(55, 214, 122, 0.05)', borderColor: 'var(--accent-positive)' }}>
+              <div className="border rounded-xl p-3" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--text-secondary)' }}>
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--accent-positive)' }}>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--text-secondary)' }}>
                     <span style={{ color: 'var(--bg-primary)' }} className="text-sm font-bold">A</span>
                   </div>
                   <div>
                     <p className="text-sm font-medium" style={{ color: 'var(--text-high)' }}>Asmi</p>
-                    <p className="text-xs" style={{ color: 'var(--accent-positive)' }}>Running deep research...</p>
+                    <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>Running deep research...</p>
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-2xl p-3" style={{ backgroundColor: 'var(--accent-positive)' }}>
+              <div className="rounded-2xl p-3" style={{ backgroundColor: 'var(--text-high)', opacity: 0.9 }}>
                 <p className="text-sm text-center" style={{ color: 'var(--bg-primary)' }}>Updates on Alex Rivera?</p>
               </div>
             </div>
@@ -87,9 +87,9 @@ const PersonBackgroundDemo = () => {
                 <p className="text-sm" style={{ color: 'var(--text-high)' }}>Alex Rivera - CEO at FinScale</p>
               </div>
 
-              <div className="border rounded-xl p-4" style={{ backgroundColor: 'rgba(55, 214, 122, 0.05)', borderColor: 'var(--accent-positive)' }}>
+              <div className="border rounded-xl p-4" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--text-secondary)' }}>
                 <div className="flex items-start space-x-3 mb-4">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--accent-positive)' }}>
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--text-secondary)' }}>
                     <span className="font-bold text-lg" style={{ color: 'var(--bg-primary)' }}>A</span>
                   </div>
                   <div className="flex-1 min-w-0">
@@ -100,7 +100,7 @@ const PersonBackgroundDemo = () => {
 
                 <div className="space-y-3">
                   <div className="flex items-start space-x-2">
-                    <Building size={12} style={{ color: 'var(--accent-positive)' }} className="mt-0.5 flex-shrink-0" />
+                    <Building size={12} style={{ color: 'var(--text-secondary)' }} className="mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-xs font-medium" style={{ color: 'var(--text-high)' }}>Background</p>
                       <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>Ex-Stripe PM, MIT, Built 2 fintech unicorns</p>
@@ -118,7 +118,7 @@ const PersonBackgroundDemo = () => {
                     previousRole="Ex-Stripe Operations VP"
                   />
                   
-                  <div className="rounded-lg p-2 border" style={{ backgroundColor: 'rgba(55, 214, 122, 0.1)', borderColor: 'var(--accent-positive)' }}>
+                  <div className="rounded-lg p-2 border" style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--text-secondary)' }}>
                     <p className="text-xs font-medium" style={{ color: 'var(--accent-positive)' }}>💡 Strategic Opportunity</p>
                     <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>With new funding and COO, they're scaling fast. Perfect time to strengthen relationship and explore partnerships.</p>
                   </div>
