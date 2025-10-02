@@ -117,8 +117,8 @@ const MorningBriefDemo = () => {
   }, [currentMessage]);
 
   return (
-    <div id="morning-brief-demo" className="min-h-screen w-full flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
-      <div className="w-full max-w-[400px] mx-auto px-4 py-8">
+    <div id="morning-brief-demo" className="min-h-screen w-full flex items-center justify-center px-4" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div className="w-full max-w-[400px] mx-auto py-8">
         {/* Header */}
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold" style={{ color: 'var(--text-high)' }}>Inbox → Actionable Updates</h2>
