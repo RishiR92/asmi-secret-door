@@ -32,7 +32,7 @@ const PersonBackgroundDemo = () => {
         {/* Phone Demo */}
         <div 
           className="rounded-3xl p-4 w-full cursor-pointer transition-transform active:scale-95"
-          style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--text-high)', border: '1px solid' }}
+          style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'rgba(255, 255, 255, 0.12)', border: '1px solid' }}
           onClick={handleCardTap}
         >
           {/* Status Bar */}
@@ -103,8 +103,8 @@ const PersonBackgroundDemo = () => {
                   
                   {/* Funding - Minimal Design */}
                   <div className="flex items-center space-x-2">
-                    <div className="p-1.5 rounded-lg" style={{ backgroundColor: 'rgba(59, 130, 246, 0.1)' }}>
-                      <TrendingUp size={12} style={{ color: '#3B82F6' }} />
+                    <div className="p-1.5 rounded-lg" style={{ backgroundColor: 'transparent' }}>
+                      <TrendingUp size={12} style={{ color: 'var(--text-secondary)' }} />
                     </div>
                     <div className="flex-1">
                       <p className="text-xs" style={{ color: 'var(--text-high)' }}>
@@ -116,8 +116,8 @@ const PersonBackgroundDemo = () => {
 
                   {/* COO Hire - Minimal Design */}
                   <div className="flex items-center space-x-2">
-                    <div className="p-1.5 rounded-lg" style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)' }}>
-                      <UserPlus size={12} style={{ color: '#F59E0B' }} />
+                    <div className="p-1.5 rounded-lg" style={{ backgroundColor: 'transparent' }}>
+                      <UserPlus size={12} style={{ color: 'var(--text-secondary)' }} />
                     </div>
                     <div className="flex-1">
                       <p className="text-xs" style={{ color: 'var(--text-high)' }}>
@@ -129,18 +129,18 @@ const PersonBackgroundDemo = () => {
                 </div>
 
                 {/* Strategic Insight - Subtle Callout */}
-                <div className="rounded-lg p-3" style={{ backgroundColor: 'rgba(16, 185, 129, 0.05)', border: '1px solid rgba(16, 185, 129, 0.1)' }}>
+                <div className="rounded-lg p-3 border" style={{ borderColor: 'rgba(255, 255, 255, 0.1)', borderLeft: '2px solid var(--accent-positive)' }}>
                   <p className="text-xs font-medium mb-1" style={{ color: 'var(--accent-positive)' }}>💡 Strategic Opportunity</p>
                   <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>With new funding and COO, they're scaling fast. Perfect time to strengthen relationship and explore partnerships.</p>
                 </div>
 
                 {/* Action Buttons - Clean Layout */}
                 <div className="space-y-2 pt-2" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                  <button className="w-full rounded-lg px-4 py-2.5 flex items-center justify-center space-x-2 transition-opacity hover:opacity-80" style={{ backgroundColor: 'var(--accent-positive)' }}>
-                    <Send size={14} style={{ color: 'var(--bg-primary)' }} />
-                    <span className="text-sm font-medium" style={{ color: 'var(--bg-primary)' }}>Send Congratulations</span>
+                  <button className="w-full rounded-lg px-4 py-2.5 flex items-center justify-center space-x-2 transition-opacity hover:opacity-80 border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+                    <Send size={14} style={{ color: 'var(--accent-positive)' }} />
+                    <span className="text-sm font-medium" style={{ color: 'var(--accent-positive)' }}>Send Congratulations</span>
                   </button>
-                  <button className="w-full rounded-lg px-4 py-2.5 flex items-center justify-center space-x-2 transition-opacity hover:opacity-80" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                  <button className="w-full rounded-lg px-4 py-2.5 flex items-center justify-center space-x-2 transition-opacity hover:opacity-80 border" style={{ backgroundColor: 'transparent', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                     <UserPlus size={14} style={{ color: 'var(--text-secondary)' }} />
                     <span className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>Request COO Introduction</span>
                   </button>

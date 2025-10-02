@@ -64,12 +64,10 @@ const SwipeableContainer = ({ children, onSectionChange }: SwipeableContainerPro
         {children.map((child, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-all duration-500 ease-out ${
+            className={`absolute inset-0 transition-opacity duration-500 ease-out flex items-center justify-center ${
               index === currentIndex 
-                ? 'translate-x-0 opacity-100 z-10' 
-                : index < currentIndex
-                ? '-translate-x-full opacity-0 z-0'
-                : 'translate-x-full opacity-0 z-0'
+                ? 'opacity-100 pointer-events-auto z-10' 
+                : 'opacity-0 pointer-events-none z-0'
             }`}
           >
             <SwipeableCard

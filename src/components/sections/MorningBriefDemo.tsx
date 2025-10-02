@@ -104,7 +104,7 @@ const MorningBriefDemo = () => {
           }
         }, 2000);
       }
-    }, messages[currentMessage]?.delay || 300);
+    }, (messages[currentMessage]?.delay || 300) * 1.3);
 
     return () => clearTimeout(timer);
   }, [currentMessage, hasStarted, messages]);
@@ -125,7 +125,7 @@ const MorningBriefDemo = () => {
         </div>
 
         {/* Phone mockup - Mobile optimized */}
-        <div className="rounded-3xl border overflow-hidden shadow-2xl w-full mx-auto" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--text-high)' }}>
+        <div className="rounded-3xl border overflow-hidden shadow-2xl w-full mx-auto" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'rgba(255, 255, 255, 0.12)' }}>
           <PhoneHeader isTyping={isTyping} />
 
           {/* Messages - Mobile optimized height */}

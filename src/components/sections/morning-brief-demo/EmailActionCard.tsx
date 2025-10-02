@@ -14,19 +14,19 @@ const EmailActionCard = ({ sender, subject, snippet, daysOverdue, priority, isVi
 
   return (
     <div className="flex justify-start animate-scale-in">
-      <div className="backdrop-blur-sm px-4 py-4 rounded-2xl border max-w-sm shadow-lg" style={{ backgroundColor: 'rgba(31, 31, 35, 0.8)', borderColor: priority === 'high' ? 'var(--text-alert)' : '#F59E0B' }}>
+      <div className="backdrop-blur-sm px-4 py-4 rounded-2xl border max-w-sm shadow-lg" style={{ backgroundColor: 'rgba(31, 31, 35, 0.8)', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
         <div className="space-y-3">
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-2">
-              <Mail size={14} style={{ color: priority === 'high' ? 'var(--text-alert)' : '#F59E0B' }} />
-              <span className={`text-xs font-medium`} style={{ color: priority === 'high' ? 'var(--text-alert)' : '#F59E0B' }}>
+              <Mail size={14} style={{ color: 'var(--text-secondary)' }} />
+              <span className="text-xs font-medium" style={{ color: 'var(--text-secondary)' }}>
                 {priority === 'high' ? 'High Priority' : 'Medium Priority'}
               </span>
             </div>
             {daysOverdue && (
               <div className="flex items-center space-x-1">
-                <AlertCircle size={12} style={{ color: 'var(--text-alert)' }} />
-                <span className="text-xs" style={{ color: 'var(--text-alert)' }}>{daysOverdue}d overdue</span>
+                <AlertCircle size={12} style={{ color: 'var(--text-secondary)' }} />
+                <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{daysOverdue}d overdue</span>
               </div>
             )}
           </div>
