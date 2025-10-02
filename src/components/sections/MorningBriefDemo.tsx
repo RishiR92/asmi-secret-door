@@ -109,10 +109,10 @@ const MorningBriefDemo = () => {
     return () => clearTimeout(timer);
   }, [currentMessage, hasStarted, messages]);
 
-  // Auto-scroll to bottom when new messages appear
+  // Auto-scroll to bottom when new messages appear (within container only)
   useEffect(() => {
-    if (messagesEndRef.current && scrollContainerRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
     }
   }, [currentMessage]);
 
