@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Clock, User, ArrowRight } from 'lucide-react';
-import MobileOptimizedSection from './MobileOptimizedSection';
+import { Clock, ArrowRight } from 'lucide-react';
 
 const MeetingContextDemo = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -69,53 +68,57 @@ const MeetingContextDemo = () => {
   };
 
   return (
-    <MobileOptimizedSection maxWidth="sm">
-      <div className="space-y-6">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-[400px] space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-            <Clock className="text-blue-400" size={20} />
+          <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
+            <Clock style={{ color: 'var(--text-secondary)' }} size={20} />
           </div>
-          <h2 className="text-2xl font-bold text-white leading-tight">
+          <h2 className="text-2xl font-bold leading-tight" style={{ color: 'var(--text-high)' }}>
             {steps[currentStep].title}
           </h2>
         </div>
 
         {/* Phone Demo */}
         <div 
-          className="bg-gray-900 rounded-3xl p-4 mx-auto max-w-xs cursor-pointer transition-all duration-300 hover:scale-105"
+          className="backdrop-blur-sm rounded-3xl p-4 cursor-pointer transition-all duration-300 hover:scale-105"
+          style={{ 
+            backgroundColor: 'rgba(31, 31, 35, 0.6)',
+            border: '1px solid rgba(255, 255, 255, 0.12)'
+          }}
           onClick={handleCardTap}
         >
           {/* Status Bar */}
-          <div className="flex justify-between items-center text-white text-xs mb-4">
+          <div className="flex justify-between items-center text-xs mb-4" style={{ color: 'var(--text-secondary)' }}>
             <span>1:45</span>
-            <div className="text-blue-400 text-xs">
-              <Clock size={12} className="inline mr-1" />
-              25 hours until meeting
+            <div className="flex items-center space-x-1">
+              <Clock size={12} />
+              <span>25h until meeting</span>
             </div>
             <div className="flex space-x-1">
-              <div className="w-1 h-1 bg-white rounded-full"></div>
-              <div className="w-1 h-1 bg-white rounded-full"></div>
-              <div className="w-1 h-1 bg-white rounded-full"></div>
+              <div className="w-1 h-1 rounded-full" style={{ backgroundColor: 'var(--text-secondary)' }}></div>
+              <div className="w-1 h-1 rounded-full" style={{ backgroundColor: 'var(--text-secondary)' }}></div>
+              <div className="w-1 h-1 rounded-full" style={{ backgroundColor: 'var(--text-secondary)' }}></div>
             </div>
           </div>
 
           {currentStep === 0 ? (
             // Message Input Step
             <div className="space-y-4 animate-fade-in">
-              <div className="bg-blue-600/20 border border-blue-500/30 rounded-xl p-3">
+              <div className="rounded-xl p-3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                 <div className="flex items-center space-x-3 mb-3">
-                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--accent-positive)' }}>
                     <span className="text-white text-sm font-bold">A</span>
                   </div>
                   <div>
-                    <p className="text-white text-sm font-medium">Asmi</p>
-                    <p className="text-blue-300 text-xs">Meeting prep assistant</p>
+                    <p className="text-sm font-medium" style={{ color: 'var(--text-high)' }}>Asmi</p>
+                    <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>Meeting prep assistant</p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-blue-500 rounded-2xl p-3">
+              <div className="rounded-2xl p-3" style={{ backgroundColor: 'var(--accent-positive)' }}>
                 <p className="text-white text-sm">
                   {typedText}
                   {typedText.length < steps[0].message.length && <span className="animate-pulse">|</span>}
@@ -123,10 +126,10 @@ const MeetingContextDemo = () => {
               </div>
 
               {typedText.length === steps[0].message.length && (
-                <div className="bg-gray-800 rounded-xl p-3 animate-fade-in">
-                  <p className="text-gray-300 text-sm">{contextData.meeting}</p>
+                <div className="rounded-xl p-3 animate-fade-in" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
+                  <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{contextData.meeting}</p>
                   <div className="mt-2 text-center">
-                    <button className="text-blue-400 text-xs underline">Tap to continue →</button>
+                    <button className="text-xs underline" style={{ color: 'var(--accent-positive)' }}>Tap to continue →</button>
                   </div>
                 </div>
               )}
@@ -134,47 +137,47 @@ const MeetingContextDemo = () => {
           ) : currentStep === 1 ? (
             // Context Step
             <div className="space-y-3 animate-fade-in">
-              <div className="bg-gray-800 rounded-xl p-3">
-                <p className="text-white text-xs font-medium mb-2">{contextData.meeting}</p>
+              <div className="rounded-xl p-3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
+                <p className="text-xs font-medium mb-2" style={{ color: 'var(--text-high)' }}>{contextData.meeting}</p>
               </div>
 
-              <div className="bg-blue-600/20 border border-blue-500/30 rounded-xl p-3 space-y-2">
+              <div className="rounded-xl p-3 space-y-2" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                 {contextData.insights.map((insight, index) => (
-                  <div key={index} className="flex items-start space-x-2 p-2 bg-white/5 rounded-lg">
+                  <div key={index} className="flex items-start space-x-2 p-2 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.03)' }}>
                     <span className="text-xs">{insight.icon}</span>
                     <div className="flex-1 min-w-0">
-                      <p className="text-white text-xs font-medium leading-tight mb-1">
+                      <p className="text-xs font-medium leading-tight mb-1" style={{ color: 'var(--text-high)' }}>
                         {insight.text}
                       </p>
-                      <p className="text-blue-300 text-xs">{insight.time}</p>
+                      <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{insight.time}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="bg-green-600/20 border border-green-500/30 rounded-xl p-2">
+              <div className="rounded-xl p-2" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                 <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <p className="text-green-300 text-xs font-medium">Context Brief Ready</p>
+                  <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: 'var(--accent-positive)' }}></div>
+                  <p className="text-xs font-medium" style={{ color: 'var(--accent-positive)' }}>Context Brief Ready</p>
                 </div>
               </div>
             </div>
           ) : (
             // Ready Step
             <div className="space-y-4 animate-fade-in text-center">
-              <div className="bg-green-600/20 border border-green-500/30 rounded-xl p-4">
-                <div className="w-12 h-12 bg-green-400 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <span className="text-black text-lg font-bold">✓</span>
+              <div className="rounded-xl p-4" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style={{ backgroundColor: 'var(--accent-positive)' }}>
+                  <span className="text-white text-lg font-bold">✓</span>
                 </div>
-                <p className="text-green-300 text-sm font-medium mb-2">
+                <p className="text-sm font-medium mb-2" style={{ color: 'var(--accent-positive)' }}>
                   You're prepared for Pat!
                 </p>
-                <p className="text-gray-300 text-xs">
+                <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
                   Board context loaded. Ready to impress Sequoia.
                 </p>
               </div>
               
-              <div className="flex items-center justify-center space-x-2 text-gray-400 text-xs">
+              <div className="flex items-center justify-center space-x-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
                 <span>Tap to restart</span>
                 <ArrowRight size={12} />
               </div>
@@ -192,18 +195,20 @@ const MeetingContextDemo = () => {
                 setCurrentStep(index);
                 if (index === 0) setTypedText('');
               }}
-              className={`w-2 h-2 rounded-full transition-all ${
-                index === currentStep ? 'bg-blue-400 w-6' : 'bg-gray-600'
-              }`}
+              className="w-2 h-2 rounded-full transition-all"
+              style={{ 
+                backgroundColor: index === currentStep ? 'var(--accent-positive)' : 'rgba(255, 255, 255, 0.2)',
+                width: index === currentStep ? '1.5rem' : '0.5rem'
+              }}
             />
           ))}
         </div>
 
-        <p className="text-gray-500 text-xs text-center">
+        <p className="text-xs text-center" style={{ color: 'var(--text-secondary)' }}>
           Tap demo to interact
         </p>
       </div>
-    </MobileOptimizedSection>
+    </div>
   );
 };
 

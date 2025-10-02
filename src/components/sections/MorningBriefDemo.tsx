@@ -104,7 +104,7 @@ const MorningBriefDemo = () => {
           }
         }, 2000);
       }
-    }, (messages[currentMessage]?.delay || 300) * 1.3);
+    }, (messages[currentMessage]?.delay || 300) * 0.8);
 
     return () => clearTimeout(timer);
   }, [currentMessage, hasStarted, messages]);
