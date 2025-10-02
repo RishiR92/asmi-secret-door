@@ -1,10 +1,10 @@
 
 import { useState, useEffect } from 'react';
-import { MessageCircle, Calendar, User } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import PhoneHeader from './morning-brief-demo/PhoneHeader';
 import ChatMessage from './morning-brief-demo/ChatMessage';
-import ScheduleCard from './morning-brief-demo/ScheduleCard';
-import BirthdayCard from './morning-brief-demo/BirthdayCard';
+import EmailActionCard from './morning-brief-demo/EmailActionCard';
+import DraftReplyCard from './morning-brief-demo/DraftReplyCard';
 import TypingIndicator from './morning-brief-demo/TypingIndicator';
 
 const MorningBriefDemo = () => {
@@ -14,25 +14,26 @@ const MorningBriefDemo = () => {
   const [isComplete, setIsComplete] = useState(false);
 
   const messages = [
-    { type: 'user', text: 'Good morning Asmi', delay: 400 }, // Faster
-    { type: 'typing', delay: 500 }, // Faster
-    { type: 'asmi', text: 'Good morning! Here\'s your day:', delay: 500 }, // Faster
-    { type: 'typing', delay: 500 }, // Faster
+    { type: 'user', text: 'Show me today\'s priorities', delay: 400 },
+    { type: 'typing', delay: 500 },
+    { type: 'asmi', text: 'Here are your urgent action items:', delay: 500 },
+    { type: 'typing', delay: 500 },
     { 
-      type: 'schedule', 
-      items: [
-        { icon: Calendar, text: '9 AM: Board meeting prep', color: 'text-blue-400', location: 'Office Conference Room', notes: true },
-        { icon: User, text: '11 AM: Coffee with Alex (Physical)', color: 'text-orange-400', location: 'Blue Bottle Coffee', notes: true },
-        { icon: User, text: '2 PM: 1:1 with Sarah', color: 'text-green-400', location: 'Virtual', notes: false },
-        { icon: Calendar, text: '4 PM: Investor call with Sequoia', color: 'text-purple-400', location: 'Virtual', notes: true }
-      ],
-      delay: 400 // Faster
+      type: 'email1',
+      sender: 'Michael Zhang - Sequoia Capital',
+      subject: 'Re: Investment Discussion Follow-up',
+      snippet: 'I wanted to circle back on our conversation about the Series A round. Would love to...',
+      daysOverdue: 3,
+      priority: 'high' as const,
+      delay: 400
     },
-    { type: 'typing', delay: 500 }, // Faster
+    { type: 'typing', delay: 500 },
+    { type: 'asmi', text: 'I can draft a reply for you:', delay: 500 },
+    { type: 'typing', delay: 500 },
     { 
-      type: 'birthday', 
-      text: 'Also, it\'s Ria\'s birthday today! 🎂',
-      delay: 500 // Faster
+      type: 'draft',
+      text: 'Hi Michael, apologies for the delay. I\'d love to continue our discussion about the Series A. How does Thursday at 2pm work for a call? Looking forward to exploring this further.',
+      delay: 400
     }
   ];
 
@@ -111,16 +112,28 @@ const MorningBriefDemo = () => {
 
             <TypingIndicator isVisible={isTyping && currentMessage >= 3 && currentMessage < 5} />
 
-            <ScheduleCard 
-              items={messages[4].items} 
+            <EmailActionCard 
+              sender={messages[4].sender}
+              subject={messages[4].subject}
+              snippet={messages[4].snippet}
+              daysOverdue={messages[4].daysOverdue}
+              priority={messages[4].priority}
               isVisible={currentMessage >= 5} 
             />
 
             <TypingIndicator isVisible={isTyping && currentMessage >= 5 && currentMessage < 7} />
 
-            <BirthdayCard 
+            <ChatMessage 
+              type="asmi" 
               text={messages[6].text} 
               isVisible={currentMessage >= 7} 
+            />
+
+            <TypingIndicator isVisible={isTyping && currentMessage >= 7 && currentMessage < 9} />
+
+            <DraftReplyCard 
+              draftText={messages[8].text}
+              isVisible={currentMessage >= 9} 
             />
 
             {/* Floating action indicators */}
@@ -137,7 +150,7 @@ const MorningBriefDemo = () => {
         {/* Bottom text */}
         <div className="text-center mt-4 sm:mt-6 px-4">
           <span className="text-gray-400 text-xs sm:text-sm font-light">
-            Asmi remembered Ria's birthday from last month's conversation
+            Draft replies and send directly from the same interface
           </span>
         </div>
       </div>

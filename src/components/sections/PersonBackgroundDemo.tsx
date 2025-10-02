@@ -1,21 +1,24 @@
 
-import { useState, useEffect } from 'react';
-import { Search, User, Building, Award, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
+import { Search, User, Building, Lightbulb } from 'lucide-react';
 import MobileOptimizedSection from './MobileOptimizedSection';
+import FundingCard from './person-background-demo/FundingCard';
+import COOHireCard from './person-background-demo/COOHireCard';
+import NetworkActions from './person-background-demo/NetworkActions';
 
 const PersonBackgroundDemo = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const steps = [
     {
-      title: "Know who you're meeting.",
+      title: "Deep insights on your network.",
       content: "search",
-      icon: <User className="text-purple-400" size={20} />
+      icon: <Lightbulb className="text-purple-400" size={20} />
     },
     {
-      title: "Know who you're meeting.",
-      content: "profile",
-      icon: <User className="text-purple-400" size={20} />
+      title: "Deep insights on your network.",
+      content: "insights",
+      icon: <Lightbulb className="text-purple-400" size={20} />
     }
   ];
 
@@ -55,12 +58,12 @@ const PersonBackgroundDemo = () => {
             // Search Step
             <div className="space-y-4">
               <div className="text-center">
-                <h3 className="text-lg font-semibold text-white mb-4">Quick lookup</h3>
+                <h3 className="text-lg font-semibold text-white mb-4">Network Research</h3>
               </div>
               
               <div className="bg-gray-800 rounded-xl p-3 flex items-center space-x-3">
                 <Search size={16} className="text-gray-400" />
-                <span className="text-gray-300 text-sm">Who's Sarah Chen again?</span>
+                <span className="text-gray-300 text-sm">Updates on Alex Rivera?</span>
               </div>
 
               <div className="bg-purple-600/20 border border-purple-500/30 rounded-xl p-3">
@@ -70,30 +73,30 @@ const PersonBackgroundDemo = () => {
                   </div>
                   <div>
                     <p className="text-white text-sm font-medium">Asmi</p>
-                    <p className="text-purple-300 text-xs">Person lookup</p>
+                    <p className="text-purple-300 text-xs">Running deep research...</p>
                   </div>
                 </div>
               </div>
 
               <div className="bg-purple-500 rounded-2xl p-3">
-                <p className="text-white text-sm text-center">Who's Sarah Chen again?</p>
+                <p className="text-white text-sm text-center">Updates on Alex Rivera?</p>
               </div>
             </div>
           ) : (
-            // Profile Step - Rich founder profile
+            // Network Insights Step - Alex Rivera profile
             <div className="space-y-4">
               <div className="bg-gray-800 rounded-xl p-3">
-                <p className="text-white text-sm">Sarah Chen - CEO at CloudFlow Technologies</p>
+                <p className="text-white text-sm">Alex Rivera - CEO at FinScale</p>
               </div>
 
               <div className="bg-purple-600/20 border border-purple-500/30 rounded-xl p-4">
                 <div className="flex items-start space-x-3 mb-4">
                   <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white font-bold text-lg">S</span>
+                    <span className="text-white font-bold text-lg">A</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-white font-semibold text-sm">Sarah Chen</h4>
-                    <p className="text-purple-300 text-xs">CEO @ CloudFlow Technologies</p>
+                    <h4 className="text-white font-semibold text-sm">Alex Rivera</h4>
+                    <p className="text-purple-300 text-xs">CEO @ FinScale</p>
                   </div>
                 </div>
 
@@ -102,32 +105,29 @@ const PersonBackgroundDemo = () => {
                     <Building size={12} className="text-blue-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-gray-300 text-xs font-medium">Background</p>
-                      <p className="text-gray-400 text-xs">Ex-Google PM, Stanford CS, 2nd-time founder</p>
+                      <p className="text-gray-400 text-xs">Ex-Stripe PM, MIT, Built 2 fintech unicorns</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-start space-x-2">
-                    <TrendingUp size={12} className="text-green-400 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-gray-300 text-xs font-medium">Company Traction</p>
-                      <p className="text-gray-400 text-xs">$2M ARR, 40% MoM growth, 50+ enterprise clients</p>
-                    </div>
-                  </div>
+                  <FundingCard 
+                    amount="50M"
+                    round="Series B"
+                    lead="Andreessen Horowitz"
+                  />
+
+                  <COOHireCard 
+                    name="Jennifer Park"
+                    previousRole="Ex-Stripe Operations VP"
+                  />
                   
-                  <div className="flex items-start space-x-2">
-                    <Award size={12} className="text-yellow-400 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-gray-300 text-xs font-medium">Secret Sauce</p>
-                      <p className="text-gray-400 text-xs">Built proprietary ML model that reduces cloud costs by 60%</p>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-white/5 rounded-lg p-2 mt-3">
-                    <p className="text-yellow-300 text-xs font-medium">💡 Inside Intel</p>
-                    <p className="text-gray-300 text-xs">Raised Series A at 3x revenue multiple. Rumored to be courting Google Cloud for strategic partnership.</p>
+                  <div className="bg-yellow-500/10 rounded-lg p-2 border border-yellow-500/20">
+                    <p className="text-yellow-300 text-xs font-medium">💡 Strategic Opportunity</p>
+                    <p className="text-gray-300 text-xs">With new funding and COO, they're scaling fast. Perfect time to strengthen relationship and explore partnerships.</p>
                   </div>
                 </div>
               </div>
+
+              <NetworkActions />
             </div>
           )}
         </div>
@@ -146,7 +146,7 @@ const PersonBackgroundDemo = () => {
         </div>
 
         <p className="text-gray-500 text-xs text-center">
-          Tap demo to interact
+          Automatic research on high-value connections in your network
         </p>
       </div>
     </MobileOptimizedSection>
