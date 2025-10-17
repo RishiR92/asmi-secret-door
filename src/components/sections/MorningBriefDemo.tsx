@@ -70,7 +70,7 @@ const MorningBriefDemo = () => {
     }
 
     return () => observer.disconnect();
-  }, [hasStarted]);
+  }, []); // Fixed: Remove hasStarted dependency to prevent re-initialization
 
   useEffect(() => {
     if (!hasStarted) return;
@@ -79,7 +79,7 @@ const MorningBriefDemo = () => {
 
     if (currentMessage < messages.length) {
       const currentMsg = messages[currentMessage];
-      const delay = currentMsg.type === 'typing' ? 800 : 1500;
+      const delay = currentMsg.type === 'typing' ? 600 : 1000; // Faster, smoother timing
       
       timer = setTimeout(() => {
         if (currentMsg.type === 'typing') {
@@ -87,11 +87,12 @@ const MorningBriefDemo = () => {
           setTimeout(() => {
             setIsTyping(false);
             setCurrentMessage(prev => prev + 1);
-          }, 800);
+          }, 600);
         } else {
+          setIsTyping(false); // Ensure typing is off for messages
           setCurrentMessage(prev => prev + 1);
         }
-      }, delay);
+      }, currentMessage === 0 ? 0 : delay); // Start first message immediately
     } else {
       // Loop back to start after a pause
       timer = setTimeout(() => {
@@ -101,7 +102,7 @@ const MorningBriefDemo = () => {
         if (scrollContainerRef.current) {
           scrollContainerRef.current.scrollTop = 0;
         }
-      }, 2000);
+      }, 2500); // Slightly longer pause for smooth loop
     }
 
     return () => {
