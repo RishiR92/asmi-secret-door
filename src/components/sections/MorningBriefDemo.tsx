@@ -1,121 +1,91 @@
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Briefcase, Clock, TrendingUp } from 'lucide-react';
-import PhoneHeader from './morning-brief-demo/PhoneHeader';
 import ChatMessage from './morning-brief-demo/ChatMessage';
-import HiringMetricCard from './morning-brief-demo/HiringMetricCard';
 import TypingIndicator from './morning-brief-demo/TypingIndicator';
 
-const MorningBriefDemo = () => {
-  const [currentMessage, setCurrentMessage] = useState(0);
+type MorningBriefDemoProps = {
+  isActive?: boolean;
+};
+
+const MorningBriefDemo = ({ isActive = false }: MorningBriefDemoProps) => {
+  // Step flow: 0=user msg, 1=typing, 2=intro msg, 3=typing, 4=metrics card, 5=typing, 6=final msg
+  const [step, setStep] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
-  const [hasStarted, setHasStarted] = useState(false);
-  const [isComplete, setIsComplete] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const messages = [
-    { type: 'user', text: 'For the next 7 days, send me a daily 6 PM hiring update — how many offers we rolled out, for which roles, compensation bands, and any pending approvals.', delay: 520 },
-    { type: 'typing', delay: 390 },
-    { type: 'asmi', text: 'Here\'s your Day 3 hiring update:', delay: 520 },
-    { type: 'typing', delay: 390 },
-    { 
-      type: 'metric1',
-      title: 'Offers Rolled Out',
-      value: '7',
-      details: '3 Backend @ $140K, 2 Design @ $110K, 2 Ops @ $95K',
-      icon: 'Briefcase',
-      priority: 'success' as const,
-      delay: 1040
-    },
-    { type: 'typing', delay: 390 },
-    { 
-      type: 'metric2',
-      title: 'Approvals Pending',
-      value: '4',
-      details: 'Growth + Marketing roles — waiting on finance sign-off',
-      icon: 'Clock',
-      priority: 'warning' as const,
-      delay: 1040
-    },
-    { type: 'typing', delay: 390 },
-    { 
-      type: 'metric3',
-      title: 'Market Alert',
-      value: '',
-      details: 'AI PM offers are now trending +12% in SF — you\'re below median.',
-      icon: 'TrendingUp',
-      priority: 'alert' as const,
-      delay: 1040
-    },
-    { type: 'typing', delay: 390 },
-    { type: 'asmi', text: 'Want me to send a note for finance to expedite approvals?', delay: 520 }
-  ];
+  // Content
+  const userMessage =
+    "For the next 7 days, send me a daily 6 PM hiring update — how many offers we rolled out, for which roles, compensation bands, and any pending approvals.";
+  const asmiIntro = "Here's your Day 3 hiring update:";
+  const offersDetails = '3 Backend @ $140K, 2 Design @ $110K, 2 Ops @ $95K';
+  const approvalsDetails = 'Growth + Marketing roles — waiting on finance sign-off';
+  const marketDetails = "AI PM offers are now trending +12% in SF — you're below median.";
+  const finalMessage = 'Want me to send a note for finance to expedite approvals?';
 
+  // Timings
+  const TYPING_MS = 600;
+  const MESSAGE_MS = 900;
+  const LOOP_PAUSE_MS = 1800;
+
+  // Reset when slide becomes inactive; start fresh when active
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasStarted) {
-            setHasStarted(true);
-          }
-        });
-      },
-      { threshold: 0.4 } // More sensitive for mobile
-    );
-
-    const currentElement = document.getElementById('morning-brief-demo');
-    if (currentElement) {
-      observer.observe(currentElement);
+    if (!isActive) {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      setIsTyping(false);
+      setStep(0);
+      if (scrollContainerRef.current) scrollContainerRef.current.scrollTop = 0;
+      return;
     }
+    // When activated, ensure we start from the beginning
+    setIsTyping(false);
+    setStep(0);
+  }, [isActive]);
 
-    return () => observer.disconnect();
-  }, []); // Fixed: Remove hasStarted dependency to prevent re-initialization
-
+  // Scheduler for step progression
   useEffect(() => {
-    if (!hasStarted) return;
+    if (!isActive) return;
 
-    let timer: NodeJS.Timeout;
+    if (timerRef.current) clearTimeout(timerRef.current);
 
-    if (currentMessage < messages.length) {
-      const currentMsg = messages[currentMessage];
-      const delay = currentMsg.type === 'typing' ? 600 : 1000; // Faster, smoother timing
-      
-      timer = setTimeout(() => {
-        if (currentMsg.type === 'typing') {
-          setIsTyping(true);
-          setTimeout(() => {
-            setIsTyping(false);
-            setCurrentMessage(prev => prev + 1);
-          }, 600);
-        } else {
-          setIsTyping(false); // Ensure typing is off for messages
-          setCurrentMessage(prev => prev + 1);
-        }
-      }, currentMessage === 0 ? 0 : delay); // Start first message immediately
-    } else {
-      // Loop back to start after a pause
-      timer = setTimeout(() => {
+    // Typing steps
+    if (step === 1 || step === 3 || step === 5) {
+      setIsTyping(true);
+      timerRef.current = setTimeout(() => {
         setIsTyping(false);
-        setCurrentMessage(0);
-        setIsComplete(false);
-        if (scrollContainerRef.current) {
-          scrollContainerRef.current.scrollTop = 0;
-        }
-      }, 2500); // Slightly longer pause for smooth loop
+        setStep((s) => s + 1);
+      }, TYPING_MS);
+      return () => {
+        if (timerRef.current) clearTimeout(timerRef.current);
+      };
     }
+
+    // Non-typing steps: show content, then advance
+    const delay = step === 6 ? LOOP_PAUSE_MS : MESSAGE_MS;
+    timerRef.current = setTimeout(() => {
+      if (step === 6) {
+        // Loop back after short pause
+        setStep(0);
+        if (scrollContainerRef.current) scrollContainerRef.current.scrollTop = 0;
+      } else {
+        setStep((s) => s + 1);
+      }
+    }, step === 0 ? MESSAGE_MS : delay);
 
     return () => {
-      if (timer) clearTimeout(timer);
+      if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [currentMessage, hasStarted, messages]);
+  }, [isActive, step]);
 
-  // Auto-scroll to bottom when new messages appear (within container only)
+  // Auto-scroll within the container
   useEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
     }
-  }, [currentMessage]);
+  }, [step, isTyping]);
 
   return (
     <div id="morning-brief-demo" className="min-h-screen w-full flex items-center justify-center px-4" style={{ backgroundColor: 'var(--bg-primary)' }}>
@@ -129,41 +99,32 @@ const MorningBriefDemo = () => {
             </div>
             <div className="flex-1">
               <h3 className="font-semibold text-white text-sm">Asmi</h3>
-              <p className="text-xs text-gray-400">
-                {isTyping ? 'typing...' : 'online'}
-              </p>
+              <p className="text-xs text-gray-400">{isTyping ? 'typing...' : 'online'}</p>
             </div>
           </div>
 
           {/* Messages - WhatsApp style */}
-          <div 
+          <div
             ref={scrollContainerRef}
             className="p-4 space-y-3 h-[500px] relative overflow-y-auto scroll-smooth"
             style={{ backgroundColor: '#0B141A' }}
           >
-            <ChatMessage 
-              type="user" 
-              text={messages[0].text} 
-              isVisible={currentMessage >= 1} 
-            />
+            {/* 0: User message */}
+            <ChatMessage type="user" text={userMessage} isVisible={isActive && step >= 0} />
 
-            <TypingIndicator isVisible={isTyping && currentMessage >= 1 && currentMessage < 3} />
+            {/* 1: Typing */}
+            <TypingIndicator isVisible={isActive && isTyping && step === 1} />
 
-            <ChatMessage 
-              type="asmi" 
-              text={messages[2].text} 
-              isVisible={currentMessage >= 3} 
-            />
+            {/* 2: Asmi intro */}
+            <ChatMessage type="asmi" text={asmiIntro} isVisible={isActive && step >= 2} />
 
-            <TypingIndicator isVisible={isTyping && currentMessage >= 3 && currentMessage < 5} />
+            {/* 3: Typing */}
+            <TypingIndicator isVisible={isActive && isTyping && step === 3} />
 
-            {/* Hiring Report Card */}
-            {currentMessage >= 5 && (
+            {/* 4: Metrics card */}
+            {isActive && step >= 4 && (
               <div className="flex justify-start animate-scale-in">
-                <div 
-                  className="rounded-lg p-4 max-w-[85%] space-y-3" 
-                  style={{ backgroundColor: '#1F2C34' }}
-                >
+                <div className="rounded-lg p-4 max-w-[85%] space-y-3" style={{ backgroundColor: '#1F2C34' }}>
                   <div className="flex items-center space-x-2 pb-2" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                     <span className="text-base">📊</span>
                     <h4 className="font-semibold text-sm text-white">Hiring Sprint — Day 3</h4>
@@ -177,7 +138,7 @@ const MorningBriefDemo = () => {
                         <p className="text-sm font-semibold text-white">Offers Rolled Out</p>
                         <p className="text-base font-bold" style={{ color: '#00A884' }}>7</p>
                       </div>
-                      <p className="text-xs text-gray-400 mt-0.5">{messages[4].details}</p>
+                      <p className="text-xs text-gray-400 mt-0.5">{offersDetails}</p>
                     </div>
                   </div>
 
@@ -189,7 +150,7 @@ const MorningBriefDemo = () => {
                         <p className="text-sm font-semibold text-white">Approvals Pending</p>
                         <p className="text-base font-bold" style={{ color: '#FBB024' }}>4</p>
                       </div>
-                      <p className="text-xs text-gray-400 mt-0.5">{messages[6].details}</p>
+                      <p className="text-xs text-gray-400 mt-0.5">{approvalsDetails}</p>
                     </div>
                   </div>
 
@@ -198,22 +159,19 @@ const MorningBriefDemo = () => {
                     <TrendingUp size={14} style={{ color: '#EF4444', flexShrink: 0 }} className="mt-0.5" />
                     <div className="flex-1">
                       <p className="text-sm font-semibold text-white">Market Alert</p>
-                      <p className="text-xs text-gray-400 mt-0.5">{messages[8].details}</p>
+                      <p className="text-xs text-gray-400 mt-0.5">{marketDetails}</p>
                     </div>
                   </div>
                 </div>
               </div>
             )}
 
-            <TypingIndicator isVisible={isTyping && currentMessage >= 9 && currentMessage < 11} />
+            {/* 5: Typing */}
+            <TypingIndicator isVisible={isActive && isTyping && step === 5} />
 
-            <ChatMessage 
-              type="asmi" 
-              text={messages[10].text} 
-              isVisible={currentMessage >= 11} 
-            />
+            {/* 6: Final message */}
+            <ChatMessage type="asmi" text={finalMessage} isVisible={isActive && step >= 6} />
 
-            {/* Scroll anchor */}
             <div ref={messagesEndRef} />
           </div>
         </div>

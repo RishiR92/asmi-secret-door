@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, isValidElement, cloneElement } from 'react';
 import SwipeableCard from './SwipeableCard';
 
 interface SwipeableContainerProps {
@@ -61,25 +61,38 @@ const SwipeableContainer = ({ children, onSectionChange }: SwipeableContainerPro
 
       {/* Card Stack */}
       <div className="relative w-full h-full">
-        {children.map((child, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-500 ease-out flex items-center justify-center ${
-              index === currentIndex 
-                ? 'opacity-100 pointer-events-auto z-10' 
-                : 'opacity-0 pointer-events-none z-0'
-            }`}
-          >
-            <SwipeableCard
-              onSwipeLeft={handleSwipeLeft}
-              onSwipeRight={handleSwipeRight}
-              isActive={index === currentIndex}
-              showGuide={showGuide && index === 0}
+        {children.map((child, index) => {
+          const isActiveSlide = index === currentIndex;
+
+          let content = child as any;
+          if (isValidElement(child)) {
+            const inner = (child as any).props?.children;
+            if (isValidElement(inner)) {
+              content = cloneElement(child as any, {}, cloneElement(inner as any, { isActive: isActiveSlide } as any));
+            } else if (Array.isArray(inner)) {
+              const clonedChildren = inner.map((c: any) => (isValidElement(c) ? cloneElement(c as any, { isActive: isActiveSlide } as any) : c));
+              content = cloneElement(child as any, {}, clonedChildren);
+            }
+          }
+
+          return (
+            <div
+              key={index}
+              className={`absolute inset-0 transition-opacity duration-500 ease-out flex items-center justify-center ${
+                isActiveSlide ? 'opacity-100 pointer-events-auto z-10' : 'opacity-0 pointer-events-none z-0'
+              }`}
             >
-              {child}
-            </SwipeableCard>
-          </div>
-        ))}
+              <SwipeableCard
+                onSwipeLeft={handleSwipeLeft}
+                onSwipeRight={handleSwipeRight}
+                isActive={isActiveSlide}
+                showGuide={showGuide && index === 0}
+              >
+                {content}
+              </SwipeableCard>
+            </div>
+          );
+        })}
       </div>
 
       {/* Section Counter */}
