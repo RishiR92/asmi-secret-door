@@ -75,33 +75,38 @@ const MorningBriefDemo = () => {
   useEffect(() => {
     if (!hasStarted) return;
 
-    const timer = setTimeout(() => {
-      if (currentMessage < messages.length) {
-        const currentMsg = messages[currentMessage];
-        
+    let timer: NodeJS.Timeout;
+
+    if (currentMessage < messages.length) {
+      const currentMsg = messages[currentMessage];
+      const delay = currentMsg.type === 'typing' ? 800 : 1500;
+      
+      timer = setTimeout(() => {
         if (currentMsg.type === 'typing') {
           setIsTyping(true);
           setTimeout(() => {
             setIsTyping(false);
             setCurrentMessage(prev => prev + 1);
-          }, 500);
+          }, 800);
         } else {
           setCurrentMessage(prev => prev + 1);
         }
-      } else {
-        // Loop back to start after a pause
-        setTimeout(() => {
-          setCurrentMessage(0);
-          setIsComplete(false);
-          // Scroll to top when restarting
-          if (scrollContainerRef.current) {
-            scrollContainerRef.current.scrollTop = 0;
-          }
-        }, 2000);
-      }
-    }, (messages[currentMessage]?.delay || 300) * 0.8);
+      }, delay);
+    } else {
+      // Loop back to start after a pause
+      timer = setTimeout(() => {
+        setIsTyping(false);
+        setCurrentMessage(0);
+        setIsComplete(false);
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTop = 0;
+        }
+      }, 2000);
+    }
 
-    return () => clearTimeout(timer);
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [currentMessage, hasStarted, messages]);
 
   // Auto-scroll to bottom when new messages appear (within container only)
