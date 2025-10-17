@@ -15,6 +15,7 @@ import WhyMessagingSection from './sections/WhyMessagingSection';
 import OrbitDialVisionSection from './sections/OrbitDialVisionSection';
 import BuiltForEveryoneSection from './sections/BuiltForEveryoneSection';
 import FinalCTASectionNew from './sections/FinalCTASectionNew';
+import AIChiefOfStaffSection from './sections/AIChiefOfStaffSection';
 
 const InvestorSite = () => {
   const [currentSection, setCurrentSection] = useState(0);
@@ -22,6 +23,7 @@ const InvestorSite = () => {
 
   const sections = [
     { component: InteractiveHeroSection, title: 'Hero' },
+    { component: AIChiefOfStaffSection, title: 'AI Chief of Staff' },
     { component: AsmiIntroSection, title: 'Asmi Intro' },
     { component: MorningBriefDemo, title: 'Morning Brief' },
     { component: MeetingContextDemo, title: 'Meeting Context' },
