@@ -1,10 +1,9 @@
 
 import { useState, useEffect, useRef } from 'react';
-import { MessageCircle } from 'lucide-react';
+import { Briefcase, Clock, TrendingUp } from 'lucide-react';
 import PhoneHeader from './morning-brief-demo/PhoneHeader';
 import ChatMessage from './morning-brief-demo/ChatMessage';
-import EmailActionCard from './morning-brief-demo/EmailActionCard';
-import DraftReplyCard from './morning-brief-demo/DraftReplyCard';
+import HiringMetricCard from './morning-brief-demo/HiringMetricCard';
 import TypingIndicator from './morning-brief-demo/TypingIndicator';
 
 const MorningBriefDemo = () => {
@@ -16,45 +15,41 @@ const MorningBriefDemo = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const messages = [
-    { type: 'user', text: 'Show me today\'s priorities', delay: 520 },
+    { type: 'user', text: 'For the next 7 days, send me a daily 6 PM hiring update — how many offers we rolled out, for which roles, compensation bands, and any pending approvals.', delay: 520 },
     { type: 'typing', delay: 390 },
-    { type: 'asmi', text: 'Here are your urgent action items:', delay: 520 },
-    { type: 'typing', delay: 390 },
-    { 
-      type: 'email1',
-      sender: 'Michael Zhang - Sequoia Capital',
-      subject: 'Re: Investment Discussion Follow-up',
-      snippet: 'I wanted to circle back on our conversation about the Series A round. Would love to...',
-      daysOverdue: 3,
-      priority: 'high' as const,
-      delay: 1040
-    },
-    { type: 'typing', delay: 390 },
-    { type: 'asmi', text: 'I can draft a reply for you:', delay: 520 },
+    { type: 'asmi', text: 'Here\'s your Day 3 hiring update:', delay: 520 },
     { type: 'typing', delay: 390 },
     { 
-      type: 'draft',
-      text: 'Hi Michael, apologies for the delay. I\'d love to continue our discussion about the Series A. How does Thursday at 2pm work for a call? Looking forward to exploring this further.',
-      delay: 1560
-    },
-    { type: 'typing', delay: 390 },
-    { 
-      type: 'email2',
-      sender: 'Sarah Chen - Partner at TechVentures',
-      subject: 'Partnership Proposal - Follow-up',
-      snippet: 'Following up on our discussion about the strategic partnership. Would love to...',
-      priority: 'medium' as const,
+      type: 'metric1',
+      title: 'Offers Rolled Out',
+      value: '7',
+      details: '3 Backend @ $140K, 2 Design @ $110K, 2 Ops @ $95K',
+      icon: 'Briefcase',
+      priority: 'success' as const,
       delay: 1040
     },
     { type: 'typing', delay: 390 },
     { 
-      type: 'email3',
-      sender: 'Contract Deadline - Acme Corp',
-      subject: 'Client Contract Review Needed',
-      snippet: 'The revised contract needs your final approval before we can proceed. Due today...',
-      priority: 'high' as const,
+      type: 'metric2',
+      title: 'Approvals Pending',
+      value: '4',
+      details: 'Growth + Marketing roles — waiting on finance sign-off',
+      icon: 'Clock',
+      priority: 'warning' as const,
       delay: 1040
-    }
+    },
+    { type: 'typing', delay: 390 },
+    { 
+      type: 'metric3',
+      title: 'Market Alert',
+      value: '',
+      details: 'AI PM offers are now trending +12% in SF — you\'re below median.',
+      icon: 'TrendingUp',
+      priority: 'alert' as const,
+      delay: 1040
+    },
+    { type: 'typing', delay: 390 },
+    { type: 'asmi', text: 'Want me to send a note for finance to expedite approvals?', delay: 520 }
   ];
 
   useEffect(() => {
@@ -121,7 +116,7 @@ const MorningBriefDemo = () => {
       <div className="w-full max-w-[400px] mx-auto py-8">
         {/* Header */}
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold" style={{ color: 'var(--text-high)' }}>Inbox → Actionable Updates</h2>
+          <h2 className="text-2xl font-bold" style={{ color: 'var(--text-high)' }}>Asmi turns your 7-day hiring sprint into one clean daily dashboard — inside chat.</h2>
         </div>
 
         {/* Phone mockup - Mobile optimized */}
@@ -149,68 +144,54 @@ const MorningBriefDemo = () => {
 
             <TypingIndicator isVisible={isTyping && currentMessage >= 3 && currentMessage < 5} />
 
-            <EmailActionCard 
-              sender={messages[4].sender}
-              subject={messages[4].subject}
-              snippet={messages[4].snippet}
-              daysOverdue={messages[4].daysOverdue}
+            <HiringMetricCard 
+              title={messages[4].title}
+              value={messages[4].value}
+              details={messages[4].details}
+              icon={Briefcase}
               priority={messages[4].priority}
               isVisible={currentMessage >= 5} 
             />
 
             <TypingIndicator isVisible={isTyping && currentMessage >= 5 && currentMessage < 7} />
 
-            <ChatMessage 
-              type="asmi" 
-              text={messages[6].text} 
+            <HiringMetricCard 
+              title={messages[6].title}
+              value={messages[6].value}
+              details={messages[6].details}
+              icon={Clock}
+              priority={messages[6].priority}
               isVisible={currentMessage >= 7} 
             />
 
             <TypingIndicator isVisible={isTyping && currentMessage >= 7 && currentMessage < 9} />
 
-            <DraftReplyCard 
-              draftText={messages[8].text}
+            <HiringMetricCard 
+              title={messages[8].title}
+              value={messages[8].value}
+              details={messages[8].details}
+              icon={TrendingUp}
+              priority={messages[8].priority}
               isVisible={currentMessage >= 9} 
             />
 
             <TypingIndicator isVisible={isTyping && currentMessage >= 9 && currentMessage < 11} />
 
-            <EmailActionCard 
-              sender={messages[10].sender}
-              subject={messages[10].subject}
-              snippet={messages[10].snippet}
-              priority={messages[10].priority}
+            <ChatMessage 
+              type="asmi" 
+              text={messages[10].text} 
               isVisible={currentMessage >= 11} 
-            />
-
-            <TypingIndicator isVisible={isTyping && currentMessage >= 11 && currentMessage < 13} />
-
-            <EmailActionCard 
-              sender={messages[12].sender}
-              subject={messages[12].subject}
-              snippet={messages[12].snippet}
-              priority={messages[12].priority}
-              isVisible={currentMessage >= 13} 
             />
 
             {/* Scroll anchor */}
             <div ref={messagesEndRef} />
-
-            {/* Floating action indicators */}
-            {currentMessage >= 3 && (
-              <div className="absolute bottom-4 right-4 space-y-2">
-                <div className="bg-green-500/20 border border-green-400/40 rounded-full p-2">
-                  <MessageCircle size={12} className="text-green-400" />
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
         {/* Bottom text */}
         <div className="text-center mt-6">
           <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
-            Draft replies and send directly from the same interface
+            Real-time hiring insights compiled from mail, calendar, and market data
           </p>
         </div>
       </div>
