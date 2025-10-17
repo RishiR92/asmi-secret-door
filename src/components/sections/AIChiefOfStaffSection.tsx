@@ -12,9 +12,11 @@ const AIChiefOfStaffSection = () => {
   }, []);
 
   const agents = [
-    { name: 'Meeting Prep Agent', icon: '📋', delay: 0 },
-    { name: 'Network Agent', icon: '🔗', delay: 0.3 },
-    { name: 'Email Agent', icon: '📧', delay: 0.6 }
+    { icon: '⚡', delay: 0, angle: -60 },
+    { icon: '💫', delay: 0.15, angle: -30 },
+    { icon: '🤖', delay: 0.3, angle: 0 },
+    { icon: '✨', delay: 0.45, angle: 30 },
+    { icon: '⭐', delay: 0.6, angle: 60 }
   ];
 
   return (
@@ -56,78 +58,70 @@ const AIChiefOfStaffSection = () => {
         </div>
 
         {/* Animation Section */}
-        <div className="space-y-4 min-h-[300px]">
-          {/* User Prompt - WhatsApp Style */}
+        <div className="relative min-h-[320px] flex items-center justify-center">
+          {/* User Prompt Text */}
           {step >= 0 && (
-            <div className="flex justify-end animate-slide-in-right">
-              <div 
-                className="px-4 py-3 rounded-lg rounded-tr-sm max-w-[85%]"
-                style={{ backgroundColor: '#005C4B' }}
-              >
-                <span className="text-sm text-white">
-                  Get me ready for today
-                </span>
-              </div>
+            <div 
+              className="absolute left-0 transition-all duration-1000 ease-out"
+              style={{
+                opacity: step >= 1 ? 0 : 1,
+                transform: step >= 1 ? 'translateX(150px)' : 'translateX(0)'
+              }}
+            >
+              <span className="text-white text-lg font-medium">
+                User Prompt
+              </span>
             </div>
           )}
 
-          {/* Asmi thinking/coordinating */}
-          {step >= 1 && (
-            <div className="flex justify-start animate-scale-in">
-              <div 
-                className="px-4 py-3 rounded-lg rounded-tl-sm"
-                style={{ backgroundColor: '#1F2C34' }}
-              >
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#00D96F' }}></div>
-                  <span className="text-sm text-white">Coordinating agents...</span>
-                </div>
-              </div>
+          {/* Central Asmi Logo */}
+          <div className="relative">
+            <div 
+              className="w-24 h-24 rounded-full flex flex-col items-center justify-center transition-all duration-500"
+              style={{ 
+                backgroundColor: '#25D366',
+                transform: step === 2 ? 'scale(1.15)' : 'scale(1)',
+                boxShadow: step === 2 ? '0 0 30px rgba(0, 217, 111, 0.6)' : 'none'
+              }}
+            >
+              <MessageCircle size={36} color="#fff" fill="#fff" />
+              <span className="text-white text-xs font-bold mt-1">Asmi</span>
             </div>
-          )}
 
-          {/* AI Agents spinning up */}
-          {step >= 2 && (
-            <div className="flex justify-center space-x-3 py-4 animate-fade-in">
-              {agents.map((agent, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col items-center space-y-2 animate-scale-in"
-                  style={{ 
-                    animationDelay: `${agent.delay}s`,
-                    opacity: step >= 2 ? 1 : 0
-                  }}
-                >
-                  <div 
-                    className="w-16 h-16 rounded-full flex items-center justify-center text-2xl animate-spin"
-                    style={{ 
-                      backgroundColor: '#1F2C34',
-                      animationDuration: '2s'
-                    }}
-                  >
-                    {agent.icon}
-                  </div>
-                  <span className="text-xs text-gray-400 text-center max-w-[70px]">
-                    {agent.name}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Completion message */}
-          {step >= 3 && (
-            <div className="flex justify-start animate-scale-in">
-              <div 
-                className="px-4 py-3 rounded-lg rounded-tl-sm"
-                style={{ backgroundColor: '#1F2C34' }}
-              >
-                <span className="text-sm text-white">
-                  ✓ All agents synced. You're all set!
-                </span>
-              </div>
-            </div>
-          )}
+            {/* AI Agents emerging in radial pattern */}
+            {step >= 3 && (
+              <>
+                {agents.map((agent, index) => {
+                  const radius = 100;
+                  const angleRad = (agent.angle * Math.PI) / 180;
+                  const x = Math.cos(angleRad) * radius;
+                  const y = Math.sin(angleRad) * radius;
+                  
+                  return (
+                    <div
+                      key={index}
+                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-scale-in"
+                      style={{ 
+                        animationDelay: `${agent.delay}s`,
+                        transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`
+                      }}
+                    >
+                      <div 
+                        className="w-14 h-14 rounded-full flex items-center justify-center text-2xl"
+                        style={{ 
+                          backgroundColor: '#1F2C34',
+                          animation: 'float-subtle 2s ease-in-out infinite',
+                          animationDelay: `${agent.delay * 2}s`
+                        }}
+                      >
+                        {agent.icon}
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
