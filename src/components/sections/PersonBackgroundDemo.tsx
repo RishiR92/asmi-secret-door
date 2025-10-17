@@ -1,4 +1,4 @@
-import { Calendar, FileText, CreditCard, Bell } from 'lucide-react';
+import { Calendar, FileText, CreditCard } from 'lucide-react';
 
 const PersonBackgroundDemo = () => {
   return (
@@ -51,7 +51,23 @@ const PersonBackgroundDemo = () => {
               </div>
             </div>
 
-            {/* Asmi Message 3 - PTM */}
+            {/* Asmi Message 3 - Fee Payment (with link) */}
+            <div className="flex justify-start">
+              <div className="px-4 py-2.5 rounded-lg rounded-tl-sm max-w-[85%]" style={{ backgroundColor: '#1F2C34' }}>
+                <div className="flex items-start space-x-2">
+                  <CreditCard size={16} style={{ color: '#EF4444', flexShrink: 0 }} className="mt-0.5" />
+                  <div>
+                    <p className="text-sm font-medium text-white">Fee payment</p>
+                    <p className="text-xs text-gray-400 mt-0.5">Deadline - 28th Oct</p>
+                    <a href="#" className="text-xs mt-1 inline-block" style={{ color: '#00A884' }}>
+                      pay.greenfieldschool.edu/fee2024
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Asmi Message 4 - PTM */}
             <div className="flex justify-start">
               <div className="px-4 py-2.5 rounded-lg rounded-tl-sm max-w-[85%]" style={{ backgroundColor: '#1F2C34' }}>
                 <div className="flex items-start space-x-2">
@@ -64,26 +80,10 @@ const PersonBackgroundDemo = () => {
               </div>
             </div>
 
-            {/* Asmi Message 4 - Fee Payment (with action) */}
+            {/* Asmi Message 5 - Reminder Text */}
             <div className="flex justify-start">
               <div className="px-4 py-2.5 rounded-lg rounded-tl-sm max-w-[85%]" style={{ backgroundColor: '#1F2C34' }}>
-                <div className="flex items-start space-x-2">
-                  <CreditCard size={16} style={{ color: '#EF4444', flexShrink: 0 }} className="mt-0.5" />
-                  <div>
-                    <p className="text-sm font-medium text-white">Fee payment link attached</p>
-                    <p className="text-xs text-gray-400 mt-0.5">Deadline - 28th Oct</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Asmi Message 5 - Action Prompt */}
-            <div className="flex justify-start">
-              <div className="px-4 py-2.5 rounded-lg rounded-tl-sm max-w-[85%]" style={{ backgroundColor: '#1F2C34' }}>
-                <div className="flex items-start space-x-2">
-                  <Bell size={16} style={{ color: '#00A884', flexShrink: 0 }} className="mt-0.5" />
-                  <p className="text-sm text-white">Want me to set a reminder for Monday?</p>
-                </div>
+                <p className="text-sm text-white">Want me to set a reminder for Monday?</p>
               </div>
             </div>
           </div>
