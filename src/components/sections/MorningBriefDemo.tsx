@@ -114,19 +114,26 @@ const MorningBriefDemo = () => {
   return (
     <div id="morning-brief-demo" className="min-h-screen w-full flex items-center justify-center px-4" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="w-full max-w-[400px] mx-auto py-8">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold" style={{ color: 'var(--text-high)' }}>Asmi turns your 7-day hiring sprint into one clean daily dashboard — inside chat.</h2>
-        </div>
+        {/* WhatsApp-style chat interface */}
+        <div className="rounded-2xl overflow-hidden shadow-2xl w-full mx-auto" style={{ backgroundColor: '#0B141A' }}>
+          {/* WhatsApp Header */}
+          <div className="px-4 py-3 flex items-center space-x-3" style={{ backgroundColor: '#202C33' }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg" style={{ backgroundColor: '#00A884' }}>
+              A
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-white text-sm">Asmi</h3>
+              <p className="text-xs text-gray-400">
+                {isTyping ? 'typing...' : 'online'}
+              </p>
+            </div>
+          </div>
 
-        {/* Phone mockup - Mobile optimized */}
-        <div className="rounded-3xl border overflow-hidden shadow-2xl w-full mx-auto" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'rgba(255, 255, 255, 0.12)' }}>
-          <PhoneHeader isTyping={isTyping} />
-
-          {/* Messages - Mobile optimized height */}
+          {/* Messages - WhatsApp style */}
           <div 
             ref={scrollContainerRef}
-            className="p-4 space-y-4 bg-gradient-to-b from-[#121214] to-[#1F1F23] h-[500px] relative overflow-y-auto scroll-smooth"
+            className="p-4 space-y-3 h-[500px] relative overflow-y-auto scroll-smooth"
+            style={{ backgroundColor: '#0B141A' }}
           >
             <ChatMessage 
               type="user" 
@@ -144,36 +151,53 @@ const MorningBriefDemo = () => {
 
             <TypingIndicator isVisible={isTyping && currentMessage >= 3 && currentMessage < 5} />
 
-            <HiringMetricCard 
-              title={messages[4].title}
-              value={messages[4].value}
-              details={messages[4].details}
-              icon={Briefcase}
-              priority={messages[4].priority}
-              isVisible={currentMessage >= 5} 
-            />
+            {/* Hiring Report Card */}
+            {currentMessage >= 5 && (
+              <div className="flex justify-start animate-scale-in">
+                <div 
+                  className="rounded-lg p-4 max-w-[85%] space-y-3" 
+                  style={{ backgroundColor: '#1F2C34' }}
+                >
+                  <div className="flex items-center space-x-2 pb-2" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                    <span className="text-base">📊</span>
+                    <h4 className="font-semibold text-sm text-white">Hiring Sprint — Day 3</h4>
+                  </div>
 
-            <TypingIndicator isVisible={isTyping && currentMessage >= 5 && currentMessage < 7} />
+                  {/* Offers Rolled Out */}
+                  <div className="flex items-start space-x-2">
+                    <Briefcase size={14} style={{ color: '#00A884', flexShrink: 0 }} className="mt-0.5" />
+                    <div className="flex-1">
+                      <div className="flex items-baseline space-x-2">
+                        <p className="text-sm font-semibold text-white">Offers Rolled Out</p>
+                        <p className="text-base font-bold" style={{ color: '#00A884' }}>7</p>
+                      </div>
+                      <p className="text-xs text-gray-400 mt-0.5">{messages[4].details}</p>
+                    </div>
+                  </div>
 
-            <HiringMetricCard 
-              title={messages[6].title}
-              value={messages[6].value}
-              details={messages[6].details}
-              icon={Clock}
-              priority={messages[6].priority}
-              isVisible={currentMessage >= 7} 
-            />
+                  {/* Approvals Pending */}
+                  <div className="flex items-start space-x-2">
+                    <Clock size={14} style={{ color: '#FBB024', flexShrink: 0 }} className="mt-0.5" />
+                    <div className="flex-1">
+                      <div className="flex items-baseline space-x-2">
+                        <p className="text-sm font-semibold text-white">Approvals Pending</p>
+                        <p className="text-base font-bold" style={{ color: '#FBB024' }}>4</p>
+                      </div>
+                      <p className="text-xs text-gray-400 mt-0.5">{messages[6].details}</p>
+                    </div>
+                  </div>
 
-            <TypingIndicator isVisible={isTyping && currentMessage >= 7 && currentMessage < 9} />
-
-            <HiringMetricCard 
-              title={messages[8].title}
-              value={messages[8].value}
-              details={messages[8].details}
-              icon={TrendingUp}
-              priority={messages[8].priority}
-              isVisible={currentMessage >= 9} 
-            />
+                  {/* Market Alert */}
+                  <div className="flex items-start space-x-2">
+                    <TrendingUp size={14} style={{ color: '#EF4444', flexShrink: 0 }} className="mt-0.5" />
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-white">Market Alert</p>
+                      <p className="text-xs text-gray-400 mt-0.5">{messages[8].details}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <TypingIndicator isVisible={isTyping && currentMessage >= 9 && currentMessage < 11} />
 

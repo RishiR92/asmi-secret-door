@@ -13,12 +13,12 @@ const ProcessingMessage = ({ type, text, isVisible }: ProcessingMessageProps) =>
   if (type === 'processing') {
     return (
       <div className="flex justify-start animate-scale-in">
-        <div className="bg-purple-900/40 backdrop-blur-sm px-4 py-3 rounded-2xl rounded-tl-sm max-w-xs border border-purple-400/30 shadow-lg">
+        <div className="px-4 py-3 rounded-lg rounded-tl-sm max-w-[85%]" style={{ backgroundColor: '#1F2C34' }}>
           <div className="flex items-center space-x-2 mb-1">
-            <div className="w-3 h-3 border-2 border-purple-400 border-t-transparent rounded-full animate-spin"></div>
-            <span className="text-purple-400 text-xs font-medium">Processing</span>
+            <div className="w-2.5 h-2.5 border-2 rounded-full animate-spin" style={{ borderColor: '#00A884', borderTopColor: 'transparent' }}></div>
+            <span className="text-xs font-medium" style={{ color: '#00A884' }}>Processing</span>
           </div>
-          <span className="text-purple-200 text-sm font-light">{text}</span>
+          <span className="text-sm text-white">{text}</span>
         </div>
       </div>
     );
@@ -26,12 +26,12 @@ const ProcessingMessage = ({ type, text, isVisible }: ProcessingMessageProps) =>
 
   return (
     <div className="flex justify-start animate-scale-in">
-      <div className="bg-gradient-to-r from-purple-500/30 to-purple-600/30 border border-purple-400/40 px-4 py-3 rounded-2xl rounded-tl-sm max-w-xs shadow-lg backdrop-blur-sm">
-        <div className="flex items-center space-x-2 mb-2">
-          <CheckCircle size={14} className="text-purple-400" />
-          <span className="text-purple-400 text-xs font-medium">Success</span>
+      <div className="px-4 py-3 rounded-lg rounded-tl-sm max-w-[85%]" style={{ backgroundColor: '#1F2C34' }}>
+        <div className="flex items-center space-x-2 mb-1">
+          <CheckCircle size={12} style={{ color: '#00A884' }} />
+          <span className="text-xs font-medium" style={{ color: '#00A884' }}>Success</span>
         </div>
-        <span className="text-purple-200 text-sm font-light">{text}</span>
+        <span className="text-sm text-white">{text}</span>
       </div>
     </div>
   );

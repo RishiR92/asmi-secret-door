@@ -11,8 +11,8 @@ const ChatMessage = ({ type, text, isVisible }: ChatMessageProps) => {
   if (type === 'user') {
     return (
       <div className="flex justify-end animate-slide-in-right">
-        <div className="px-4 py-3 rounded-2xl rounded-tr-sm max-w-xs shadow-lg" style={{ background: 'linear-gradient(135deg, var(--accent-positive), #2EC56A)' }}>
-          <span className="text-sm font-light" style={{ color: 'var(--bg-primary)' }}>{text}</span>
+        <div className="px-4 py-2.5 rounded-lg rounded-tr-sm max-w-[85%]" style={{ backgroundColor: '#005C4B' }}>
+          <span className="text-sm text-white">{text}</span>
         </div>
       </div>
     );
@@ -20,8 +20,8 @@ const ChatMessage = ({ type, text, isVisible }: ChatMessageProps) => {
 
   return (
     <div className="flex justify-start animate-scale-in">
-      <div className="backdrop-blur-sm px-4 py-3 rounded-2xl rounded-tl-sm border max-w-sm shadow-lg" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'rgba(255,255,255,0.1)' }}>
-        <span className="text-sm font-light" style={{ color: 'var(--text-high)' }}>{text}</span>
+      <div className="px-4 py-2.5 rounded-lg rounded-tl-sm max-w-[85%]" style={{ backgroundColor: '#1F2C34' }}>
+        <span className="text-sm text-white">{text}</span>
       </div>
     </div>
   );

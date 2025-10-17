@@ -7,13 +7,11 @@ const TypingIndicator = ({ isVisible }: TypingIndicatorProps) => {
   if (!isVisible) return null;
 
   return (
-    <div className="flex justify-start animate-fade-in">
-      <div className="bg-gray-800/90 backdrop-blur-sm px-4 py-3 rounded-2xl rounded-tl-sm border border-white/10">
-        <div className="flex space-x-1">
-          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-        </div>
+    <div className="flex justify-start">
+      <div className="flex space-x-1.5 px-3 py-2 rounded-lg" style={{ backgroundColor: '#1F2C34' }}>
+        <div className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: '#8696A0' }}></div>
+        <div className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: '#8696A0', animationDelay: '0.1s' }}></div>
+        <div className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: '#8696A0', animationDelay: '0.2s' }}></div>
       </div>
     </div>
   );

@@ -79,16 +79,23 @@ const VoiceRescheduleDemo = () => {
           </h2>
         </div>
 
-        {/* Phone Demo */}
-        <div className="bg-gray-900 rounded-2xl overflow-hidden mx-auto max-w-[280px] shadow-xl">
-          {/* Status Bar */}
-          <PhoneStatusBar isRecording={isRecording} />
-          
-          {/* Chat Header */}
-          <ChatHeader isRecording={isRecording} />
+        {/* WhatsApp-style interface */}
+        <div className="rounded-2xl overflow-hidden mx-auto max-w-[280px] shadow-xl" style={{ backgroundColor: '#0B141A' }}>
+          {/* WhatsApp Header */}
+          <div className="px-4 py-3 flex items-center space-x-3" style={{ backgroundColor: '#202C33' }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg" style={{ backgroundColor: '#00A884' }}>
+              A
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-white text-sm">Asmi</h3>
+              <p className="text-xs text-gray-400">
+                {isRecording ? 'listening...' : 'online'}
+              </p>
+            </div>
+          </div>
 
           {/* Chat Messages */}
-          <div className="bg-black min-h-[320px] p-3 space-y-3">
+          <div className="min-h-[320px] p-3 space-y-3" style={{ backgroundColor: '#0B141A' }}>
             {/* Voice Message */}
             <VoiceMessage 
               text="Meeting with Sam over dinner. Find a good place in Downtown SF & block 1 hour."
@@ -100,8 +107,8 @@ const VoiceRescheduleDemo = () => {
             {/* Text Message (converted from voice) */}
             {showTextMessage && (
               <div className="flex justify-end animate-slide-in-right">
-                <div className="bg-purple-600/60 border border-purple-400/30 px-4 py-3 rounded-2xl rounded-tr-sm max-w-xs backdrop-blur-sm">
-                  <span className="text-purple-100 text-sm">Meeting with Sam over dinner. Find a good place in Downtown SF & block 1 hour.</span>
+                <div className="px-4 py-2.5 rounded-lg rounded-tr-sm max-w-[85%]" style={{ backgroundColor: '#005C4B' }}>
+                  <span className="text-sm text-white">Meeting with Sam over dinner. Find a good place in Downtown SF & block 1 hour.</span>
                 </div>
               </div>
             )}
