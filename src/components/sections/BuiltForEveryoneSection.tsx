@@ -8,28 +8,28 @@ const BuiltForEveryoneSection = () => {
 
   const personas = [
     {
-      icon: <TrendingUp className="text-white" size={20} />,
-      title: "Fast Growing Startups",
-      summary: "Context intelligence",
-      example: "Asmi is pulling meetings, relationships, and email into one place. It preps you before every call, surfaces network intel automatically, and turns your inbox into simple, actionable updates in WhatsApp/iMessage"
-    },
-    {
-      icon: <User className="text-white" size={20} />,
-      title: "Founders",
-      summary: "Leverage on autopilot",
-      example: "Asmi keeps you sharp in the chaos - daily plan in WhatsApp, pre-reads before every call, and missed follow-ups surfaced from your inbox. Think of it as the co-pilot that never misses."
-    },
-    {
       icon: <Briefcase className="text-white" size={20} />,
-      title: "Operators & Execs", 
-      summary: "Execution speed",
-      example: "Operators don't have time to switch between 10 apps. Asmi brings everything that matters into WhatsApp/iMessage - meetings, inbox, network insights - saving you 1+ hours every day so you can ship faster."
+      title: "Operators & Executives",
+      summary: "Work + life in sync",
+      example: "Asmi manages your work meetings, personal commitments, and everything in between. Get prepped before calls, never miss a birthday, and handle both project deadlines and family plans - all from WhatsApp/iMessage."
     },
     {
       icon: <Users className="text-white" size={20} />,
-      title: "Investors & Advisors", 
-      summary: "Relationship intelligence",
-      example: "Asmi tracks every founder interaction, surfaces deal-relevant context instantly, and reminds you when to follow up - for both portfolio and new opportunities. Stay ahead of the curve, without the spreadsheet grind."
+      title: "Consultants & Advisors",
+      summary: "Client context on demand",
+      example: "Asmi tracks every client interaction across work and personal networks. Surfaces relevant background before meetings, reminds you of follow-ups, and helps balance multiple clients while keeping your personal life organized."
+    },
+    {
+      icon: <TrendingUp className="text-white" size={20} />,
+      title: "Legal & Finance Professionals",
+      summary: "Details that matter",
+      example: "Asmi organizes case details, client communications, and deadlines while managing your personal schedule. Never lose track of important dates - whether it's a filing deadline, court appearance, or your kid's recital."
+    },
+    {
+      icon: <User className="text-white" size={20} />,
+      title: "Educators & Creators",
+      summary: "Focus on what matters",
+      example: "Asmi handles your teaching schedule, student communications, and personal commitments. Get reminded of parent meetings, prep materials for classes, and still have time for your creative projects and family - all managed effortlessly."
     }
   ];
 
@@ -37,7 +37,7 @@ const BuiltForEveryoneSection = () => {
     <MobileOptimizedSection>
       <div className="text-center space-y-8">
         <h2 className="text-3xl font-bold text-white">
-          Built for fast moving people.
+          Built for busy professionals managing work and life.
         </h2>
 
         {/* Main selected persona */}
