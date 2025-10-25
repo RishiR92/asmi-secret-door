@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { User, Briefcase, TrendingUp, Users } from 'lucide-react';
+import { Calendar, MessageSquare, Users, Clock } from 'lucide-react';
 import MobileOptimizedSection from './MobileOptimizedSection';
 
 const BuiltForEveryoneSection = () => {
@@ -8,28 +8,28 @@ const BuiltForEveryoneSection = () => {
 
   const personas = [
     {
-      icon: <Briefcase className="text-white" size={20} />,
-      title: "Operators & Executives",
-      summary: "Work + life in sync",
-      example: "Asmi manages your work meetings, personal commitments, and everything in between. Get prepped before calls, never miss a birthday, and handle both project deadlines and family plans - all from WhatsApp/iMessage."
+      icon: <Calendar className="text-white" size={20} />,
+      title: "Too Many Meetings",
+      summary: "Never caught off guard",
+      example: "Asmi preps you for every call - client presentations at 9am, parent-teacher conference at 3pm. Background on every person, context from past conversations, and follow-ups tracked. Work meetings and family commitments, all handled."
+    },
+    {
+      icon: <MessageSquare className="text-white" size={20} />,
+      title: "Drowning in Messages",
+      summary: "Inbox to action, instantly",
+      example: "Asmi turns email chaos into clear updates in WhatsApp. Urgent client requests, school permission slips, dinner RSVPs - all triaged and surfaced with what needs your attention right now, both work and personal."
     },
     {
       icon: <Users className="text-white" size={20} />,
-      title: "Consultants & Advisors",
-      summary: "Client context on demand",
-      example: "Asmi tracks every client interaction across work and personal networks. Surfaces relevant background before meetings, reminds you of follow-ups, and helps balance multiple clients while keeping your personal life organized."
+      title: "Losing Track of People",
+      summary: "Remember every relationship",
+      example: "Asmi tracks everyone - colleagues, clients, friends, family. Reminds you when someone's birthday is coming up, surfaces when it's time to follow up with a lead, and helps you maintain relationships that matter in every part of your life."
     },
     {
-      icon: <TrendingUp className="text-white" size={20} />,
-      title: "Legal & Finance Professionals",
-      summary: "Details that matter",
-      example: "Asmi organizes case details, client communications, and deadlines while managing your personal schedule. Never lose track of important dates - whether it's a filing deadline, court appearance, or your kid's recital."
-    },
-    {
-      icon: <User className="text-white" size={20} />,
-      title: "Educators & Creators",
-      summary: "Focus on what matters",
-      example: "Asmi handles your teaching schedule, student communications, and personal commitments. Get reminded of parent meetings, prep materials for classes, and still have time for your creative projects and family - all managed effortlessly."
+      icon: <Clock className="text-white" size={20} />,
+      title: "Work-Life Blur",
+      summary: "Balance without effort",
+      example: "Asmi manages both worlds seamlessly. Reschedules your team standup around your kid's soccer game, blocks focus time for your presentation while keeping space for date night. One AI, all of life, in sync."
     }
   ];
 
@@ -37,7 +37,7 @@ const BuiltForEveryoneSection = () => {
     <MobileOptimizedSection>
       <div className="text-center space-y-8">
         <h2 className="text-3xl font-bold text-white">
-          Built for busy professionals managing work and life.
+          One AI managing everything. Work and life.
         </h2>
 
         {/* Main selected persona */}
